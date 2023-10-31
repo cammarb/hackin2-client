@@ -1,5 +1,5 @@
 import React from 'react';
-import './Auth.css';
+import './Test.css';
 
 const SignUp: React.FC = () => {
   console.log('Rendering SignUp');

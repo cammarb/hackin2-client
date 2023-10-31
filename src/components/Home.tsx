@@ -1,10 +1,11 @@
 import React from 'react';
+import './Test.css';
 
 const Home: React.FC = () => {
     console.log('Rendering Home');
     return (
         <div>
-            <h1>Home Page</h1>
+            <h1>Hackin2 Home</h1>
         </div>
     );
 };
