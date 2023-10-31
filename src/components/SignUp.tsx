@@ -1,8 +1,8 @@
-
 import React from 'react';
 import './Auth.css';
 
 const SignUp: React.FC = () => {
+  console.log('Rendering SignUp');
     return (
         <div className="auth-container">
             <h2>Sign Up</h2>
