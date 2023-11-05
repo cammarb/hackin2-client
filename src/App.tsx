@@ -1,19 +1,17 @@
 import './App.css'
 import { Outlet } from 'react-router-dom'
 import Header from './components/Header'
-import { ThemeProvider } from '@emotion/react'
-import { CssBaseline, createTheme } from '@mui/material'
-
-const defaultTheme = createTheme()
+import { CssBaseline } from '@mui/material'
+import { StyledEngineProvider } from '@mui/material/styles'
 
 function App() {
   return (
     <>
-      <ThemeProvider theme={defaultTheme}>
+      <StyledEngineProvider injectFirst>
         <CssBaseline />
         <Header />
         <Outlet />
-      </ThemeProvider>
+      </StyledEngineProvider>
     </>
   )
 }
