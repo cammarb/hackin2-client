@@ -1,26 +1,21 @@
-import React from 'react';
-import './App.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './components/Login';
-import SignUp from './components/SignUp';
-import Home from './components/Home';
-import ErrorPage from './components/ErrorPage';  
-import Header from './components/Header';  
+import './App.css'
+import { Outlet } from 'react-router-dom'
+import Header from './components/Header'
+import { ThemeProvider } from '@emotion/react'
+import { CssBaseline, createTheme } from '@mui/material'
+
+const defaultTheme = createTheme()
 
 function App() {
-    return (
-        <Router>
-            <div>
-                <Header />  
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/signup" element={<SignUp />} />
-                    <Route path="/*" element={<ErrorPage />} />
-                </Routes>
-            </div>
-        </Router>
-    );
+  return (
+    <>
+      <ThemeProvider theme={defaultTheme}>
+        <CssBaseline />
+        <Header />
+        <Outlet />
+      </ThemeProvider>
+    </>
+  )
 }
 
-export default App;
+export default App
