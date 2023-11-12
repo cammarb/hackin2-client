@@ -9,6 +9,8 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import { store } from './app/store'
 import Account from './pages/User/Account'
+import RequireAuth from './features/auth/requireAuth'
+import Settings from './pages/User/Settings'
 
 const router = createBrowserRouter([
   {
@@ -29,8 +31,17 @@ const router = createBrowserRouter([
         element: <SignUp />,
       },
       {
-        path: 'account',
-        element: <Account />,
+        element: <RequireAuth />,
+        children: [
+          {
+            path: 'account',
+            element: <Account />,
+          },
+          {
+            path: 'settings',
+            element: <Settings />,
+          },
+        ],
       },
     ],
   },
