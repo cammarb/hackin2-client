@@ -1,21 +1,21 @@
-import { apiConnection } from "../../app/api/apiConnection";
+import { apiConnection } from '../../app/api/apiConnection'
 
 export const userApiSlice = apiConnection.injectEndpoints({
   endpoints: (builder) => ({
     getUser: builder.query({
-      query: () => ({
-        url: "/user",
-        method: "GET",
+      query: (username) => ({
+        url: `/user/${username}`,
+        method: 'GET',
       }),
     }),
     newUser: builder.mutation({
       query: (userDetails) => ({
-        url: "/register",
-        method: "POST",
+        url: '/user/register',
+        method: 'POST',
         body: { ...userDetails },
       }),
     }),
   }),
-});
+})
 
-export const { useGetUserQuery, useNewUserMutation } = userApiSlice;
+export const { useGetUserQuery, useNewUserMutation } = userApiSlice
