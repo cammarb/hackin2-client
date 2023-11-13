@@ -15,7 +15,9 @@ import { useLogoutMutation } from '../features/auth/authApiSlice'
 
 export default function Header() {
   const token = useSelector(selectCurrentToken)
-  const [removeCredentials] = useLogoutMutation()
+  const [logout] = useLogoutMutation()
+
+  const navigate = useNavigate()
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -26,15 +28,25 @@ export default function Header() {
     setAnchorEl(null)
   }
 
-  const navigate = useNavigate()
+  const handleLogout = async () => {
+    try {
+      await logout('')
+      navigate('/login')
+    } catch (error) {
+      console.error('Logout error:', error)
+    }
+  }
   return (
     <>
       <div className="flex justify-between items-center">
         <Link to={'/'}>Hackin2</Link>
         <div className="flex gap-4 items-center">
-          <Link to={'signup'}>Sign Up</Link>
-          <Link to={'login'}>Log In</Link>
-          {token ? (
+          {token === null ? (
+            <>
+              <Link to={'signup'}>Sign Up</Link>
+              <Link to={'login'}>Log In</Link>
+            </>
+          ) : (
             <Tooltip title="Account settings">
               <IconButton
                 onClick={handleClick}
@@ -47,8 +59,6 @@ export default function Header() {
                 <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
               </IconButton>
             </Tooltip>
-          ) : (
-            <></>
           )}
         </div>
       </div>
@@ -102,12 +112,7 @@ export default function Header() {
             Settings
           </Link>
         </MenuItem>
-        <MenuItem
-          onClick={() => {
-            removeCredentials
-            navigate('login')
-          }}
-        >
+        <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
