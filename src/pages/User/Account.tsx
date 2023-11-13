@@ -1,38 +1,41 @@
 import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '../../features/auth/authSlice'
 import { useGetUserQuery } from '../../features/user/userSlice'
+import { Container, Paper, Typography } from '@mui/material'
 
 export default function Account() {
-  const username = useSelector(selectCurrentUser)
+  const user = useSelector(selectCurrentUser)
+
   const {
     data: userResponse,
     isLoading,
     isSuccess,
     isError,
     error,
-  } = useGetUserQuery(username)
+  } = useGetUserQuery(user)
 
-  const welcome = userResponse ? `Welcome ${username}!` : 'Welcome!'
-  console.log(username)
+  let content
 
-  return (
-    <>
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : isSuccess ? (
-        <>
-          <h1>{welcome}</h1>
-          <p>
-            Name: {userResponse['firstName']} {userResponse['lastName']}
-          </p>
-          <p>E-Mail: {userResponse['email']}</p>
-          <p>Role: {userResponse['roleId']}</p>
-        </>
-      ) : isError ? (
-        <div>{error.toString()}</div>
-      ) : (
-        <></>
-      )}
-    </>
-  )
+  if (isLoading) {
+    content = <p>Loading...</p>
+  } else if (isSuccess) {
+    content = (
+      <>
+        <Container maxWidth="sm">
+          <Paper style={{ padding: '20px', marginTop: '20px' }}>
+            <Typography variant="h4">{userResponse.username}</Typography>
+            <Typography variant="subtitle1">
+              {userResponse.firstName} {userResponse.lastName}
+            </Typography>
+            <Typography variant="subtitle1">{userResponse.email}</Typography>
+            <Typography variant="subtitle1">{userResponse.roleId}</Typography>
+          </Paper>
+        </Container>
+      </>
+    )
+  } else if (isError) {
+    content = <p>{JSON.stringify(error)}</p>
+  }
+
+  return content
 }

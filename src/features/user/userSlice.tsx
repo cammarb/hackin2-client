@@ -3,9 +3,17 @@ import { apiConnection } from '../../app/api/apiConnection'
 export const userApiSlice = apiConnection.injectEndpoints({
   endpoints: (builder) => ({
     getUser: builder.query({
-      query: (username) => ({
-        url: `/user/${username}`,
+      query: () => ({
+        url: `/user/account`,
         method: 'GET',
+        refetchOnMountOrArgChange: 30,
+      }),
+    }),
+    putUser: builder.query({
+      query: (userDetails) => ({
+        url: `/user/account/edit`,
+        method: 'PUT',
+        body: { ...userDetails },
       }),
     }),
     newUser: builder.mutation({
@@ -18,4 +26,5 @@ export const userApiSlice = apiConnection.injectEndpoints({
   }),
 })
 
-export const { useGetUserQuery, useNewUserMutation } = userApiSlice
+export const { useGetUserQuery, useNewUserMutation, usePutUserQuery } =
+  userApiSlice
