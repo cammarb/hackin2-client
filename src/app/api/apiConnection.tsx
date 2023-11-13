@@ -14,8 +14,8 @@ import { RootState } from '../store'
 const baseQuery = fetchBaseQuery({
   baseUrl: `${import.meta.env.VITE_API_BASE_URL}`,
   credentials: 'include',
-  prepareHeaders: (headers, api: Pick<BaseQueryApi, 'getState'>) => {
-    const token = (api.getState() as RootState).auth.token
+  prepareHeaders: (headers, { getState }) => {
+    const token = (getState() as RootState).auth.token
     if (token) headers.set('Authorization', `Bearer ${token}`)
 
     return headers
@@ -23,13 +23,13 @@ const baseQuery = fetchBaseQuery({
 })
 
 const baseQueryRefresh = async (
-  args: string | FetchArgs,
+  args: string | FetchArgs = '',
   api: BaseQueryApi,
   extraOptions: object
 ) => {
   let result = await baseQuery(args, api, extraOptions)
 
-  if (result?.error?.status === 403) {
+  if (result?.meta?.response?.status === 403) {
     const refreshResult = await baseQuery('auth/refresh', api, extraOptions)
 
     if (refreshResult?.data) {
