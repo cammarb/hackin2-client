@@ -33,8 +33,8 @@ export default function Login() {
       }).unwrap()
       console.log(userData)
       dispatch(setCredentials({ ...userData, user }))
-      // setUser('')
-      // setPassword('')
+      setUser('')
+      setPassword('')
       navigate('/account')
     } catch (err) {
       console.log(err)
