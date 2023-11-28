@@ -1,13 +1,4 @@
 import * as React from 'react'
-import Avatar from '@mui/material/Avatar'
-import Menu from '@mui/material/Menu'
-import MenuItem from '@mui/material/MenuItem'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import Divider from '@mui/material/Divider'
-import IconButton from '@mui/material/IconButton'
-import Tooltip from '@mui/material/Tooltip'
-import Settings from '@mui/icons-material/Settings'
-import Logout from '@mui/icons-material/Logout'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { selectCurrentToken } from '../features/auth/authSlice'
@@ -38,87 +29,16 @@ export default function Header() {
   }
   return (
     <>
-      <div className="flex justify-between items-center">
-        <Link to={'/'}>Hackin2</Link>
-        <div className="flex gap-4 items-center">
-          {token === null ? (
-            <>
-              <Link to={'signup'}>Sign Up</Link>
-              <Link to={'login'}>Log In</Link>
-            </>
-          ) : (
-            <Tooltip title="Account settings">
-              <IconButton
-                onClick={handleClick}
-                size="small"
-                sx={{ ml: 2 }}
-                aria-controls={open ? 'account-menu' : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? 'true' : undefined}
-              >
-                <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
-              </IconButton>
-            </Tooltip>
-          )}
+      <div className="navbar bg-base-100">
+        <div className="navbar-start">
+          <a className="btn btn-ghost text-xl">Hackin2</a>
+        </div>
+
+        <div className="navbar-end gap-4">
+          <a className="">Log In</a>
+          <a className="btn btn-primary">Register</a>
         </div>
       </div>
-      <Menu
-        anchorEl={anchorEl}
-        id="account-menu"
-        open={open}
-        onClose={handleClose}
-        onClick={handleClose}
-        PaperProps={{
-          elevation: 0,
-          sx: {
-            overflow: 'visible',
-            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-            mt: 1.5,
-            '& .MuiAvatar-root': {
-              width: 32,
-              height: 32,
-              ml: -0.5,
-              mr: 1,
-            },
-            '&:before': {
-              content: '""',
-              display: 'block',
-              position: 'absolute',
-              top: 0,
-              right: 14,
-              width: 10,
-              height: 10,
-              bgcolor: 'background.paper',
-              transform: 'translateY(-50%) rotate(45deg)',
-              zIndex: 0,
-            },
-          },
-        }}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-      >
-        <MenuItem onClick={handleClose}>
-          <Link to={'account'} className="flex items-center">
-            <Avatar />
-            My account
-          </Link>
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={handleClose}>
-          <Link to={'settings'} className="flex items-center">
-            <ListItemIcon>
-              <Settings fontSize="small" />
-            </ListItemIcon>
-            Settings
-          </Link>
-        </MenuItem>
-        <MenuItem onClick={handleLogout}>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          Logout
-        </MenuItem>
-      </Menu>
     </>
   )
 }

@@ -22,27 +22,27 @@ const router = createBrowserRouter([
         index: true,
         element: <Home />,
       },
-      {
-        path: 'login',
-        element: <Login />,
-      },
-      {
-        path: 'signup',
-        element: <SignUp />,
-      },
-      {
-        element: <RequireAuth />,
-        children: [
-          {
-            path: 'account',
-            element: <Account />,
-          },
-          {
-            path: 'settings',
-            element: <Settings />,
-          },
-        ],
-      },
+      // {
+      //   path: 'login',
+      //   element: <Login />,
+      // },
+      // {
+      //   path: 'signup',
+      //   element: <SignUp />,
+      // },
+      // {
+      //   element: <RequireAuth />,
+      //   children: [
+      //     {
+      //       path: 'account',
+      //       element: <Account />,
+      //     },
+      //     {
+      //       path: 'settings',
+      //       element: <Settings />,
+      //     },
+      //   ],
+      // },
     ],
   },
 ])
