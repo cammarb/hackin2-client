@@ -1,15 +1,17 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 
 export default function Home() {
-  const [text, setText] = useState('mentor')
+  const [text, setText] = useState('mentor');
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       // Check the current text and update accordingly
-      setText((prevText) => (prevText.includes('mentor') ? 'mentee' : 'mentor'))
-    }, 2500)
-    return () => clearInterval(intervalId)
-  }, [])
+      setText((prevText) =>
+        prevText.includes('mentor') ? 'mentee' : 'mentor'
+      );
+    }, 2500);
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <div>
@@ -29,5 +31,5 @@ export default function Home() {
         </div>
       </div>
     </div>
-  )
+  );
 }

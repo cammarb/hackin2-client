@@ -3,5 +3,5 @@ export default function Settings() {
     <>
       <h1>Settings page</h1>
     </>
-  )
+  );
 }

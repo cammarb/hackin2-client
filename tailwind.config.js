@@ -2,7 +2,7 @@
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    extend: {},
+    extend: {}
   },
   // eslint-disable-next-line no-undef
   plugins: [require('daisyui')],
@@ -18,9 +18,9 @@ export default {
           info: '#22d3ee',
           success: '#4ade80',
           warning: '#f59e0b',
-          error: '#ef4444',
-        },
-      },
-    ],
-  },
-}
+          error: '#ef4444'
+        }
+      }
+    ]
+  }
+};

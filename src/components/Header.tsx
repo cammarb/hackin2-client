@@ -1,8 +1,8 @@
-import * as React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { selectCurrentToken } from "@/features/auth/authSlice";
-import { useLogoutMutation } from "@/features/auth/authApiSlice";
+import * as React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectCurrentToken } from '@/features/auth/authSlice';
+import { useLogoutMutation } from '@/features/auth/authApiSlice';
 
 export default function Header() {
   const token = useSelector(selectCurrentToken);
@@ -21,10 +21,10 @@ export default function Header() {
 
   const handleLogout = async () => {
     try {
-      await logout("");
-      navigate("/login");
+      await logout('');
+      navigate('/login');
     } catch (error) {
-      console.error("Logout error:", error);
+      console.error('Logout error:', error);
     }
   };
   return (

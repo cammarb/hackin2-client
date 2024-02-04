@@ -1,7 +1,7 @@
-import { useLocation, Navigate, Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { selectCurrentUser } from "@/features/auth/authSlice";
-import { useGetUserQuery } from "@/features/user/userSlice";
+import { useLocation, Navigate, Outlet } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectCurrentUser } from '@/features/auth/authSlice';
+import { useGetUserQuery } from '@/features/user/userSlice';
 
 const RequireAuth = () => {
   const user = useSelector(selectCurrentUser);
@@ -12,7 +12,7 @@ const RequireAuth = () => {
     isLoading,
     isSuccess,
     isError,
-    error,
+    error
   } = useGetUserQuery(user);
 
   let content;

@@ -1,23 +1,23 @@
-import { useSelector } from 'react-redux'
-import { selectCurrentUser } from '@/features/auth/authSlice'
-import { useGetUserQuery } from '@/features/user/userSlice'
-import { Container, Paper, Typography } from '@mui/material'
+import { useSelector } from 'react-redux';
+import { selectCurrentUser } from '@/features/auth/authSlice';
+import { useGetUserQuery } from '@/features/user/userSlice';
+import { Container, Paper, Typography } from '@mui/material';
 
 export default function Account() {
-  const user = useSelector(selectCurrentUser)
+  const user = useSelector(selectCurrentUser);
 
   const {
     data: userResponse,
     isLoading,
     isSuccess,
     isError,
-    error,
-  } = useGetUserQuery(user)
+    error
+  } = useGetUserQuery(user);
 
-  let content
+  let content;
 
   if (isLoading) {
-    content = <p>Loading...</p>
+    content = <p>Loading...</p>;
   } else if (isSuccess) {
     content = (
       <>
@@ -32,10 +32,10 @@ export default function Account() {
           </Paper>
         </Container>
       </>
-    )
+    );
   } else if (isError) {
-    content = <p>{JSON.stringify(error)}</p>
+    content = <p>{JSON.stringify(error)}</p>;
   }
 
-  return content
+  return content;
 }

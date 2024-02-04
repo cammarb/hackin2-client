@@ -1,15 +1,15 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { apiConnection } from "@/app/api/apiConnection";
-import authReducer from "@/features/auth/authSlice";
+import { configureStore } from '@reduxjs/toolkit';
+import { apiConnection } from '@/app/api/apiConnection';
+import authReducer from '@/features/auth/authSlice';
 
 export const store = configureStore({
   reducer: {
     [apiConnection.reducerPath]: apiConnection.reducer,
-    auth: authReducer,
+    auth: authReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiConnection.middleware),
-  devTools: true,
+  devTools: true
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
