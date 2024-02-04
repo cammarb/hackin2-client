@@ -11,9 +11,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { useNavigate } from 'react-router-dom'
-import { useLoginMutation } from '../features/auth/authApiSlice'
+import { useLoginMutation } from '@/features/auth/authApiSlice'
 import { useDispatch } from 'react-redux'
-import { setCredentials } from '../features/auth/authSlice'
+import { setCredentials } from '@/features/auth/authSlice'
 
 export default function Login() {
   const [user, setUser] = useState('')

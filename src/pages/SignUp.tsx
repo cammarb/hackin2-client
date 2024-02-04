@@ -1,44 +1,44 @@
-import { ChangeEvent, useState } from 'react'
-import Avatar from '@mui/material/Avatar'
-import Button from '@mui/material/Button'
-import CssBaseline from '@mui/material/CssBaseline'
-import TextField from '@mui/material/TextField'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import { Link, useNavigate } from 'react-router-dom'
-import Grid from '@mui/material/Grid'
-import Box from '@mui/material/Box'
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-import Typography from '@mui/material/Typography'
-import Container from '@mui/material/Container'
-import { useNewUserMutation } from '../features/user/userSlice'
-import { FormControl, Radio, RadioGroup } from '@mui/material'
+import { ChangeEvent, useState } from "react";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import { Link, useNavigate } from "react-router-dom";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { useNewUserMutation } from "@/features/user/userSlice";
+import { FormControl, Radio, RadioGroup } from "@mui/material";
 
 export default function SignUp() {
-  const [putUser] = useNewUserMutation()
+  const [putUser] = useNewUserMutation();
 
   const [userData, setUserData] = useState({
-    username: '',
-    email: '',
-    firstName: '',
-    lastName: '',
-    password: '',
-    roleId: '',
-  })
+    username: "",
+    email: "",
+    firstName: "",
+    lastName: "",
+    password: "",
+    roleId: "",
+  });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setUserData((prevUserData) => ({
       ...prevUserData,
       [name]: value,
-    }))
-    console.log(userData)
-  }
+    }));
+    console.log(userData);
+  };
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   // const dispatch = useDispatch()
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     try {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -49,12 +49,12 @@ export default function SignUp() {
         lastName: userData.lastName,
         password: userData.password,
         roleId: parseInt(userData.roleId),
-      }).unwrap()
-      navigate('/login')
+      }).unwrap();
+      navigate("/login");
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -62,12 +62,12 @@ export default function SignUp() {
       <Box
         sx={{
           marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
@@ -171,11 +171,11 @@ export default function SignUp() {
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link to={'login'}>Already have an account? Sign in</Link>
+              <Link to={"login"}>Already have an account? Sign in</Link>
             </Grid>
           </Grid>
         </Box>
       </Box>
     </Container>
-  )
+  );
 }

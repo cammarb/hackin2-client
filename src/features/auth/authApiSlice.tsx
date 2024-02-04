@@ -1,5 +1,5 @@
-import { apiConnection } from '../../app/api/apiConnection'
-import { removeCredentials } from './authSlice'
+import { apiConnection } from '@/app/api/apiConnection'
+import { removeCredentials } from '@/features/auth/authSlice'
 
 export const authApiSlice = apiConnection.injectEndpoints({
   endpoints: (builder) => ({

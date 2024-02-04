@@ -1,11 +1,11 @@
-import { useLocation, Navigate, Outlet } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { selectCurrentUser } from './authSlice'
-import { useGetUserQuery } from '../user/userSlice'
+import { useLocation, Navigate, Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/features/auth/authSlice";
+import { useGetUserQuery } from "@/features/user/userSlice";
 
 const RequireAuth = () => {
-  const user = useSelector(selectCurrentUser)
-  const location = useLocation()
+  const user = useSelector(selectCurrentUser);
+  const location = useLocation();
 
   const {
     data: userResponse,
@@ -13,27 +13,27 @@ const RequireAuth = () => {
     isSuccess,
     isError,
     error,
-  } = useGetUserQuery(user)
+  } = useGetUserQuery(user);
 
-  let content
+  let content;
 
   if (isLoading) {
-    content = <p>Loading...</p>
+    content = <p>Loading...</p>;
   } else if (isError || !user || userResponse?.data === null) {
-    console.log(error)
+    console.log(error);
     content = (
       <div>
         <p>Error loading user data.</p>
         <Navigate to="/login" state={{ from: location }} replace />
       </div>
-    )
+    );
   } else if (isSuccess && userResponse?.data !== null) {
-    content = <Outlet />
+    content = <Outlet />;
   } else {
-    content = <p>User not authenticated.</p>
+    content = <p>User not authenticated.</p>;
   }
 
-  return content
-}
+  return content;
+};
 
-export default RequireAuth
+export default RequireAuth;

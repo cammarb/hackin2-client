@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux'
-import { selectCurrentUser } from '../../features/auth/authSlice'
-import { useGetUserQuery } from '../../features/user/userSlice'
+import { selectCurrentUser } from '@/features/auth/authSlice'
+import { useGetUserQuery } from '@/features/user/userSlice'
 import { Container, Paper, Typography } from '@mui/material'
 
 export default function Account() {
