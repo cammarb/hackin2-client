@@ -11,23 +11,23 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@/app*": [
-        "src/app*"
+      "@/*": [
+        "./src/*"
       ],
       "@/components/*": [
-        "src/components/*"
+        "./src/components/*"
       ],
       "@/features/*": [
-        "src/features/*"
+        "./src/features/*"
       ],
       "@/assets/*": [
-        "src/assets/*"
+        "./src/assets/*"
       ],
       "@/pages/*": [
-        "src/pages/*"
+        "./src/pages/*"
       ],
       "@/app/*": [
-        "src/app/*"
+        "./src/app/*"
       ]
     },
     /* Bundler mode */
