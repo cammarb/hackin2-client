@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState } from 'react'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
@@ -25,10 +26,40 @@ export default function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+=======
+import { useState } from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+// import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { useNavigate } from 'react-router-dom';
+import { useLoginMutation } from '@/features/auth/authApiSlice';
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '@/features/auth/authSlice';
+
+export default function Login() {
+  const [user, setUser] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
+  const [login, { isLoading }] = useLoginMutation();
+  const dispatch = useDispatch();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+>>>>>>> dev_melvin
 
     try {
       const userData = await login({
         username: user,
+<<<<<<< HEAD
         password: password,
       }).unwrap()
       console.log(userData)
@@ -40,6 +71,19 @@ export default function Login() {
       console.log(err)
     }
   }
+=======
+        password: password
+      }).unwrap();
+      console.log(userData);
+      dispatch(setCredentials({ ...userData, user }));
+      setUser('');
+      setPassword('');
+      navigate('/account');
+    } catch (err) {
+      console.log(err);
+    }
+  };
+>>>>>>> dev_melvin
 
   return (
     <Container component="main" maxWidth="xs">
@@ -52,7 +96,11 @@ export default function Login() {
             marginTop: 8,
             display: 'flex',
             flexDirection: 'column',
+<<<<<<< HEAD
             alignItems: 'center',
+=======
+            alignItems: 'center'
+>>>>>>> dev_melvin
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -107,5 +155,9 @@ export default function Login() {
         </Box>
       )}
     </Container>
+<<<<<<< HEAD
   )
+=======
+  );
+>>>>>>> dev_melvin
 }

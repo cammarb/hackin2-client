@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { ChangeEvent, useState } from 'react'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
@@ -15,6 +16,25 @@ import { FormControl, Radio, RadioGroup } from '@mui/material'
 
 export default function SignUp() {
   const [putUser] = useNewUserMutation()
+=======
+import { ChangeEvent, useState } from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import { Link, useNavigate } from 'react-router-dom';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { useNewUserMutation } from '@/features/user/userSlice';
+import { FormControl, Radio, RadioGroup } from '@mui/material';
+
+export default function SignUp() {
+  const [putUser] = useNewUserMutation();
+>>>>>>> dev_melvin
 
   const [userData, setUserData] = useState({
     username: '',
@@ -22,6 +42,7 @@ export default function SignUp() {
     firstName: '',
     lastName: '',
     password: '',
+<<<<<<< HEAD
     roleId: '',
   })
 
@@ -39,6 +60,25 @@ export default function SignUp() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+=======
+    roleId: ''
+  });
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setUserData((prevUserData) => ({
+      ...prevUserData,
+      [name]: value
+    }));
+    console.log(userData);
+  };
+
+  const navigate = useNavigate();
+  // const dispatch = useDispatch()
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+>>>>>>> dev_melvin
 
     try {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -48,6 +88,7 @@ export default function SignUp() {
         firstName: userData.firstName,
         lastName: userData.lastName,
         password: userData.password,
+<<<<<<< HEAD
         roleId: parseInt(userData.roleId),
       }).unwrap()
       navigate('/login')
@@ -55,6 +96,15 @@ export default function SignUp() {
       console.log(err)
     }
   }
+=======
+        roleId: parseInt(userData.roleId)
+      }).unwrap();
+      navigate('/login');
+    } catch (err) {
+      console.log(err);
+    }
+  };
+>>>>>>> dev_melvin
 
   return (
     <Container component="main" maxWidth="xs">
@@ -64,7 +114,11 @@ export default function SignUp() {
           marginTop: 8,
           display: 'flex',
           flexDirection: 'column',
+<<<<<<< HEAD
           alignItems: 'center',
+=======
+          alignItems: 'center'
+>>>>>>> dev_melvin
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -177,5 +231,9 @@ export default function SignUp() {
         </Box>
       </Box>
     </Container>
+<<<<<<< HEAD
   )
+=======
+  );
+>>>>>>> dev_melvin
 }

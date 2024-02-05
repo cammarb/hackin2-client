@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import * as ReactDOM from 'react-dom/client'
 import App from './App'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
@@ -11,6 +12,21 @@ import { store } from './app/store'
 import Account from './pages/User/Account'
 import RequireAuth from './features/auth/requireAuth'
 import Settings from './pages/User/Settings'
+=======
+import * as ReactDOM from 'react-dom/client';
+import App from '@/App';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import Login from '@/pages/Login';
+import SignUp from '@/pages/SignUp';
+import ErrorPage from '@/pages/ErrorPage';
+import Home from '@/pages/Home';
+import React from 'react';
+import { Provider } from 'react-redux';
+import { store } from '@/app/store';
+import Account from '@/pages/User/Account';
+import RequireAuth from '@/features/auth/requireAuth';
+import Settings from '@/pages/User/Settings';
+>>>>>>> dev_melvin
 
 const router = createBrowserRouter([
   {
@@ -20,8 +36,13 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
+<<<<<<< HEAD
         element: <Home />,
       },
+=======
+        element: <Home />
+      }
+>>>>>>> dev_melvin
       // {
       //   path: 'login',
       //   element: <Login />,
@@ -43,9 +64,15 @@ const router = createBrowserRouter([
       //     },
       //   ],
       // },
+<<<<<<< HEAD
     ],
   },
 ])
+=======
+    ]
+  }
+]);
+>>>>>>> dev_melvin
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -53,4 +80,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <RouterProvider router={router} />
     </Provider>
   </React.StrictMode>
+<<<<<<< HEAD
 )
+=======
+);
+>>>>>>> dev_melvin

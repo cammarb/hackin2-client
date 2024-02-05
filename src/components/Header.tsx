@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import * as React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -27,6 +28,37 @@ export default function Header() {
       console.error('Logout error:', error)
     }
   }
+=======
+import * as React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectCurrentToken } from '@/features/auth/authSlice';
+import { useLogoutMutation } from '@/features/auth/authApiSlice';
+
+export default function Header() {
+  const token = useSelector(selectCurrentToken);
+  const [logout] = useLogoutMutation();
+
+  const navigate = useNavigate();
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout('');
+      navigate('/login');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
+>>>>>>> dev_melvin
   return (
     <>
       <div className="navbar bg-base-100">
@@ -40,5 +72,9 @@ export default function Header() {
         </div>
       </div>
     </>
+<<<<<<< HEAD
   )
+=======
+  );
+>>>>>>> dev_melvin
 }
