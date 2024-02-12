@@ -22,6 +22,25 @@ export default function SignUp() {
     firstName: '',
     lastName: '',
     password: '',
+<<<<<<< HEAD
+    roleId: '',
+  })
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setUserData((prevUserData) => ({
+      ...prevUserData,
+      [name]: value,
+    }))
+    console.log(userData)
+  }
+
+  const navigate = useNavigate()
+  // const dispatch = useDispatch()
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+=======
     roleId: ''
   });
 
@@ -39,6 +58,7 @@ export default function SignUp() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+>>>>>>> dev_melvin
 
     try {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -48,6 +68,15 @@ export default function SignUp() {
         firstName: userData.firstName,
         lastName: userData.lastName,
         password: userData.password,
+<<<<<<< HEAD
+        roleId: parseInt(userData.roleId),
+      }).unwrap()
+      navigate('/login')
+    } catch (err) {
+      console.log(err)
+    }
+  }
+=======
         roleId: parseInt(userData.roleId)
       }).unwrap();
       navigate('/login');
@@ -55,6 +84,7 @@ export default function SignUp() {
       console.log(err);
     }
   };
+>>>>>>> dev_melvin
 
   return (
     <Container component="main" maxWidth="xs">
@@ -64,7 +94,11 @@ export default function SignUp() {
           marginTop: 8,
           display: 'flex',
           flexDirection: 'column',
+<<<<<<< HEAD
+          alignItems: 'center',
+=======
           alignItems: 'center'
+>>>>>>> dev_melvin
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -177,5 +211,9 @@ export default function SignUp() {
         </Box>
       </Box>
     </Container>
+<<<<<<< HEAD
+  )
+=======
   );
+>>>>>>> dev_melvin
 }
