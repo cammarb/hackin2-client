@@ -16,7 +16,13 @@ export default function ProgramManagement() {
         program={currentProgram}
         setProgram={setCurrentProgram}
       />
-      <Outlet context={currentProgram} />
+      <div className="pt-8 ml-56">
+        {currentProgram ? (
+          <Outlet context={currentProgram} />
+        ) : (
+          <div>Click on a program</div>
+        )}
+      </div>
     </>
   );
 }

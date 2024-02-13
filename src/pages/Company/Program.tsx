@@ -6,7 +6,7 @@ export default function Program() {
 
   return (
     <>
-      <div className="pt-8 ml-56">
+      <div className="">
         <h1>{program.title}</h1>
       </div>
     </>
