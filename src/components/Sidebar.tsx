@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 
 export function SidebarItems({ items, program, setProgram }) {
   return items?.length ? (
-    <div className="grid grid-flow-row auto-rows-max text-sm p-6">
+    <div className="grid grid-flow-row auto-rows-max gap-2 text-sm p-6">
       {items.map((item, index) =>
         !item.disabled && item.href ? (
           <NavLink
@@ -12,9 +12,9 @@ export function SidebarItems({ items, program, setProgram }) {
             to={item.href}
             className={({ isActive }) =>
               cn(
-                'flex w-full items-center justify-between rounded-md p-2 hover:underline',
+                'flex w-full items-center gap-4 rounded-md p-3 border hover:underline',
                 {
-                  'bg-red-300': isActive === item.href
+                  'bg-muted': isActive
                 }
               )
             }
@@ -23,7 +23,7 @@ export function SidebarItems({ items, program, setProgram }) {
             onClick={() => setProgram(item)}
           >
             <Avatar>
-              <AvatarImage src={item.logo} className="max-w-9" />
+              <AvatarImage src={item.logo} className="max-w-5" />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             {item.title}
@@ -40,7 +40,7 @@ export function SidebarItems({ items, program, setProgram }) {
 
 export default function Sidebar({ items, program, setProgram }) {
   return items.length ? (
-    <div className="max-w-screen-sm h-screen fixed border border-red-300">
+    <div className="max-w-screen-sm h-screen fixed border">
       <SidebarItems items={items} setProgram={setProgram} program={program} />
     </div>
   ) : null;
