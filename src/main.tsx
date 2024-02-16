@@ -1,19 +1,18 @@
-import React from 'react'
+import React from 'react';
 import * as ReactDOM from 'react-dom/client';
 import App from '@/App';
-import '@/index.css'
+import '@/index.css';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
-import Login from '@/pages/Login';
-import SignUp from '@/pages/SignUp';
 import ErrorPage from '@/pages/ErrorPage';
 import Home from '@/pages/Home';
-import Account from '@/pages/User/Account';
-import RequireAuth from '@/features/auth/requireAuth';
-import Settings from '@/pages/User/Settings';
+
 import { ThemeProvider } from '@/components/theme-provider';
+import ProgramManagement from './pages/Company/ProgramManagement';
+import Program from './pages/Company/Program';
+import { programLoader } from './loaders/programsLoader';
 
 const router = createBrowserRouter([
   {
@@ -24,28 +23,18 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />
+      },
+      {
+        path: 'program-management',
+        element: <ProgramManagement />,
+        loader: programLoader,
+        children: [
+          {
+            path: ':id',
+            element: <Program />
+          }
+        ]
       }
-      // {
-      //   path: 'login',
-      //   element: <Login />,
-      // },
-      // {
-      //   path: 'signup',
-      //   element: <SignUp />,
-      // },
-      // {
-      //   element: <RequireAuth />,
-      //   children: [
-      //     {
-      //       path: 'account',
-      //       element: <Account />,
-      //     },
-      //     {
-      //       path: 'settings',
-      //       element: <Settings />,
-      //     },
-      //   ],
-      // },
     ]
   }
 ]);
