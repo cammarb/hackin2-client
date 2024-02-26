@@ -29,19 +29,6 @@ export default function Login() {
     try {
       const userData = await login({
         username: user,
-<<<<<<< HEAD
-        password: password,
-      }).unwrap()
-      console.log(userData)
-      dispatch(setCredentials({ ...userData, user }))
-      setUser('')
-      setPassword('')
-      navigate('/account')
-    } catch (err) {
-      console.log(err)
-    }
-  }
-=======
         password: password
       }).unwrap();
       console.log(userData);
@@ -53,7 +40,6 @@ export default function Login() {
       console.log(err);
     }
   };
->>>>>>> dev_melvin
 
   return (
     <Container component="main" maxWidth="xs">
@@ -66,11 +52,7 @@ export default function Login() {
             marginTop: 8,
             display: 'flex',
             flexDirection: 'column',
-<<<<<<< HEAD
-            alignItems: 'center',
-=======
             alignItems: 'center'
->>>>>>> dev_melvin
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -125,9 +107,5 @@ export default function Login() {
         </Box>
       )}
     </Container>
-<<<<<<< HEAD
-  )
-=======
   );
->>>>>>> dev_melvin
 }

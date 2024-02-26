@@ -10,9 +10,16 @@ import ErrorPage from '@/pages/ErrorPage';
 import Home from '@/pages/Home';
 
 import { ThemeProvider } from '@/components/theme-provider';
-import ProgramManagement from './pages/Company/ProgramManagement';
-import Program from './pages/Company/Program';
+import ProgramManagement from '@/pages/Company/ProgramManagement';
+import Submissions from '@/pages/Company/Submissions';
+import Details from '@/pages/Company/Details';
+import UserRolesPermissions from '@/pages/Company/UserRolesPermissions';
+import Program from '@/pages/Company/Program';
+import Dashboard from '@/pages/Company/Dashboard'; 
+import UserManagement from '@/pages/Company/UserManagement'; 
+import Settings from '@/pages/Company/Settings'; 
 import { programLoader } from './loaders/programsLoader';
+
 
 const router = createBrowserRouter([
   {
@@ -25,13 +32,41 @@ const router = createBrowserRouter([
         element: <Home />
       },
       {
+        path: 'dashboard', 
+        element: <Dashboard />
+      },
+      {
+        path: 'user-management', 
+        element: <UserManagement />
+      },
+      {
+        path: 'settings', 
+        element: <Settings />
+      },
+      {
+        path: 'settings', 
+        element: <Settings />
+      },
+      {
         path: 'program-management',
         element: <ProgramManagement />,
         loader: programLoader,
         children: [
           {
-            path: ':id',
+            index: true, // default subpage for program-management
             element: <Program />
+          },
+          {
+            path: 'submissions',
+            element: <Submissions />
+          },
+          {
+            path: 'details', 
+            element: <Details />
+          },
+          {
+            path: 'userrolespermissions',
+            element: <UserRolesPermissions />
           }
         ]
       }
