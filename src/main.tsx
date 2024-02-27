@@ -12,7 +12,9 @@ import Home from '@/pages/Home';
 import { ThemeProvider } from '@/components/theme-provider';
 import ProgramManagement from './pages/Company/ProgramManagement';
 import Program from './pages/Company/Program';
-import { programLoader } from './loaders/programsLoader';
+import Login from './pages/Login';
+import Dashboard from './pages/Company/Dashboard';
+import CompanyUsers from './pages/Company/CompanyUsers';
 
 const router = createBrowserRouter([
   {
@@ -25,13 +27,29 @@ const router = createBrowserRouter([
         element: <Home />
       },
       {
-        path: 'program-management',
-        element: <ProgramManagement />,
-        loader: programLoader,
+        path: 'login',
+        element: <Login />
+      },
+      {
+        path: 'company',
         children: [
           {
-            path: ':id',
-            element: <Program />
+            path: 'dashboard',
+            element: <Dashboard />
+          },
+          {
+            path: 'programs',
+            element: <ProgramManagement />,
+            children: [
+              {
+                path: ':id',
+                element: <Program />
+              }
+            ]
+          },
+          {
+            path: 'users',
+            element: <CompanyUsers />
           }
         ]
       }
