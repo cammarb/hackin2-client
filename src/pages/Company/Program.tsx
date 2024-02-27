@@ -18,7 +18,7 @@ export default function Program() {
     <>
       <div className="m-10">
         <header className="py-10">
-          <h1 className="text-4xl font-medium">{program.title}</h1>
+          <h1 className="text-4xl font-medium">{program.name}</h1>
         </header>
         <Tabs defaultValue="submissions">
           <TabsList className="w-[500px] grid grid-flow-col gap-3 px-4 py-2 rounded bg-neutral-800">

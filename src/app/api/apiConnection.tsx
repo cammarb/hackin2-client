@@ -31,7 +31,6 @@ const baseQueryRefresh = async (
 
   if (result?.meta?.response?.status === 403) {
     const refreshResult = await baseQuery('auth/refresh', api, extraOptions);
-
     if (refreshResult?.data) {
       const { user, token } = refreshResult.data as AuthState;
 
@@ -48,5 +47,5 @@ const baseQueryRefresh = async (
 
 export const apiConnection = createApi({
   baseQuery: baseQueryRefresh,
-  endpoints: () => ({})
+  endpoints: (builder) => ({})
 });
