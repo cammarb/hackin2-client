@@ -1,21 +1,21 @@
 import { LoaderFunction, json } from 'react-router-dom';
 
 export interface Program {
-  title: string;
-  href: string;
+  id: string;
+  name: string;
   variant: 'default' | 'ghost';
 }
 
 export const programLoader: LoaderFunction = async () => {
   const programs: Program[] = [
     {
-      title: 'Google',
-      href: 'google',
+      name: 'Google',
+      id: 'google',
       variant: 'default'
     },
     {
-      title: 'Microsoft',
-      href: 'microsoft',
+      name: 'Microsoft',
+      id: 'microsoft',
       variant: 'ghost'
     }
   ];

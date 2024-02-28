@@ -19,6 +19,8 @@ import Dashboard from '@/pages/Company/Dashboard';
 import UserManagement from '@/pages/Company/UserManagement'; 
 import Settings from '@/pages/Company/Settings'; 
 import { programLoader } from './loaders/programsLoader';
+import Login from './pages/Login';
+import CompanyUsers from './pages/Company/CompanyUsers';
 
 
 const router = createBrowserRouter([
@@ -32,10 +34,6 @@ const router = createBrowserRouter([
         element: <Home />
       },
       {
-        path: 'dashboard', 
-        element: <Dashboard />
-      },
-      {
         path: 'user-management', 
         element: <UserManagement />
       },
@@ -44,29 +42,43 @@ const router = createBrowserRouter([
         element: <Settings />
       },
       {
-        path: 'settings', 
-        element: <Settings />
+        path: 'login',
+        element: <Login />
       },
       {
-        path: 'program-management',
-        element: <ProgramManagement />,
-        loader: programLoader,
+        path: 'company',
         children: [
           {
-            index: true, // default subpage for program-management
-            element: <Program />
+            path: 'dashboard',
+            element: <Dashboard />
           },
           {
-            path: 'submissions',
-            element: <Submissions />
+            path: 'programs',
+            element: <ProgramManagement />,
+            children: [
+              {
+                path: ':id',
+                element: <Program />
+              },
+              {
+                path: 'submissions',
+                element: <Submissions />
+              }
+              ,
+              {
+                path: 'details', 
+                element: <Details />
+              }
+              ,
+              {
+                path: 'userrolespermissions',
+                element: <UserRolesPermissions />
+              }
+            ]
           },
           {
-            path: 'details', 
-            element: <Details />
-          },
-          {
-            path: 'userrolespermissions',
-            element: <UserRolesPermissions />
+            path: 'users',
+            element: <CompanyUsers />
           }
         ]
       }

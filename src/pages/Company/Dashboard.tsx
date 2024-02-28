@@ -1,12 +1,29 @@
-import React from 'react';
+import { useSelector } from 'react-redux';
+import { selectCurrentUser } from '@/features/auth/authSlice';
+import { useGetCompanyQuery } from '@/features/company/companySlice';
 
-const Dashboard: React.FC = () => {
-  return (
-    <div>
-      <h1>Dashboard</h1>
-      {/* Dashboard content goes here */}
-    </div>
-  );
-};
+export default function Dashboard() {
+  const user = useSelector(selectCurrentUser);
+  const {
+    data: company,
+    isLoading,
+    isSuccess,
+    isError,
+    error
+  } = useGetCompanyQuery(user);
+  let content;
 
-export default Dashboard;
+  if (isLoading) {
+    content = <p>Loading...</p>;
+  } else if (isSuccess) {
+    content = (
+      <>
+        <h1>{company.message}</h1>
+      </>
+    );
+  } else if (isError) {
+    content = <p>{JSON.stringify(error)}</p>;
+  }
+
+  return content;
+}

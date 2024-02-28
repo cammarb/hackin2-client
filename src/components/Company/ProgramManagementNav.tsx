@@ -1,22 +1,3 @@
-// import React from 'react';
-// import { NavLink } from 'react-router-dom';
-
-// const ProgramManagementNav = () => {
-//   return (
-//     <nav className="bg-gradient-to-r from-purple-600 via-pink-600 to-purple-500 bg-clip-text text-transparent">
-//       <ul className="flex justify-end space-x-4"> {/* Adjusted this line */}
-//         <li><NavLink to="/program-management/submissions" activeClassName="text-blue-300">Submissions</NavLink></li>
-//         <li><NavLink to="/program-management/details" activeClassName="text-blue-300">Details</NavLink></li>
-//         <li><NavLink to="/program-management/userrolespermissions" activeClassName="text-blue-300">User Roles and Permissions</NavLink></li>
-//       </ul>
-//     </nav>
-//   );
-// };
-
-// export default ProgramManagementNav;
-
-
-
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
