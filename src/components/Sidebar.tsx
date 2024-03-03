@@ -12,7 +12,7 @@ import { TooltipProvider } from '@radix-ui/react-tooltip';
 
 interface SidebarProps {
   isCollapsed: boolean;
-  links: Program[];
+  links: unknown;
   setProgram: React.Dispatch<React.SetStateAction<Program | null>>;
 }
 
@@ -36,29 +36,48 @@ export function Sidebar({ links, isCollapsed, setProgram }: SidebarProps) {
       className="group flex flex-col gap-4 py-2 px-4 data-[collapsed=true]:py-2"
     >
       <Nav links={links} isCollapsed={isCollapsed} setProgram={setProgram} />
-      {isCollapsed ? (
-        <TooltipProvider>
-          <Tooltip delayDuration={0}>
-            <TooltipTrigger asChild>
-              <NavLink
-                to={'#'}
-                className={(buttonVariants({ variant: 'outline' }), b)}
-              >
-                <button.icon className="h-4 w-4" />
-                <span className="sr-only">{button.title}</span>
-              </NavLink>
-            </TooltipTrigger>
-            <TooltipContent side="right" className="flex items-center gap-4">
-              {button.title}
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      ) : (
-        <NavLink to={'#'} className={buttonVariants({ variant: 'outline' })}>
-          <button.icon className="mr-2 h-4 w-4" />
-          {button.title}
-        </NavLink>
-      )}
+      <div className="grid gap-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
+        {isCollapsed ? (
+          <TooltipProvider>
+            <Tooltip delayDuration={0}>
+              <TooltipTrigger asChild>
+                <NavLink
+                  to={'#'}
+                  className={({ isActive }) =>
+                    cn(
+                      'flex w-full items-center gap-4 rounded-md p-3 border hover:underline',
+                      {
+                        'bg-muted': isActive
+                      }
+                    )
+                  }
+                >
+                  <button.icon className="w-4 h-4" />
+                  <span className="sr-only">{button.title}</span>
+                </NavLink>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="flex items-center gap-4">
+                {button.title}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        ) : (
+          <NavLink
+            to={'#'}
+            className={({ isActive }) =>
+              cn(
+                'flex w-full items-center gap-4 rounded-md p-3 border hover:underline',
+                {
+                  'bg-muted': isActive
+                }
+              )
+            }
+          >
+            <button.icon className="w-4 h-4 mr-2" />
+            {button.title}
+          </NavLink>
+        )}
+      </div>
     </div>
   );
 }
@@ -72,7 +91,7 @@ function Nav({ links, isCollapsed, setProgram }: NavProps) {
             <Tooltip key={index} delayDuration={0}>
               <TooltipTrigger asChild>
                 <NavLink
-                  to={link.href}
+                  to={link.name}
                   className={({ isActive }) =>
                     cn(
                       'flex w-full items-center gap-4 rounded-md p-3 border hover:underline',
@@ -83,19 +102,19 @@ function Nav({ links, isCollapsed, setProgram }: NavProps) {
                   }
                   onClick={() => setProgram(link)}
                 >
-                  <Building className="h-4 w-4" />
-                  <span className="sr-only">{link.title}</span>
+                  <Building className="w-4 h-4" />
+                  <span className="sr-only">{link.name}</span>
                 </NavLink>
               </TooltipTrigger>
               <TooltipContent side="right" className="flex items-center gap-4">
-                {link.title}
+                {link.name}
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
         ) : (
           <NavLink
             key={index}
-            to={link.href}
+            to={link.name}
             className={({ isActive }) =>
               cn(
                 'flex w-full items-center gap-4 rounded-md p-3 border hover:underline',
@@ -106,8 +125,8 @@ function Nav({ links, isCollapsed, setProgram }: NavProps) {
             }
             onClick={() => setProgram(link)}
           >
-            <Building className="mr-2 h-4 w-4" />
-            {link.title}
+            <Building className="w-4 h-4 mr-2" />
+            {link.name}
           </NavLink>
         )
       )}
