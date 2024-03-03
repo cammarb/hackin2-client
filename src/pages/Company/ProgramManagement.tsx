@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom';
 import { Sidebar } from '@/components/Sidebar';
 import React from 'react';
 import { Program } from '@/loaders/programsLoader';
+import { ProgramManagementDetails } from '@/components/ProgramManagementDetails';
 
 import {
   ResizableHandle,
