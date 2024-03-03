@@ -2,6 +2,7 @@ import { Outlet, useLoaderData } from 'react-router-dom';
 import { Sidebar } from '@/components/Sidebar';
 import React from 'react';
 import { Program } from '@/loaders/programsLoader';
+import { ProgramManagementDetails } from '@/components/ProgramManagementDetails';
 
 import {
   ResizableHandle,
@@ -54,7 +55,10 @@ export default function ProgramManagement() {
         <ResizableHandle withHandle />
         <ResizablePanel>
           {currentProgram ? (
-            <Outlet context={currentProgram} />
+            <>
+              <Outlet context={currentProgram} />
+              <ProgramManagementDetails program={currentProgram} />
+            </>
           ) : (
             <div>Click on a program</div>
           )}
