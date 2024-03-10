@@ -5,6 +5,7 @@ import '@/index.css';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Toaster } from '@/components/ui/toaster';
 
 import ErrorPage from '@/pages/ErrorPage';
 import Home from '@/pages/Home';
@@ -62,6 +63,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <Provider store={store}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <RouterProvider router={router} />
+        <Toaster />
       </ThemeProvider>
     </Provider>
   </React.StrictMode>
