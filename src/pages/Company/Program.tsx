@@ -46,7 +46,8 @@ export default function Program() {
             Submissions
           </TabsContent>
           <TabsContent value="details" className="my-10">
-            Details
+            <div>Status: {program.programStatus}</div>
+            <div>Location: {program.location}</div>
           </TabsContent>
           <TabsContent value="user-management" className="my-10">
             User Management
