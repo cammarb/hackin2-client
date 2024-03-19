@@ -17,15 +17,6 @@ export const companyApiSlice = apiConnection.injectEndpoints({
         refetchOnMountOrArgChange: 30
       }),
       providesTags: ['Program'],
-      transformResponse: (response: { programs: Program[] }) => {
-        const programsArray = response.programs;
-        const sortedPrograms = programsArray.sort((a: Program, b: Program) => {
-          if (a.name < b.name) return -1;
-          if (a.name > b.name) return 1;
-          return 0;
-        });
-        return sortedPrograms;
-      }
     }),
     getProgram: builder.query({
       query: (id) => ({
