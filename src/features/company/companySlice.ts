@@ -1,5 +1,4 @@
 import { apiConnection } from '@/app/api/apiConnection';
-import { Program } from '@/interface/Program';
 
 export const companyApiSlice = apiConnection.injectEndpoints({
   endpoints: (builder) => ({
