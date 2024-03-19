@@ -24,7 +24,7 @@ export default function AddProgram() {
 
   const schema: ZodType<ProgramData> = z.object({
     name: z.string().min(2).max(30),
-    description: z.string().min(2).max(30),
+    description: z.string().min(2).max(100),
     location: z.string().min(2).max(100)
   });
 
@@ -44,7 +44,7 @@ export default function AddProgram() {
         description: data.description,
         location: data.location
       }).unwrap();
-
+      form.reset({})
       console.log('Program added:', addedProgram);
     } catch (error) {
       console.error('Error adding program:', error);
