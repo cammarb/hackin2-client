@@ -10,11 +10,12 @@ import ErrorPage from '@/pages/ErrorPage';
 import Home from '@/pages/Home';
 
 import { ThemeProvider } from '@/components/theme-provider';
-import ProgramManagement from './pages/Company/ProgramManagement';
-import Program from './pages/Company/Program';
+import ProgramManagement from './pages/Company/Program/ProgramManagement';
+import Program from './pages/Company/Program/Program';
 import Login from './pages/Login';
 import Dashboard from './pages/Company/Dashboard';
 import CompanyUsers from './pages/Company/CompanyUsers';
+import AddProgram from './pages/Company/Program/AddProgram';
 
 const router = createBrowserRouter([
   {
@@ -42,8 +43,16 @@ const router = createBrowserRouter([
             element: <ProgramManagement />,
             children: [
               {
+                index: true,
+                element: <div>Click on a program</div>
+              },
+              {
                 path: ':id',
                 element: <Program />
+              },
+              {
+                path: 'new',
+                element: <AddProgram />
               }
             ]
           },

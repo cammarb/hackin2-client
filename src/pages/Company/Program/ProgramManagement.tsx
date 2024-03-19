@@ -1,8 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import { Sidebar } from '@/components/Sidebar';
 import React from 'react';
-import { Program } from '@/loaders/programsLoader';
-import { ProgramManagementDetails } from '@/components/ProgramManagementDetails';
+import { Program } from '@/interface/Program';
 
 import {
   ResizableHandle,
@@ -16,13 +15,8 @@ import { useGetCompanyProgramsQuery } from '@/features/company/companySlice';
 
 export default function ProgramManagement() {
   const user = useSelector(selectCurrentUser);
-  const {
-    data: programs,
-    isLoading,
-    isSuccess,
-    isError,
-    error
-  } = useGetCompanyProgramsQuery(user);
+  const { data, isLoading, isSuccess, isError, error } =
+    useGetCompanyProgramsQuery(user);
   let content;
 
   const [currentProgram, setCurrentProgram] = React.useState<Program | null>(
@@ -64,18 +58,14 @@ export default function ProgramManagement() {
             )}
           >
             <Sidebar
-              links={programs.programs}
+              programs={data.programs}
               setProgram={setCurrentProgram}
               isCollapsed={isCollapsed}
             />
           </ResizablePanel>
           <ResizableHandle withHandle />
           <ResizablePanel>
-            {currentProgram ? (
-              <Outlet context={currentProgram} />
-            ) : (
-              <div>Click on a program</div>
-            )}
+            {currentProgram ? <Outlet context={currentProgram} /> : <Outlet />}
           </ResizablePanel>
         </ResizablePanelGroup>
       </>

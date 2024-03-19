@@ -1,4 +1,4 @@
-import { Program as ProgramType } from '@/loaders/programsLoader';
+import { Program as ProgramType } from '@/interface/Program';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@radix-ui/react-tabs';
 import { useOutletContext } from 'react-router-dom';
 
