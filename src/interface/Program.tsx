@@ -1,5 +1,3 @@
-import { LoaderFunction, json } from 'react-router-dom';
-
 export interface Program {
   id: string;
   name: string;
