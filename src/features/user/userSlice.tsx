@@ -18,7 +18,7 @@ export const userApiSlice = apiConnection.injectEndpoints({
     }),
     newUser: builder.mutation({
       query: (userDetails) => ({
-        url: '/user/register',
+        url: '/auth/register',
         method: 'POST',
         body: { ...userDetails }
       })

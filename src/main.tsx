@@ -14,6 +14,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import ProgramManagement from './pages/Company/Program/ProgramManagement';
 import Program from './pages/Company/Program/Program';
 import Login from './pages/Login';
+import Register from './pages/Register';
 import Dashboard from './pages/Company/Dashboard';
 import CompanyUsers from './pages/Company/CompanyUsers';
 import AddProgram from './pages/Company/Program/AddProgram';
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: 'login',
         element: <Login />
+      },
+      {
+        path: 'register',
+        element: <Register />
       },
       {
         path: 'company',
