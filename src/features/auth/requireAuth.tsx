@@ -1,36 +1,41 @@
-import { useLocation, Navigate, Outlet } from 'react-router-dom';
+import { useNavigate, Outlet, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { selectCurrentUser } from '@/features/auth/authSlice';
-import { useGetUserQuery } from '@/features/user/userSlice';
+import {
+  selectCurrentRole,
+  selectCurrentUser
+} from '@/features/auth/authSlice';
+import { useToast } from '@/components/ui/use-toast';
+import { useEffect } from 'react';
 
 const RequireAuth = () => {
   const user = useSelector(selectCurrentUser);
+  const role = useSelector(selectCurrentRole);
+  const { toast } = useToast();
+  const navigate = useNavigate();
   const location = useLocation();
 
-  const {
-    data: userResponse,
-    isLoading,
-    isSuccess,
-    isError,
-    error
-  } = useGetUserQuery(user);
+  useEffect(() => {
+    if (!user || !role) {
+      toast({
+        title: 'Uh oh! Something went wrong.',
+        description: 'There was a problem with your request.'
+      });
+      navigate('/login', { state: { from: location }, replace: true });
+    }
+  }, [user, role, toast]);
 
   let content;
-
-  if (isLoading) {
-    content = <p>Loading...</p>;
-  } else if (isError || !user || userResponse?.data === null) {
-    console.log(error);
-    content = (
-      <div>
-        <p>Error loading user data.</p>
-        <Navigate to="/login" state={{ from: location }} replace />
-      </div>
-    );
-  } else if (isSuccess && userResponse?.data !== null) {
+  if (!user || !role) {
+    content = null;
+  } else if (user && role === 'ENTERPRISE') {
     content = <Outlet />;
   } else {
-    content = <p>User not authenticated.</p>;
+    content = (
+      <div>
+        <h1>Access Denied</h1>
+        <p>You do not have permission to view this page.</p>
+      </div>
+    );
   }
 
   return content;

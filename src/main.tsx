@@ -18,6 +18,7 @@ import Register from './pages/Register';
 import Dashboard from './pages/Company/Dashboard';
 import CompanyUsers from './pages/Company/CompanyUsers';
 import AddProgram from './pages/Company/Program/AddProgram';
+import RequireAuth from './features/auth/requireAuth';
 
 const router = createBrowserRouter([
   {
@@ -38,36 +39,42 @@ const router = createBrowserRouter([
         element: <Register />
       },
       {
-        path: 'company',
+        element: <RequireAuth />,
         children: [
           {
-            path: 'dashboard',
-            element: <Dashboard />
-          },
-          {
-            path: 'programs',
-            element: <ProgramManagement />,
+            path: 'company',
             children: [
               {
-                index: true,
-                element: <div>Click on a program</div>
+                path: 'dashboard',
+                element: <Dashboard />
               },
               {
-                path: ':id',
-                element: <Program />
+                path: 'programs',
+                element: <ProgramManagement />,
+                children: [
+                  {
+                    index: true,
+                    element: <div>Click on a program</div>
+                  },
+                  {
+                    path: ':id',
+                    element: <Program />
+                  },
+                  {
+                    path: 'new',
+                    element: <AddProgram />
+                  }
+                ]
               },
               {
-                path: 'new',
-                element: <AddProgram />
+                path: 'users',
+                element: <CompanyUsers />
               }
             ]
-          },
-          {
-            path: 'users',
-            element: <CompanyUsers />
           }
+
         ]
-      }
+      },
     ]
   }
 ]);
@@ -76,8 +83,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <RouterProvider router={router} />
         <Toaster />
+        <RouterProvider router={router} />
       </ThemeProvider>
     </Provider>
   </React.StrictMode>
