@@ -1,69 +1,120 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { z, ZodType } from 'zod';
+import { useForm } from 'react-hook-form';
 import { useLoginMutation } from '@/features/auth/authApiSlice';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '@/features/auth/authSlice';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from '@/components/ui/form';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+interface LoginData {
+  username: string
+  password: string
+}
 
 export default function Login() {
-  const [user, setUser] = useState('');
-  const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const [login, { isLoading }] = useLoginMutation();
   const dispatch = useDispatch();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const schema: ZodType<LoginData> = z.object({
+    username: z.string().min(6),
+    password: z.string().min(8).max(100),
+  });
 
+  const form = useForm<LoginData>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      username: '',
+      password: '',
+    }
+  });
+
+  const submitData = async (data: LoginData) => {
     try {
       const userData = await login({
-        username: user,
-        password: password
+        username: data.username,
+        password: data.password
       }).unwrap();
-      console.log(userData);
-      dispatch(setCredentials({ ...userData, user }));
-      setUser('');
-      setPassword('');
-      navigate('/company/programs');
-    } catch (err) {
-      console.log(err);
+      dispatch(setCredentials({ ...userData }))
+      form.reset({})
+      navigate('/company/programs')
+    } catch (error) {
+      console.error('Error Loging In:', error);
     }
   };
 
-  return (
-    <div>
-      {isLoading ? (
-        <h1>Loading...</h1>
-      ) : (
-        <>
-          <h1>Log in</h1>
-          <form onSubmit={handleSubmit}>
-            <div className="grid grid-flow-row gap-2 max-w-80">
-              <input
-                required
-                id="username"
+  const content = isLoading ? (
+    <>
+      <h1>Loading ...</h1>
+    </>
+  ) : (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(submitData)}>
+        <Card className="max-w-xl mx-auto">
+          <CardHeader className="space-y-1">
+            <CardTitle className="text-2xl">Log In</CardTitle>
+            <CardDescription>
+              Enter your username below to login to your account
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-4">
+            <div className="grid gap-2">
+              <FormField
+                control={form.control}
                 name="username"
-                autoComplete="username"
-                autoFocus
-                value={user}
-                onChange={(e) => setUser(e.target.value)}
-                className="bg-zinc-900"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Username</FormLabel>
+                    <FormControl>
+                      <Input id="username" placeholder="SuperUser" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-              <input
-                required
-                name="password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="bg-zinc-900"
-              />
-              <button type="submit">Log In</button>
             </div>
-          </form>
-        </>
-      )}
-    </div>
-  );
+            <div className="grid gap-2">
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input type="password" id="password" placeholder="" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </CardContent>
+          <CardFooter className="flex flex-col">
+            <Button className="w-full" type="submit">Log In</Button>
+          </CardFooter>
+        </Card>
+      </form>
+    </Form >
+  )
+
+  return content;
 }

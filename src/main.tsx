@@ -5,22 +5,20 @@ import '@/index.css';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Toaster } from '@/components/ui/toaster';
 
 import ErrorPage from '@/pages/ErrorPage';
 import Home from '@/pages/Home';
 
 import { ThemeProvider } from '@/components/theme-provider';
-import ProgramManagement from '@/pages/Company/ProgramManagement';
-import Submissions from '@/pages/Company/Submissions';
-import Details from '@/pages/Company/Details';
-import UserRolesPermissions from '@/pages/Company/UserRolesPermissions';
-import Program from '@/pages/Company/Program';
-import Dashboard from '@/pages/Company/Dashboard'; 
-import UserManagement from '@/pages/Company/UserManagement'; 
-import Settings from '@/pages/Company/Settings'; 
-import { programLoader } from './loaders/programsLoader';
+import ProgramManagement from './pages/Company/Program/ProgramManagement';
+import Program from './pages/Company/Program/Program';
 import Login from './pages/Login';
+import Register from './pages/Register';
+import Dashboard from './pages/Company/Dashboard';
 import CompanyUsers from './pages/Company/CompanyUsers';
+import AddProgram from './pages/Company/Program/AddProgram';
+import RequireAuth from './features/auth/requireAuth';
 
 
 const router = createBrowserRouter([
@@ -38,50 +36,50 @@ const router = createBrowserRouter([
         element: <Dashboard />
       },
       {
-        path: 'user-management', 
-        element: <UserManagement />
-      },
-      {
-        path: 'settings', 
-        element: <Settings />
-      },
-      {
         path: 'login',
         element: <Login />
       },
       {
-        path: 'company',
+        path: 'register',
+        element: <Register />
+      },
+      {
+        element: <RequireAuth />,
         children: [
           {
-            path: 'program-management',
-            element: <ProgramManagement />,
+            path: 'company',
             children: [
               {
-                path: ':id',
-                element: <Program />
+                path: 'dashboard',
+                element: <Dashboard />
               },
               {
-                path: 'submissions',
-                element: <Submissions />
-              }
-              ,
+                path: 'programs',
+                element: <ProgramManagement />,
+                children: [
+                  {
+                    index: true,
+                    element: <div>Click on a program</div>
+                  },
+                  {
+                    path: ':id',
+                    element: <Program />
+                  },
+                  {
+                    path: 'new',
+                    element: <AddProgram />
+                  }
+                ]
+              },
               {
-                path: 'details', 
-                element: <Details />
-              }
-              ,
-              {
-                path: 'userrolespermissions',
-                element: <UserRolesPermissions />
+                path: 'users',
+                element: <CompanyUsers />
               }
             ]
-          },
-          {
-            path: 'users',
-            element: <CompanyUsers />
           }
+
         ]
-      }
+      },
     ]
   }
 ]);
@@ -90,6 +88,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <Toaster />
         <RouterProvider router={router} />
       </ThemeProvider>
     </Provider>

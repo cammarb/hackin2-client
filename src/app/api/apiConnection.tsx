@@ -28,18 +28,19 @@ const baseQueryRefresh = async (
   extraOptions: object
 ) => {
   let result = await baseQuery(args, api, extraOptions);
-
-  if (result?.meta?.response?.status === 403) {
+  console.log('Result', result);
+  if (result?.meta?.response?.status === 403 && result?.error?.data?.message == 'Token expired') {
     const refreshResult = await baseQuery('auth/refresh', api, extraOptions);
-    if (refreshResult?.data) {
+    console.log('Refresh result', refreshResult);
+    if (!refreshResult.data) api.dispatch(removeCredentials());
+    try {
       const { user, token } = refreshResult.data as AuthState;
-
       api.dispatch(setCredentials({ user: user, token: token }));
-
       result = await baseQuery(args, api, extraOptions);
-    } else {
-      api.dispatch(removeCredentials());
+    } catch (error) {
+      console.error('Error refreshing token', error);
     }
+
   }
 
   return result;
@@ -47,5 +48,6 @@ const baseQueryRefresh = async (
 
 export const apiConnection = createApi({
   baseQuery: baseQueryRefresh,
-  endpoints: (builder) => ({})
+  tagTypes: ['Company', 'Program'],
+  endpoints: () => ({})
 });

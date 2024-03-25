@@ -54,7 +54,7 @@ npm install
 
 Before running the client, you need to set up the configuration. Copy the .env.example file and rename it to .env, then fill in the appropriate values for the environment variables:
 
-VITE_API_BASE_URL = 'https://hackin2-api.example.com';
+VITE_API_BASE_URL = 'https://hackin2-api.example.com/api/v1'
 
 ### Usage
 

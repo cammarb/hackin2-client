@@ -6,27 +6,26 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip';
 import { Building, PlusSquare } from 'lucide-react';
-import { Program } from '@/loaders/programsLoader';
-import { buttonVariants } from './ui/button';
+import { Program } from '@/interface/Program';
 import { TooltipProvider } from '@radix-ui/react-tooltip';
 
 interface SidebarProps {
   isCollapsed: boolean;
-  links: unknown;
+  programs: Program[];
   setProgram: React.Dispatch<React.SetStateAction<Program | null>>;
 }
 
 interface NavProps {
   isCollapsed: boolean;
-  links: Program[];
+  programs: Program[];
   setProgram: React.Dispatch<React.SetStateAction<Program | null>>;
 }
 
-export function Sidebar({ links, isCollapsed, setProgram }: SidebarProps) {
+export function Sidebar({ programs, isCollapsed, setProgram }: SidebarProps) {
   const button = {
     title: 'Add Program',
     icon: PlusSquare,
-    href: '#',
+    href: 'new',
     variant: 'default'
   };
 
@@ -35,14 +34,18 @@ export function Sidebar({ links, isCollapsed, setProgram }: SidebarProps) {
       data-collapsed={isCollapsed}
       className="group flex flex-col gap-4 py-2 px-4 data-[collapsed=true]:py-2"
     >
-      <Nav links={links} isCollapsed={isCollapsed} setProgram={setProgram} />
+      <Nav
+        programs={programs}
+        isCollapsed={isCollapsed}
+        setProgram={setProgram}
+      />
       <div className="grid gap-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
         {isCollapsed ? (
           <TooltipProvider>
             <Tooltip delayDuration={0}>
               <TooltipTrigger asChild>
                 <NavLink
-                  to={'#'}
+                  to={button.href}
                   className={({ isActive }) =>
                     cn(
                       'flex w-full items-center gap-4 rounded-md p-3 border hover:underline',
@@ -63,7 +66,7 @@ export function Sidebar({ links, isCollapsed, setProgram }: SidebarProps) {
           </TooltipProvider>
         ) : (
           <NavLink
-            to={'#'}
+            to={button.href}
             className={({ isActive }) =>
               cn(
                 'flex w-full items-center gap-4 rounded-md p-3 border hover:underline',
@@ -82,16 +85,16 @@ export function Sidebar({ links, isCollapsed, setProgram }: SidebarProps) {
   );
 }
 
-function Nav({ links, isCollapsed, setProgram }: NavProps) {
+function Nav({ programs, isCollapsed, setProgram }: NavProps) {
   return (
     <nav className="grid gap-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
-      {links.map((link, index) =>
+      {programs.map((program, index) =>
         isCollapsed ? (
           <TooltipProvider>
             <Tooltip key={index} delayDuration={0}>
               <TooltipTrigger asChild>
                 <NavLink
-                  to={link.name}
+                  to={program.name}
                   className={({ isActive }) =>
                     cn(
                       'flex w-full items-center gap-4 rounded-md p-3 border hover:underline',
@@ -100,21 +103,21 @@ function Nav({ links, isCollapsed, setProgram }: NavProps) {
                       }
                     )
                   }
-                  onClick={() => setProgram(link)}
+                  onClick={() => setProgram(program)}
                 >
                   <Building className="w-4 h-4" />
-                  <span className="sr-only">{link.name}</span>
+                  <span className="sr-only">{program.name}</span>
                 </NavLink>
               </TooltipTrigger>
               <TooltipContent side="right" className="flex items-center gap-4">
-                {link.name}
+                {program.name}
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
         ) : (
           <NavLink
             key={index}
-            to={link.name}
+            to={program.name}
             className={({ isActive }) =>
               cn(
                 'flex w-full items-center gap-4 rounded-md p-3 border hover:underline',
@@ -123,10 +126,10 @@ function Nav({ links, isCollapsed, setProgram }: NavProps) {
                 }
               )
             }
-            onClick={() => setProgram(link)}
+            onClick={() => setProgram(program)}
           >
             <Building className="w-4 h-4 mr-2" />
-            {link.name}
+            {program.name}
           </NavLink>
         )
       )}
