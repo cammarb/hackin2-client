@@ -7,7 +7,7 @@ import { store } from '@/app/store';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { Toaster } from '@/components/ui/toaster';
 
-import ErrorPage from '@/pages/ErrorPage';
+import NotFound from '@/pages/Error/404';
 import Home from '@/pages/Home';
 
 import { ThemeProvider } from '@/components/theme-provider';
@@ -24,7 +24,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
-    errorElement: <ErrorPage />,
+    errorElement: <NotFound />,
     children: [
       {
         index: true,

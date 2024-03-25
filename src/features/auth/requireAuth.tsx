@@ -6,6 +6,7 @@ import {
 } from '@/features/auth/authSlice';
 import { useToast } from '@/components/ui/use-toast';
 import { useEffect } from 'react';
+import Forbidden from '@/pages/Error/403';
 
 const RequireAuth = () => {
   const user = useSelector(selectCurrentUser);
@@ -30,12 +31,7 @@ const RequireAuth = () => {
   } else if (user && role === 'ENTERPRISE') {
     content = <Outlet />;
   } else {
-    content = (
-      <div>
-        <h1>Access Denied</h1>
-        <p>You do not have permission to view this page.</p>
-      </div>
-    );
+    content = <Forbidden />;
   }
 
   return content;
