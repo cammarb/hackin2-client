@@ -20,7 +20,6 @@ import CompanyUsers from './pages/Company/CompanyUsers';
 import AddProgram from './pages/Company/Program/AddProgram';
 import RequireAuth from './features/auth/requireAuth';
 
-
 const router = createBrowserRouter([
   {
     path: '/',
@@ -30,10 +29,6 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />
-      },
-      {
-        path: 'dashboard',
-        element: <Dashboard />
       },
       {
         path: 'login',
@@ -77,9 +72,8 @@ const router = createBrowserRouter([
               }
             ]
           }
-
         ]
-      },
+      }
     ]
   }
 ]);
