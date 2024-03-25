@@ -74,31 +74,5 @@ export default function ProgramManagement() {
     content = <p>{JSON.stringify(error)}</p>;
   }
 
-  return (
-    <>
-      <ResizablePanelGroup
-        direction="horizontal"
-        onLayout={(sizes: number[]) => {
-          document.cookie = `react-resizable-panels:layout=${JSON.stringify(sizes)}`;
-        }}
-        className="h-full max-h-[800px] items-stretch"
-      >
-        <ResizablePanel
-          defaultSize={20}
-          collapsedSize={4}
-          collapsible={true}
-          minSize={15}
-          maxSize={20}
-          onCollapse={() => {
-            setIsCollapsed(!isCollapsed); 
-            document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(isCollapsed)}`;
-          }}
-          className={cn(isCollapsed && 'min-w-[50px] transition-all duration-300 ease-in-out')}
-        >
-          {content}
-        </ResizablePanel>
-        <Outlet />
-      </ResizablePanelGroup>
-    </>
-  );
+  return content;
 }
