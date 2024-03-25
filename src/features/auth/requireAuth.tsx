@@ -15,14 +15,14 @@ const RequireAuth = () => {
   const location = useLocation();
 
   useEffect(() => {
-    if (!user || !role) {
+    if (!user) {
       toast({
         title: 'Uh oh! Something went wrong.',
         description: 'There was a problem with your request.'
       });
       navigate('/login', { state: { from: location }, replace: true });
     }
-  }, [user, role, toast]);
+  }, [user]);
 
   let content;
   if (!user || !role) {

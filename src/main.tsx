@@ -72,9 +72,8 @@ const router = createBrowserRouter([
               }
             ]
           }
-
         ]
-      },
+      }
     ]
   }
 ]);
