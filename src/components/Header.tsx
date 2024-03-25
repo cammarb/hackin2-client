@@ -53,34 +53,40 @@ export const Header = () => {
   const logo = theme === 'light' ? blackLogo : whiteLogo;
 
   return (
-    <header className="sticky top-0 flex h-16 items-center border-b bg-background px-4 md:px-6">
+    <header className="sticky top-0 flex h-16 mb-10 items-center border-b bg-background px-4 md:px-6">
       <img src={logo} alt="Logo" className="h-8 w-auto" />
 
-      <Navbar links={links} className="justify-center flex-grow" />
+      {user ? (
+        <>
+          <Navbar links={links} className="justify-center flex-grow" />
 
-      <div className="flex items-center justify-end gap-4">
-        <ModeToggle />
-        {user ? (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="secondary" size="icon" className="rounded-full">
-                <CircleUser className="h-5 w-5" />
-                <span className="sr-only">Toggle user menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        ) : (
-          <Navbar links={authLinks} />
-        )}
-      </div>
+          <div className="flex items-center justify-end gap-4">
+            <ModeToggle />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="secondary"
+                  size="icon"
+                  className="rounded-full"
+                >
+                  <CircleUser className="h-5 w-5" />
+                  <span className="sr-only">Toggle user menu</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>Settings</DropdownMenuItem>
+                <DropdownMenuItem>Support</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>Logout</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </>
+      ) : (
+        <Navbar links={authLinks} className="flex-grow justify-end" />
+      )}
     </header>
   );
 };
