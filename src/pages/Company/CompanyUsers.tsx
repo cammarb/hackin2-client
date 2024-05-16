@@ -62,6 +62,8 @@ export default function CompanyUsers() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Name</TableHead>
+                    <TableHead>Email</TableHead>
+
                     <TableHead>Role</TableHead>
                     <TableHead>
                       <span className="sr-only">Actions</span>
@@ -70,9 +72,11 @@ export default function CompanyUsers() {
                 </TableHeader>
                 <TableBody>
                   {members.map((member, index) => (
-                    <TableRow key={index}>
+                    <TableRow key={member.userId}>
+                      <TableCell>{member.User.firstName} {member.User.lastName} </TableCell>
                       <TableCell className="font-medium">
-                        {member.userId}                        </TableCell>
+                        {member.User.email}
+                      </TableCell>
                       <TableCell>
                         <Badge variant="outline">{member.companyRole}</Badge>
                       </TableCell>
