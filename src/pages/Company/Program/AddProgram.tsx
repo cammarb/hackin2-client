@@ -24,8 +24,8 @@ export default function AddProgram() {
 
   const schema: ZodType<ProgramData> = z.object({
     name: z.string().min(2).max(30),
-    description: z.string().min(2).max(100),
-    location: z.string().min(2).max(100)
+    description: z.string().min(2).max(200),
+    location: z.string().min(2).max(100),
   });
 
   const form = useForm<ProgramData>({
@@ -33,7 +33,7 @@ export default function AddProgram() {
     defaultValues: {
       name: '',
       description: '',
-      location: ''
+      location: '',
     }
   });
 
@@ -42,7 +42,7 @@ export default function AddProgram() {
       const addedProgram = await addProgram({
         name: data.name,
         description: data.description,
-        location: data.location
+        location: data.location,
       }).unwrap();
       form.reset({})
       console.log('Program added:', addedProgram);

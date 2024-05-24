@@ -117,7 +117,7 @@ function Nav({ programs, isCollapsed, setProgram }: NavProps) {
         ) : (
           <NavLink
             key={index}
-            to={program.name}
+            to={program.id}
             className={({ isActive }) =>
               cn(
                 'flex w-full items-center gap-4 rounded-md p-3 border hover:underline',

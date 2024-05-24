@@ -1,4 +1,3 @@
-import { Bounty } from '@/loaders/bountiesLoader';
 import {
   Table,
   TableBody,
@@ -8,28 +7,18 @@ import {
   TableRow
 } from '@/components/ui/table';
 
-export function BountiesTable({ bounties }: { bounties: Bounty[] }) {
+export function BountiesTable({ bounties }: { bounties: any }) {
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">Tier</TableHead>
-          <TableHead>Low</TableHead>
-          <TableHead>Medium</TableHead>
-          <TableHead>High</TableHead>
-          <TableHead>Critical</TableHead>
-          <TableHead>Exceptional</TableHead>
+          <TableHead className="w-[100px]">Title</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {bounties.map((bounty) => (
-          <TableRow key={bounty.tier}>
-            <TableCell>{bounty.tier}</TableCell>
-            <TableCell>{bounty.low}</TableCell>
-            <TableCell>{bounty.medium}</TableCell>
-            <TableCell>{bounty.high}</TableCell>
-            <TableCell>{bounty.critical}</TableCell>
-            <TableCell>{bounty.exceptional}</TableCell>
+        {bounties.map((bounty, index) => (
+          <TableRow key={bounty.id}>
+            <TableCell>{bounty.title}</TableCell>
           </TableRow>
         ))}
       </TableBody>

@@ -28,7 +28,6 @@ const baseQueryRefresh = async (
   extraOptions: object
 ) => {
   let result = await baseQuery(args, api, extraOptions);
-  console.log('Result', result);
   if (result?.meta?.response?.status === 403 && result?.error?.data?.message == 'Token expired') {
     const refreshResult = await baseQuery('auth/refresh', api, extraOptions);
     console.log('Refresh result', refreshResult);
@@ -48,6 +47,6 @@ const baseQueryRefresh = async (
 
 export const apiConnection = createApi({
   baseQuery: baseQueryRefresh,
-  tagTypes: ['Company', 'Program'],
+  tagTypes: ['Company', 'Program', 'Member', 'Bounty', 'Scope', 'Reward'],
   endpoints: () => ({})
 });
