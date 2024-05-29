@@ -202,12 +202,12 @@ export default function Program() {
                                   aria-label="Select status"
                                 >
                                   <SelectValue
-                                    placeholder={(program.programStatus).toLowerCase().charAt(0).toUpperCase()}
+                                    placeholder={((program.programStatus).toLowerCase()).charAt(0).toUpperCase()}
                                     {...field}
                                   />
                                 </SelectTrigger>
                                 <SelectContent>
-                                  <SelectItem value="DRAFT">Draft</SelectItem>
+                                  <SelectItem value="DRAFT"></SelectItem>
                                   <SelectItem value="ACTIVE">Active</SelectItem>
                                   <SelectItem value="PAUSED">Paused</SelectItem>
                                   <SelectItem value="COMPLETE">

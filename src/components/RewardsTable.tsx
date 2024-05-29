@@ -30,9 +30,13 @@ import {
 } from './ui/table';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useAddRewardsMutation, useGetProgramRewardsQuery } from '@/features/company/companySlice';
+import {
+  useAddRewardsMutation,
+  useGetProgramRewardsQuery
+} from '@/features/company/companySlice';
 import { Mail } from 'lucide-react';
 import { Program } from '@/interface/Program';
+import { Badge } from './ui/badge';
 
 interface RewardsTableProps {
   program: Program;
@@ -46,19 +50,42 @@ type RewardsData = {
 };
 
 export const RewardsTable = ({ program }: RewardsTableProps) => {
-  const { data: response,
+  const {
+    data: response,
     isLoading,
     isSuccess,
     isError,
     error
-  } = useGetProgramRewardsQuery(program.id)
-  console.log(response)
+  } = useGetProgramRewardsQuery(program.id);
+  let rewards
+  let content
+
+  if (isSuccess) {
+    rewards = response.severityRewards;
+    content = <>
+      <TableBody>
+        {rewards.map((reward) => (
+          <TableRow key={reward.id}>
+            <TableCell>
+              <Badge>{reward.severity}</Badge>
+            </TableCell>
+            <TableCell>{reward.min}</TableCell>
+            <TableCell>{reward.max}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </>
+  }
+  else {
+    content = <TableBody>No rewards yet.</TableBody>
+
+  }
   const [addReward] = useAddRewardsMutation();
 
   const schema: ZodType<RewardsData> = z.object({
     severity: z.string(),
-    min: z.number().min(50).max(10000),
-    max: z.number().min(50).max(10000),
+    min: z.coerce.number().min(50).max(10000),
+    max: z.coerce.number().min(50).max(10000),
     programId: z.string()
   });
 
@@ -75,9 +102,9 @@ export const RewardsTable = ({ program }: RewardsTableProps) => {
   const submitData = async (data: RewardsData) => {
     try {
       const newReward = await addReward({
-        id: 'test',
-        severity: {
-          severity: data.severity,
+        id: program.id,
+        reward: {
+          severity: data.severity.toUpperCase(),
           min: data.min,
           max: data.max,
           programId: data.programId
@@ -134,8 +161,11 @@ export const RewardsTable = ({ program }: RewardsTableProps) => {
                         <FormItem>
                           <FormLabel>Min</FormLabel>
                           <FormControl>
-                            <Mail className="mr-2 h-4 w-4" />
-                            <Input placeholder="50" {...field} />
+                            <Input
+                              type="number"
+                              placeholder="e.g 50"
+                              {...field}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -148,20 +178,23 @@ export const RewardsTable = ({ program }: RewardsTableProps) => {
                         <FormItem>
                           <FormLabel>Max</FormLabel>
                           <FormControl>
-                            <Mail className="mr-2 h-4 w-4" />
-                            <Input placeholder="10000" {...field} />
+                            <Input
+                              type="number"
+                              placeholder="e.g 10000"
+                              {...field}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
+
+                    <Button type="submit">Add</Button>
                   </div>
                 </form>
               </Form>
               <DialogFooter>
-                <DialogClose asChild>
-                  <Button type="submit">Add</Button>
-                </DialogClose>
+                <DialogClose asChild></DialogClose>
               </DialogFooter>
             </DialogContent>
           </Dialog>
@@ -170,20 +203,12 @@ export const RewardsTable = ({ program }: RewardsTableProps) => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Low</TableHead>
-                <TableHead>Medium</TableHead>
-                <TableHead>High</TableHead>
-                <TableHead>Critical</TableHead>
+                <TableHead>Severity</TableHead>
+                <TableHead>Min</TableHead>
+                <TableHead>Max</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
-              <TableRow>
-                <TableCell>{ }</TableCell>
-                <TableCell>{ }</TableCell>
-                <TableCell>{ }</TableCell>
-                <TableCell>{ }</TableCell>
-              </TableRow>
-            </TableBody>
+            {content}
           </Table>
         </CardContent>
       </Card>

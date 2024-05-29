@@ -47,6 +47,6 @@ const baseQueryRefresh = async (
 
 export const apiConnection = createApi({
   baseQuery: baseQueryRefresh,
-  tagTypes: ['Company', 'Program', 'Member', 'Bounty', 'Scope', 'Reward'],
+  tagTypes: ['Company', 'Programs', 'Program', 'Members', 'Bounty', 'Scope', 'Rewards'],
   endpoints: () => ({})
 });

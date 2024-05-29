@@ -15,14 +15,15 @@ export const companyApiSlice = apiConnection.injectEndpoints({
         method: 'GET',
         refetchOnMountOrArgChange: 30
       }),
-      providesTags: ['Program']
+      providesTags: ['Programs']
     }),
     getProgram: builder.query({
       query: (id) => ({
         url: `/company/programs/${id}`,
         method: 'GET',
         refetchOnMountOrArgChange: 30
-      })
+      }),
+      providesTags: ['Program']
     }),
     addProgram: builder.mutation({
       query: (program) => ({
@@ -30,7 +31,7 @@ export const companyApiSlice = apiConnection.injectEndpoints({
         method: 'POST',
         body: program
       }),
-      invalidatesTags: ['Program']
+      invalidatesTags: ['Programs']
     }),
     updateProgram: builder.mutation({
       query: ({ id, program }) => ({
@@ -38,7 +39,7 @@ export const companyApiSlice = apiConnection.injectEndpoints({
         method: 'PUT',
         body: program
       }),
-      invalidatesTags: ['Program']
+      invalidatesTags: ['Program', 'Programs']
     }),
     getCompanyMembers: builder.query({
       query: () => ({
@@ -46,7 +47,7 @@ export const companyApiSlice = apiConnection.injectEndpoints({
         method: 'GET',
         refetchOnMountOrArgChange: 30
       }),
-      providesTags: ['Member']
+      providesTags: ['Members']
     }),
     addCompanyMembers: builder.mutation({
       query: (member) => ({
@@ -54,7 +55,7 @@ export const companyApiSlice = apiConnection.injectEndpoints({
         method: 'POST',
         body: member
       }),
-      invalidatesTags: ['Member']
+      invalidatesTags: ['Members']
     }),
     getProgramBounties: builder.query({
       query: (id) => ({
@@ -69,7 +70,7 @@ export const companyApiSlice = apiConnection.injectEndpoints({
         method: 'GET',
         refetchOnMountOrArgChange: 30
       }),
-      providesTags: ['Reward']
+      providesTags: ['Rewards']
     }),
 
     addRewards: builder.mutation({
@@ -78,7 +79,7 @@ export const companyApiSlice = apiConnection.injectEndpoints({
         method: 'POST',
         body: reward
       }),
-      invalidatesTags: ['Reward']
+      invalidatesTags: ['Rewards']
     })
   })
 });
