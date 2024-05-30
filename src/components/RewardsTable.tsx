@@ -43,6 +43,7 @@ interface RewardsTableProps {
 }
 
 type RewardsData = {
+  id: string;
   severity: string;
   min: number;
   max: number;
@@ -60,144 +61,130 @@ export const RewardsTable = ({ program }: RewardsTableProps) => {
   let rewards
   let content
 
-  if (isSuccess) {
-    rewards = response.severityRewards;
-    content = <>
-      <TableBody>
-        {rewards.map((reward) => (
-          <TableRow key={reward.id}>
-            <TableCell>
-              <Badge>{reward.severity}</Badge>
-            </TableCell>
-            <TableCell>{reward.min}</TableCell>
-            <TableCell>{reward.max}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </>
-  }
-  else {
-    content = <TableBody>No rewards yet.</TableBody>
-
-  }
   const [addReward] = useAddRewardsMutation();
 
-  const schema: ZodType<RewardsData> = z.object({
-    severity: z.string(),
-    min: z.coerce.number().min(50).max(10000),
-    max: z.coerce.number().min(50).max(10000),
-    programId: z.string()
-  });
 
-  const form = useForm<RewardsData>({
-    resolver: zodResolver(schema),
-    defaultValues: {
-      severity: '',
-      min: 50,
-      max: 10000,
-      programId: ''
-    }
-  });
+  if (isLoading) {
+    content = <>
+      Loading...
+    </>
+  }
+  else if (isSuccess) {
+    const rewards = response.severityRewards;
+    const schema = z.object({
+      severity: z.string(),
+      min: z.coerce.number().min(50).max(10000),
+      max: z.coerce.number().min(50).max(10000),
+      programId: z.string()
+    });
 
-  const submitData = async (data: RewardsData) => {
-    try {
-      const newReward = await addReward({
-        id: program.id,
-        reward: {
-          severity: data.severity.toUpperCase(),
-          min: data.min,
-          max: data.max,
-          programId: data.programId
-        }
-      }).unwrap();
-      form.reset({});
-      console.log('Reward added:', newReward);
-    } catch (error) {
-      console.error('Error adding program:', error);
-    }
-  };
+    const submitData = async (data: RewardsData) => {
+      try {
+        const newReward = await addReward({
+          id: program.id,
+          reward: {
+            min: data.min,
+            max: data.max,
+            programId: data.programId
+          }
+        }).unwrap();
+        form.reset({});
+        console.log('Reward updated.');
+      } catch (error) {
+        console.error('Error adding program:', error);
+      }
+    };
+
+    content = (
+      <TableBody>
+        {rewards.map((reward: RewardsData) => {
+          const form = useForm({
+            resolver: zodResolver(schema),
+            defaultValues: {
+              severity: reward.severity,
+              min: reward.min,
+              max: reward.max,
+              programId: reward.programId,
+            }
+          });
+
+          return (
+            <TableRow key={reward.id}>
+              <TableCell>
+                <Badge>{reward.severity}</Badge>
+              </TableCell>
+              <TableCell>{reward.min}</TableCell>
+              <TableCell>{reward.max}</TableCell>
+              <TableCell>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="outline">Edit</Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                      <DialogTitle>Edit Reward</DialogTitle>
+                      <DialogDescription>
+                        Specify the maximum and minimum reward depending on the severity of the finding.
+                      </DialogDescription>
+                    </DialogHeader>
+
+                    <Form {...form}>
+                      <form onSubmit={form.handleSubmit(submitData)} className="space-y-8">
+                        <div className="grid gap-4 ">
+                          <Badge>{reward.severity}</Badge>
+                          <FormField
+                            control={form.control}
+                            name="min"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Min</FormLabel>
+                                <FormControl>
+                                  <Input type="number" placeholder="e.g 50" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="max"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Max</FormLabel>
+                                <FormControl>
+                                  <Input type="number" placeholder="e.g 10000" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+
+                          <Button type="submit">Save</Button>
+                        </div>
+                      </form>
+                    </Form>
+                    <DialogFooter>
+                      <DialogClose asChild></DialogClose>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              </TableCell>
+            </TableRow>
+          );
+        })}
+      </TableBody>
+    );
+  } else if (isError) {
+    content = <TableBody>There was an error.</TableBody>;
+  } else {
+    content = <TableBody>No rewards yet.</TableBody>;
+  }
 
   return (
     <>
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Rewards</CardTitle>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="outline">Add Rewards</Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Add Reward</DialogTitle>
-                <DialogDescription>
-                  Specify the maximum and minimun reward depending on the
-                  severity of the finding.
-                </DialogDescription>
-              </DialogHeader>
-
-              <Form {...form}>
-                <form
-                  onSubmit={form.handleSubmit(submitData)}
-                  className="space-y-8"
-                >
-                  <div className="grid gap-4 ">
-                    <FormField
-                      control={form.control}
-                      name="severity"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Severity</FormLabel>
-                          <FormControl>
-                            <Input placeholder="e.g Critical" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="min"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Min</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="number"
-                              placeholder="e.g 50"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="max"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Max</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="number"
-                              placeholder="e.g 10000"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <Button type="submit">Add</Button>
-                  </div>
-                </form>
-              </Form>
-              <DialogFooter>
-                <DialogClose asChild></DialogClose>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
         </CardHeader>
         <CardContent>
           <Table>
@@ -206,6 +193,7 @@ export const RewardsTable = ({ program }: RewardsTableProps) => {
                 <TableHead>Severity</TableHead>
                 <TableHead>Min</TableHead>
                 <TableHead>Max</TableHead>
+                <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
             {content}
