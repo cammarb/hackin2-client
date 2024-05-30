@@ -39,7 +39,7 @@ export const companyApiSlice = apiConnection.injectEndpoints({
         method: 'PUT',
         body: program
       }),
-      invalidatesTags: ['Program', 'Programs']
+      invalidatesTags: ['Program']
     }),
     getCompanyMembers: builder.query({
       query: () => ({
@@ -72,12 +72,11 @@ export const companyApiSlice = apiConnection.injectEndpoints({
       }),
       providesTags: ['Rewards']
     }),
-
-    addRewards: builder.mutation({
-      query: ({ id, reward }) => ({
-        url: `/company/programs/${id}/severityReward/new`,
-        method: 'POST',
-        body: reward
+    updateReward: builder.mutation({
+      query: ({ id, body }) => ({
+        url: `/company/severityReward/${id}/edit`,
+        method: 'PUT',
+        body: body
       }),
       invalidatesTags: ['Rewards']
     })
@@ -93,6 +92,6 @@ export const {
   useGetCompanyMembersQuery,
   useAddCompanyMembersMutation,
   useUpdateProgramMutation,
-  useAddRewardsMutation,
+  useUpdateRewardMutation,
   useGetProgramRewardsQuery
 } = companyApiSlice;
