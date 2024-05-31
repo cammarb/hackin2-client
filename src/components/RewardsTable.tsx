@@ -59,7 +59,7 @@ const rewardSchema = z.object({
   programId: z.string()
 });
 
-const getBadgeVariant = (severity: string): string => {
+const getBadgeVariant = (severity: string): string | any => {
   switch (severity) {
     case 'LOW':
       return 'low';
@@ -184,6 +184,7 @@ const RewardRow = ({ reward }: { reward: RewardsData }) => {
                 </div>
               </form>
             </Form>
+
           </DialogContent>
         </Dialog>
       </TableCell>

@@ -38,6 +38,7 @@ export default function AddProgram() {
   });
 
   const submitData = async (data: ProgramData) => {
+    console.log("pressed")
     try {
       const addedProgram = await addProgram({
         name: data.name,

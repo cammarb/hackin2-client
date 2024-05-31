@@ -65,7 +65,7 @@ export default function ProgramManagement() {
           </ResizablePanel>
           <ResizableHandle withHandle />
           <ResizablePanel>
-            {currentProgram ? <Outlet context={currentProgram} /> : <Outlet />}
+            {currentProgram ? <Outlet context={currentProgram} key={currentProgram.id} /> : <Outlet />}
           </ResizablePanel>
         </ResizablePanelGroup>
       </>

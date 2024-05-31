@@ -39,7 +39,7 @@ export const companyApiSlice = apiConnection.injectEndpoints({
         method: 'PUT',
         body: program
       }),
-      invalidatesTags: ['Program']
+      invalidatesTags: ['Program', 'Programs']
     }),
     getCompanyMembers: builder.query({
       query: () => ({
