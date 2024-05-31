@@ -8,10 +8,12 @@ import {
 import { Building, PlusSquare } from 'lucide-react';
 import { Program } from '@/interface/Program';
 import { TooltipProvider } from '@radix-ui/react-tooltip';
+import { useSelector } from 'react-redux';
+import { selectCurrentUser } from '@/features/auth/authSlice';
+import { useGetCompanyProgramsQuery } from '@/features/company/companySlice';
 
 interface SidebarProps {
   isCollapsed: boolean;
-  programs: Program[];
   setProgram: React.Dispatch<React.SetStateAction<Program | null>>;
 }
 
@@ -21,7 +23,12 @@ interface NavProps {
   setProgram: React.Dispatch<React.SetStateAction<Program | null>>;
 }
 
-export function Sidebar({ programs, isCollapsed, setProgram }: SidebarProps) {
+export function Sidebar({ isCollapsed, setProgram }: SidebarProps) {
+  const user = useSelector(selectCurrentUser);
+  const { data: response, isLoading, isSuccess, isError, error } =
+    useGetCompanyProgramsQuery(user);
+
+
   const button = {
     title: 'Add Program',
     icon: PlusSquare,
@@ -29,16 +36,29 @@ export function Sidebar({ programs, isCollapsed, setProgram }: SidebarProps) {
     variant: 'default'
   };
 
+  let content;
+
+  if (isLoading) {
+    content = <>Loading...</>
+  }
+  else if (isError) {
+    content = <>Error</>
+  }
+  else if (isSuccess) {
+    let programs = response.programs
+    content = <Nav
+      programs={programs}
+      isCollapsed={isCollapsed}
+      setProgram={setProgram}
+    />
+  }
+
   return (
     <div
       data-collapsed={isCollapsed}
       className="group flex flex-col gap-4 py-2 px-4 data-[collapsed=true]:py-2"
     >
-      <Nav
-        programs={programs}
-        isCollapsed={isCollapsed}
-        setProgram={setProgram}
-      />
+      {content}
       <div className="grid gap-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
         {isCollapsed ? (
           <TooltipProvider>
@@ -88,10 +108,10 @@ export function Sidebar({ programs, isCollapsed, setProgram }: SidebarProps) {
 function Nav({ programs, isCollapsed, setProgram }: NavProps) {
   return (
     <nav className="grid gap-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
-      {programs.map((program, index) =>
+      {programs.map((program) =>
         isCollapsed ? (
-          <TooltipProvider>
-            <Tooltip key={index} delayDuration={0}>
+          <TooltipProvider key={program.id}>
+            <Tooltip delayDuration={0}>
               <TooltipTrigger asChild>
                 <NavLink
                   to={program.name}
@@ -116,7 +136,7 @@ function Nav({ programs, isCollapsed, setProgram }: NavProps) {
           </TooltipProvider>
         ) : (
           <NavLink
-            key={index}
+            key={program.id}
             to={program.id}
             className={({ isActive }) =>
               cn(

@@ -43,7 +43,6 @@ import {
 import { Badge } from './ui/badge';
 import { MoreHorizontal } from 'lucide-react';
 
-
 type RewardsData = {
   id: string;
   severity: string;
@@ -107,7 +106,9 @@ const RewardRow = ({ reward }: { reward: RewardsData }) => {
   return (
     <TableRow key={reward.id}>
       <TableCell>
-        <Badge variant={getBadgeVariant(reward.severity)}>{reward.severity}</Badge>
+        <Badge variant={getBadgeVariant(reward.severity)}>
+          {reward.severity}
+        </Badge>
       </TableCell>
       <TableCell>{reward.min}</TableCell>
       <TableCell>{reward.max}</TableCell>
@@ -184,7 +185,6 @@ const RewardRow = ({ reward }: { reward: RewardsData }) => {
                 </div>
               </form>
             </Form>
-
           </DialogContent>
         </Dialog>
       </TableCell>
@@ -209,16 +209,26 @@ export const RewardsTable = ({ programId }: { programId: string }) => {
     const rewards = response.severityRewards;
 
     content = (
-      <TableBody>
-        {rewards.map((reward: RewardsData) => (
-          <RewardRow reward={reward} key={reward.id} />
-        ))}
-      </TableBody>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Severity</TableHead>
+            <TableHead>Min</TableHead>
+            <TableHead>Max</TableHead>
+            <TableHead>Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {rewards.map((reward: RewardsData) => (
+            <RewardRow reward={reward} key={reward.id} />
+          ))}
+        </TableBody>
+      </Table>
     );
   } else if (isError) {
-    content = <TableBody>There was an error.</TableBody>;
+    content = <div>There was an error. </div>;
   } else {
-    content = <TableBody>No rewards yet.</TableBody>;
+    content = <div>No rewards yet. </div>;
   }
 
   return (
@@ -227,19 +237,7 @@ export const RewardsTable = ({ programId }: { programId: string }) => {
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Rewards</CardTitle>
         </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Severity</TableHead>
-                <TableHead>Min</TableHead>
-                <TableHead>Max</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            {content}
-          </Table>
-        </CardContent>
+        <CardContent>{content}</CardContent>
       </Card>
     </>
   );

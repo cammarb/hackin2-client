@@ -15,7 +15,6 @@ export type ProgramData = {
 
 export default function Program() {
   const program = useOutletContext() as ProgramType;
-
   return (
     <div className="m-10" key={program.id}>
       <header className="py-10 flex flex-row items-center justify-between">
