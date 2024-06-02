@@ -18,7 +18,9 @@ import Register from './pages/Register';
 import Dashboard from './pages/Company/Dashboard';
 import CompanyUsers from './pages/Company/CompanyUsers';
 import AddProgram from './pages/Company/Program/AddProgram';
-import RequireAuth from './features/auth/requireAuth';
+import RequireEnterpriseAuth from './features/auth/requireAuth';
+import RequirePentesterAuth from './pages/Pentester/RequirePentesterAuth';
+import ProgramsView from './pages/Pentester/ProgramsView';
 
 const router = createBrowserRouter([
   {
@@ -39,7 +41,7 @@ const router = createBrowserRouter([
         element: <Register />
       },
       {
-        element: <RequireAuth />,
+        element: <RequireEnterpriseAuth />,
         children: [
           {
             path: 'company',
@@ -52,10 +54,6 @@ const router = createBrowserRouter([
                 path: 'programs',
                 element: <ProgramManagement />,
                 children: [
-                  {
-                    index: true,
-                    element: <div>Click on a program</div>
-                  },
                   {
                     path: ':id',
                     element: <Program />
@@ -71,6 +69,15 @@ const router = createBrowserRouter([
                 element: <CompanyUsers />
               }
             ]
+          }
+        ]
+      },
+      {
+        element: <RequirePentesterAuth />,
+        children: [
+          {
+            path: 'bounty-programs',
+            element: <ProgramsView />
           }
         ]
       }

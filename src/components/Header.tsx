@@ -14,9 +14,9 @@ import whiteLogo from '/Hackin2_logo_white.svg';
 import blackLogo from '/Hackin2_logo_black.svg';
 import { useTheme } from './theme-provider';
 import { useSelector } from 'react-redux';
-import { selectCurrentUser } from '@/features/auth/authSlice';
+import { selectCurrentRole, selectCurrentUser } from '@/features/auth/authSlice';
 
-const links = [
+const enterpriseLinks = [
   {
     title: 'Dashboard',
     url: 'company/dashboard'
@@ -32,8 +32,16 @@ const links = [
   {
     title: 'Settings',
     url: 'company/settings'
-  }
+  },
 ];
+
+const pentesterLinks = [
+  {
+    title: 'Bounty Programs',
+    url: 'bounty-programs'
+  }
+
+]
 
 const authLinks = [
   {
@@ -48,9 +56,20 @@ const authLinks = [
 
 export const Header = () => {
   const user = useSelector(selectCurrentUser);
+  const role = useSelector(selectCurrentRole);
+
   const { theme } = useTheme();
 
   const logo = theme === 'light' ? blackLogo : whiteLogo;
+
+  let links;
+  if (user && role === 'ENTERPRISE') {
+    links = enterpriseLinks;
+  } else if (user && role === 'PENTESTER') {
+    links = pentesterLinks;
+  } else {
+    links = authLinks;
+  }
 
   return (
     <header className="sticky top-0 flex h-16 mb-10 items-center border-b bg-background px-4 md:px-6">
@@ -59,7 +78,6 @@ export const Header = () => {
       {user ? (
         <>
           <Navbar links={links} className="justify-center flex-grow" />
-
           <div className="flex items-center justify-end gap-4">
             <ModeToggle />
             <DropdownMenu>

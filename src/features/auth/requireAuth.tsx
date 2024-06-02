@@ -8,7 +8,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { useEffect } from 'react';
 import Forbidden from '@/pages/Error/403';
 
-const RequireAuth = () => {
+const RequireEnterpriseAuth = () => {
   const user = useSelector(selectCurrentUser);
   const role = useSelector(selectCurrentRole);
   const { toast } = useToast();
@@ -37,4 +37,4 @@ const RequireAuth = () => {
   return content;
 };
 
-export default RequireAuth;
+export default RequireEnterpriseAuth;

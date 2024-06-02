@@ -56,7 +56,7 @@ export default function Login() {
       }).unwrap();
       dispatch(setCredentials({ ...userData }))
       form.reset({})
-      navigate('/company/programs')
+      navigate('/')
     } catch (error) {
       console.error('Error Loging In:', error);
     }

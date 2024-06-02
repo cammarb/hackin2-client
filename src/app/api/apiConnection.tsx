@@ -33,8 +33,8 @@ const baseQueryRefresh = async (
     console.log('Refresh result', refreshResult);
     if (!refreshResult.data) api.dispatch(removeCredentials());
     try {
-      const { user, token } = refreshResult.data as AuthState;
-      api.dispatch(setCredentials({ user: user, token: token }));
+      const { user, token, role } = refreshResult.data as AuthState;
+      api.dispatch(setCredentials({ user: user, token: token, role: role }));
       result = await baseQuery(args, api, extraOptions);
     } catch (error) {
       console.error('Error refreshing token', error);
