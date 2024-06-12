@@ -41,7 +41,6 @@ const baseQueryRefresh = async (
     }
 
   }
-
   return result;
 };
 
