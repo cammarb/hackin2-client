@@ -18,15 +18,19 @@ import Register from './pages/Register';
 import Dashboard from './pages/Company/Dashboard';
 import CompanyUsers from './pages/Company/CompanyUsers';
 import AddProgram from './pages/Company/Program/AddProgram';
-import RequireEnterpriseAuth from './features/auth/requireAuth';
-import RequirePentesterAuth from './pages/Pentester/RequirePentesterAuth';
-import ProgramsView from './pages/Pentester/ProgramsView';
+import RequireEnterpriseAuth from './features/auth/requireEnterpriseAuth';
+import RequirePentesterAuth from './features/auth/RequirePentesterAuth';
+import { authLoader } from './features/auth/authLoader';
+import ProgramsList from './pages/Pentester/ProgramsList';
+import ProgramView from './pages/Pentester/ProgramView';
+import { ProgramApply } from './pages/Pentester/ProgramApply';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
     errorElement: <NotFound />,
+    loader: authLoader,
     children: [
       {
         index: true,
@@ -77,7 +81,15 @@ const router = createBrowserRouter([
         children: [
           {
             path: 'bounty-programs',
-            element: <ProgramsView />
+            element: <ProgramsList />
+          },
+          {
+            path: 'bounty-programs/:id',
+            element: <ProgramView />
+          },
+          {
+            path: 'bounty-programs/:id/apply',
+            element: <ProgramApply />
           }
         ]
       }
