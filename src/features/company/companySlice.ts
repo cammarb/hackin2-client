@@ -17,7 +17,7 @@ export const companyApiSlice = apiConnection.injectEndpoints({
       }),
       providesTags: ['Programs']
     }),
-    getProgram: builder.query({
+    getCompanyProgram: builder.query({
       query: (id) => ({
         url: `/company/programs/${id}`,
         method: 'GET',
@@ -86,7 +86,7 @@ export const companyApiSlice = apiConnection.injectEndpoints({
 export const {
   useGetCompanyQuery,
   useGetCompanyProgramsQuery,
-  useGetProgramQuery,
+  useGetCompanyProgramQuery,
   useGetProgramBountiesQuery,
   useAddProgramMutation,
   useGetCompanyMembersQuery,
