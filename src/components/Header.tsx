@@ -14,7 +14,13 @@ import whiteLogo from '/Hackin2_logo_white.svg';
 import blackLogo from '/Hackin2_logo_black.svg';
 import { useTheme } from './theme-provider';
 import { useSelector } from 'react-redux';
-import { selectCurrentRole, selectCurrentUser } from '@/features/auth/authSlice';
+import {
+  selectCurrentRole,
+  selectCurrentUser
+} from '@/features/auth/authSlice';
+import { useLogoutMutation } from '@/features/auth/authApiSlice';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const enterpriseLinks = [
   {
@@ -32,7 +38,7 @@ const enterpriseLinks = [
   {
     title: 'Settings',
     url: 'company/settings'
-  },
+  }
 ];
 
 const pentesterLinks = [
@@ -40,8 +46,7 @@ const pentesterLinks = [
     title: 'Bounty Programs',
     url: 'bounty-programs'
   }
-
-]
+];
 
 const authLinks = [
   {
@@ -57,10 +62,17 @@ const authLinks = [
 export const Header = () => {
   const user = useSelector(selectCurrentUser);
   const role = useSelector(selectCurrentRole);
-
+  const [logout, { isLoading, isSuccess }] = useLogoutMutation();
+  const navigate = useNavigate();
   const { theme } = useTheme();
 
   const logo = theme === 'light' ? blackLogo : whiteLogo;
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate('/');
+    }
+  }, [isSuccess, navigate]);
 
   let links;
   if (user && role === 'ENTERPRISE') {
@@ -97,7 +109,7 @@ export const Header = () => {
                 <DropdownMenuItem>Settings</DropdownMenuItem>
                 <DropdownMenuItem>Support</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Logout</DropdownMenuItem>
+                <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
