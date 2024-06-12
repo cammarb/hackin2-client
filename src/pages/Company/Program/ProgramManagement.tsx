@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import { Sidebar } from '@/components/Sidebar';
-import { Program } from '@/interface/Program';
+import { Program } from '@/types';
 import {
   ResizableHandle,
   ResizablePanel,
@@ -10,9 +10,7 @@ import { cn } from '@/lib/utils';
 import { useState } from 'react';
 
 export default function ProgramManagement() {
-  const [currentProgram, setCurrentProgram] = useState<Program | null>(
-    null
-  );
+  const [currentProgram, setCurrentProgram] = useState<Program | null>(null);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
@@ -40,19 +38,19 @@ export default function ProgramManagement() {
           document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(false)}`;
         }}
         className={cn(
-          isCollapsed &&
-          'min-w-[50px] transition-all duration-300 ease-in-out'
+          isCollapsed && 'min-w-[50px] transition-all duration-300 ease-in-out'
         )}
       >
-        <Sidebar
-          setProgram={setCurrentProgram}
-          isCollapsed={isCollapsed}
-        />
+        <Sidebar setProgram={setCurrentProgram} isCollapsed={isCollapsed} />
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel>
-        {currentProgram ? <Outlet context={currentProgram} key={currentProgram.id} /> : <Outlet />}
+        {currentProgram ? (
+          <Outlet context={currentProgram} key={currentProgram.id} />
+        ) : (
+          <Outlet />
+        )}
       </ResizablePanel>
     </ResizablePanelGroup>
-  )
+  );
 }

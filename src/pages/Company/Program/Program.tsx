@@ -1,17 +1,9 @@
-import { Program as ProgramType } from '@/interface/Program';
+import { Program as ProgramType } from '@/types';
 import { useOutletContext } from 'react-router-dom';
 import { ProgramCard } from '@/components/ProgramCard';
 import { RewardsTable } from '@/components/RewardsTable';
 import { BountiesTable } from '@/components/BountiesTable';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-
-export type ProgramData = {
-  id: string
-  name: string;
-  description: string;
-  location: string;
-  programStatus: string;
-};
 
 export default function Program() {
   const program = useOutletContext() as ProgramType;
@@ -41,6 +33,6 @@ export default function Program() {
           User Management
         </TabsContent>
       </Tabs>
-    </div >
+    </div>
   );
 }

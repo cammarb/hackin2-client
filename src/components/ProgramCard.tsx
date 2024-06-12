@@ -21,8 +21,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { ZodType, z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ProgramData } from '@/pages/Company/Program/Program';
-import { useEffect } from 'react';
+import { Program as ProgramData } from '@/types';
 
 export const ProgramCard = ({ program }: { program: ProgramData }) => {
   const [updateProgram] = useUpdateProgramMutation();
@@ -30,7 +29,7 @@ export const ProgramCard = ({ program }: { program: ProgramData }) => {
   const schema: ZodType<ProgramData> = z.object({
     id: z.string(),
     name: z.string().min(2).max(30),
-    description: z.string().min(2).max(200),
+    description: z.string().min(2),
     location: z.string().min(2).max(100),
     programStatus: z.string()
   });

@@ -6,7 +6,7 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip';
 import { Building, PlusSquare } from 'lucide-react';
-import { Program } from '@/interface/Program';
+import { Program } from '@/types';
 import { TooltipProvider } from '@radix-ui/react-tooltip';
 import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '@/features/auth/authSlice';
@@ -25,9 +25,13 @@ interface NavProps {
 
 export function Sidebar({ isCollapsed, setProgram }: SidebarProps) {
   const user = useSelector(selectCurrentUser);
-  const { data: response, isLoading, isSuccess, isError, error } =
-    useGetCompanyProgramsQuery(user);
-
+  const {
+    data: response,
+    isLoading,
+    isSuccess,
+    isError,
+    error
+  } = useGetCompanyProgramsQuery(user);
 
   const button = {
     title: 'Add Program',
@@ -39,18 +43,18 @@ export function Sidebar({ isCollapsed, setProgram }: SidebarProps) {
   let content;
 
   if (isLoading) {
-    content = <>Loading...</>
-  }
-  else if (isError) {
-    content = <>Error</>
-  }
-  else if (isSuccess) {
-    let programs = response.programs
-    content = <Nav
-      programs={programs}
-      isCollapsed={isCollapsed}
-      setProgram={setProgram}
-    />
+    content = <>Loading...</>;
+  } else if (isError) {
+    content = <>Error</>;
+  } else if (isSuccess) {
+    let programs = response.programs;
+    content = (
+      <Nav
+        programs={programs}
+        isCollapsed={isCollapsed}
+        setProgram={setProgram}
+      />
+    );
   }
 
   return (
@@ -114,7 +118,7 @@ function Nav({ programs, isCollapsed, setProgram }: NavProps) {
             <Tooltip delayDuration={0}>
               <TooltipTrigger asChild>
                 <NavLink
-                  to={program.name}
+                  to={program.id}
                   className={({ isActive }) =>
                     cn(
                       'flex w-full items-center gap-4 rounded-md p-3 border hover:underline',

@@ -16,8 +16,9 @@ import {
 } from '@/components/ui/card';
 
 import { Link } from 'react-router-dom';
+import { Program } from '@/types';
 
-export const ProgramCardView = ({ program }: { program: {} }) => {
+export const ProgramCardView = ({ program }: { program: Program }) => {
   return (
     <Card>
       <CardHeader className="grid grid-cols-[1fr_110px] items-start gap-4 space-y-0">
@@ -32,9 +33,11 @@ export const ProgramCardView = ({ program }: { program: {} }) => {
           </CardTitle>
           <CardDescription>{program.description} </CardDescription>
         </div>
-        <Button>
-          <PlusIcon className="mr-2 h-4 w-4" />
-          Apply
+        <Button asChild>
+          <Link to={program.id}>
+            <PlusIcon className="mr-2 h-4 w-4" />
+            Apply
+          </Link>
         </Button>
       </CardHeader>
       <CardContent>
