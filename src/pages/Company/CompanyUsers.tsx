@@ -1,6 +1,9 @@
 import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '@/features/auth/authSlice';
-import { useAddCompanyMembersMutation, useGetCompanyMembersQuery } from '@/features/company/companySlice';
+import {
+  useAddCompanyMembersMutation,
+  useGetCompanyMembersQuery
+} from '@/features/company/companySlice';
 import { MoreHorizontal } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
@@ -37,17 +40,23 @@ import {
   DialogFooter
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { ZodType, z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from '@/components/ui/form';
 import { DialogClose } from '@radix-ui/react-dialog';
 
 type MemberData = {
-  name: string
-  email: string,
-}
+  name: string;
+  email: string;
+};
 
 export default function CompanyUsers() {
   const user = useSelector(selectCurrentUser);
@@ -64,7 +73,7 @@ export default function CompanyUsers() {
 
   const schema: ZodType<MemberData> = z.object({
     name: z.string().min(2).max(100),
-    email: z.string().min(2).max(50),
+    email: z.string().min(2).max(50)
   });
 
   const form = useForm<MemberData>({
@@ -81,14 +90,12 @@ export default function CompanyUsers() {
         name: data.name,
         email: data.email
       }).unwrap();
-      form.reset({})
+      form.reset({});
       console.log('Program added:', addedProgram);
     } catch (error) {
       console.error('Error adding program:', error);
     }
   };
-
-
 
   if (isLoading) {
     content = <p>Loading...</p>;
@@ -112,13 +119,16 @@ export default function CompanyUsers() {
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[425px]">
                     <Form {...form}>
-                      <form onSubmit={form.handleSubmit(submitData)} className="space-y-8">
-
+                      <form
+                        onSubmit={form.handleSubmit(submitData)}
+                        className="space-y-8"
+                      >
                         <DialogHeader>
                           <DialogTitle>Invite User</DialogTitle>
                           <DialogDescription>
-                            Invite members, to join your space in Hackin2. <br /> Simply
-                            enter their name and email address below.
+                            Invite members, to join your space in Hackin2.{' '}
+                            <br /> Simply enter their name and email address
+                            below.
                           </DialogDescription>
                         </DialogHeader>
                         <div className="grid gap-4 ">
@@ -142,7 +152,10 @@ export default function CompanyUsers() {
                               <FormItem>
                                 <FormLabel>Email</FormLabel>
                                 <FormControl>
-                                  <Input placeholder="john.doe@hackin2.com" {...field} />
+                                  <Input
+                                    placeholder="john.doe@hackin2.com"
+                                    {...field}
+                                  />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -211,7 +224,7 @@ export default function CompanyUsers() {
               </Table>
             </CardContent>
           </Card>
-        </main >
+        </main>
       </>
     );
   } else if (isError) {
