@@ -16,7 +16,8 @@ import {
 } from '@/components/ui/card';
 
 import { Link } from 'react-router-dom';
-import { Program } from '@/types';
+import { Program } from '@/utils/types';
+import { formatDate } from '@/utils/dateFormatter';
 
 export const ProgramCardView = ({ program }: { program: Program }) => {
   return (
@@ -34,10 +35,7 @@ export const ProgramCardView = ({ program }: { program: Program }) => {
           <CardDescription>{program.description} </CardDescription>
         </div>
         <Button asChild>
-          <Link to={program.id}>
-            <PlusIcon className="mr-2 h-4 w-4" />
-            Apply
-          </Link>
+          <Link to={program.id}>View</Link>
         </Button>
       </CardHeader>
       <CardContent>
@@ -50,7 +48,7 @@ export const ProgramCardView = ({ program }: { program: Program }) => {
             <MapIcon className="mr-1 h-3 w-3" />
             {program.location}{' '}
           </div>
-          <div>Updated April 2023</div>
+          <div>Last updated: {formatDate(program.updatedAt)}</div>
         </div>
       </CardContent>
     </Card>

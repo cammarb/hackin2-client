@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import { Sidebar } from '@/components/Sidebar';
-import { Program } from '@/types';
+import { Program } from '@/utils/types';
 import {
   ResizableHandle,
   ResizablePanel,

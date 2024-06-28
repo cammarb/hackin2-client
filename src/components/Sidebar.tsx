@@ -6,7 +6,7 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip';
 import { Building, PlusSquare } from 'lucide-react';
-import { Program } from '@/types';
+import { Program } from '@/utils/types';
 import { TooltipProvider } from '@radix-ui/react-tooltip';
 import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '@/features/auth/authSlice';

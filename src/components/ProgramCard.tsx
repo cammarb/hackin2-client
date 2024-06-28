@@ -21,12 +21,12 @@ import { Textarea } from '@/components/ui/textarea';
 import { ZodType, z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Program as ProgramData } from '@/types';
+import { EditableProgram, Program as ProgramData } from '@/utils/types';
 
 export const ProgramCard = ({ program }: { program: ProgramData }) => {
   const [updateProgram] = useUpdateProgramMutation();
 
-  const schema: ZodType<ProgramData> = z.object({
+  const schema: ZodType<EditableProgram> = z.object({
     id: z.string(),
     name: z.string().min(2).max(30),
     description: z.string().min(2),

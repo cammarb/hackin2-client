@@ -28,6 +28,9 @@
       ],
       "@/app/*": [
         "./src/app/*"
+      ],
+      "@/uilts/*":[
+        "./src/utils"
       ]
     },
     /* Bundler mode */
