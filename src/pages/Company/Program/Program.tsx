@@ -1,4 +1,4 @@
-import { Program as ProgramType } from '@/types';
+import { Program as ProgramType } from '@/utils/types';
 import { useOutletContext } from 'react-router-dom';
 import { ProgramCard } from '@/components/ProgramCard';
 import { RewardsTable } from '@/components/RewardsTable';
