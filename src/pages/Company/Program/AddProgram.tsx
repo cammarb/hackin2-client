@@ -12,6 +12,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAddProgramMutation } from '@/features/company/companySlice';
+import { Textarea } from '@/components/ui/textarea';
 
 type ProgramData = {
   name: string;
@@ -25,7 +26,7 @@ export default function AddProgram() {
   const schema: ZodType<ProgramData> = z.object({
     name: z.string().min(2).max(30),
     description: z.string().min(2).max(200),
-    location: z.string().min(2).max(100),
+    location: z.string().min(2).max(100)
   });
 
   const form = useForm<ProgramData>({
@@ -33,19 +34,18 @@ export default function AddProgram() {
     defaultValues: {
       name: '',
       description: '',
-      location: '',
+      location: ''
     }
   });
 
   const submitData = async (data: ProgramData) => {
-    console.log("pressed")
     try {
       const addedProgram = await addProgram({
         name: data.name,
         description: data.description,
-        location: data.location,
+        location: data.location
       }).unwrap();
-      form.reset({})
+      form.reset({});
       console.log('Program added:', addedProgram);
     } catch (error) {
       console.error('Error adding program:', error);
@@ -77,7 +77,7 @@ export default function AddProgram() {
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Input placeholder="Program description" {...field} />
+                    <Textarea placeholder="Program description" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
