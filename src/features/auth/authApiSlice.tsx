@@ -28,16 +28,16 @@ export const authApiSlice = apiConnection.injectEndpoints({
         }
       }
     }),
-    refresh: builder.query({
+    session: builder.query({
       query: () => ({
-        url: '/auth/refresh',
+        url: '/auth/session',
         method: 'GET'
       }),
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          const { user, token, role } = data;
-          dispatch(setCredentials({ user: user, token: token, role: role }));
+          const { user, role } = data;
+          dispatch(setCredentials({ user: user, role: role }));
         } catch (err) {
           console.log(err);
         }
@@ -46,5 +46,5 @@ export const authApiSlice = apiConnection.injectEndpoints({
   })
 });
 
-export const { useLoginMutation, useLogoutMutation, useRefreshQuery } =
+export const { useLoginMutation, useLogoutMutation, useSessionQuery } =
   authApiSlice;

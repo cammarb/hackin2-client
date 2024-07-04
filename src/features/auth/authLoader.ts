@@ -3,7 +3,7 @@ import { authApiSlice } from './authApiSlice';
 
 export const authLoader = async () => {
   const auth = await store.dispatch(
-    authApiSlice.endpoints.refresh.initiate(null)
+    authApiSlice.endpoints.session.initiate(null)
   );
   return auth;
 };
