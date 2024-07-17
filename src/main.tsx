@@ -24,6 +24,7 @@ import { authLoader } from './features/auth/authLoader';
 import ProgramsList from './pages/Pentester/ProgramsList';
 import ProgramView from './pages/Pentester/ProgramView';
 import { ProgramApply } from './pages/Pentester/ProgramApply';
+import SubmissionsList from './pages/Pentester/SubmissionsList';
 
 const router = createBrowserRouter([
   {
@@ -88,8 +89,12 @@ const router = createBrowserRouter([
             element: <ProgramView />
           },
           {
-            path: 'bounty-programs/:id/apply',
+            path: 'bounty-programs/:id/submit/new',
             element: <ProgramApply />
+          },
+          {
+            path: 'submissions',
+            element: <SubmissionsList />
           }
         ]
       }

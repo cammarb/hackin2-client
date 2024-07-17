@@ -45,6 +45,10 @@ const pentesterLinks = [
   {
     title: 'Bounty Programs',
     url: 'bounty-programs'
+  },
+  {
+    title: 'Submissions',
+    url: 'submissions'
   }
 ];
 
