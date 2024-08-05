@@ -9,38 +9,6 @@ export const companyApiSlice = apiConnection.injectEndpoints({
         refetchOnMountOrArgChange: 30
       })
     }),
-    getCompanyPrograms: builder.query({
-      query: () => ({
-        url: `/company/programs`,
-        method: 'GET',
-        refetchOnMountOrArgChange: 30
-      }),
-      providesTags: ['Programs']
-    }),
-    getCompanyProgram: builder.query({
-      query: (id) => ({
-        url: `/company/programs/${id}`,
-        method: 'GET',
-        refetchOnMountOrArgChange: 30
-      }),
-      providesTags: ['Program']
-    }),
-    addProgram: builder.mutation({
-      query: (program) => ({
-        url: `/company/programs/new`,
-        method: 'POST',
-        body: program
-      }),
-      invalidatesTags: ['Programs']
-    }),
-    updateProgram: builder.mutation({
-      query: ({ id, program }) => ({
-        url: `/company/programs/${id}/edit`,
-        method: 'PUT',
-        body: program
-      }),
-      invalidatesTags: ['Program', 'Programs']
-    }),
     getCompanyMembers: builder.query({
       query: () => ({
         url: `/company/members`,
@@ -57,41 +25,11 @@ export const companyApiSlice = apiConnection.injectEndpoints({
       }),
       invalidatesTags: ['Members']
     }),
-    getProgramBounties: builder.query({
-      query: (id) => ({
-        url: `/company/programs/${id}/bounties`,
-        method: 'GET',
-        refetchOnMountOrArgChange: 30
-      })
-    }),
-    getProgramRewards: builder.query({
-      query: (id) => ({
-        url: `/company/programs/${id}/severityReward`,
-        method: 'GET',
-        refetchOnMountOrArgChange: 30
-      }),
-      providesTags: ['Rewards']
-    }),
-    updateReward: builder.mutation({
-      query: ({ id, body }) => ({
-        url: `/company/severityReward/${id}/edit`,
-        method: 'PUT',
-        body: body
-      }),
-      invalidatesTags: ['Rewards']
-    })
   })
 });
 
 export const {
   useGetCompanyQuery,
-  useGetCompanyProgramsQuery,
-  useGetCompanyProgramQuery,
-  useGetProgramBountiesQuery,
-  useAddProgramMutation,
   useGetCompanyMembersQuery,
   useAddCompanyMembersMutation,
-  useUpdateProgramMutation,
-  useUpdateRewardMutation,
-  useGetProgramRewardsQuery
 } = companyApiSlice;

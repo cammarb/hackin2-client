@@ -1,4 +1,3 @@
-import { CircleUser } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -8,19 +7,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { ModeToggle } from './mode-toggle';
-import { Navbar } from './Navbar';
-import whiteLogo from '/Hackin2_logo_white.svg';
-import blackLogo from '/Hackin2_logo_black.svg';
-import { useTheme } from './theme-provider';
-import { useSelector } from 'react-redux';
+import { useLogoutMutation } from '@/features/auth/authApiSlice';
 import {
   selectCurrentRole,
   selectCurrentUser
 } from '@/features/auth/authSlice';
-import { useLogoutMutation } from '@/features/auth/authApiSlice';
+import { CircleUser } from 'lucide-react';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { ModeToggle } from './mode-toggle';
+import { Navbar } from './Navbar';
+import { useTheme } from './theme-provider';
+import blackLogo from '/Hackin2_logo_black.svg';
+import whiteLogo from '/Hackin2_logo_white.svg';
 
 const enterpriseLinks = [
   {
@@ -66,7 +66,7 @@ const authLinks = [
 export const Header = () => {
   const user = useSelector(selectCurrentUser);
   const role = useSelector(selectCurrentRole);
-  const [logout, { isLoading, isSuccess }] = useLogoutMutation();
+  const [logout, { isSuccess }] = useLogoutMutation();
   const navigate = useNavigate();
   const { theme } = useTheme();
 
@@ -110,10 +110,12 @@ export const Header = () => {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Settings</DropdownMenuItem>
+                <DropdownMenuItem><Link to={'account-settings'}>Settings</Link></DropdownMenuItem>
                 <DropdownMenuItem>Support</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
+                <DropdownMenuItem onClick={logout}>
+                    Log Out
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

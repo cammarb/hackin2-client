@@ -7,12 +7,11 @@ import {
   TableRow
 } from '@/components/ui/table';
 import {
-  useGetProgramBountiesQuery,
-  useUpdateProgramMutation
-} from '@/features/company/companySlice';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Button } from './ui/button';
+  useGetProgramBountiesQuery
+} from '@/features/program/programSlice';
 import { Link } from 'react-router-dom';
+import { Button } from './ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 
 export function BountiesTable({ programId }: { programId: string }) {
   const {
@@ -20,16 +19,17 @@ export function BountiesTable({ programId }: { programId: string }) {
     isLoading,
     isSuccess,
     isError,
-    error
   } = useGetProgramBountiesQuery(programId);
 
   let content;
   if (isLoading) {
     content = <p>Loading...</p>;
+  } else if(isError){
+    content = <p>Error</p>
   } else if (isSuccess) {
-    const bounties = response.bounties;
-    if (bounties.length === 0) content = <p>No Bounties yet.</p>;
-    else
+    if (!response.bounties) content = <p>No Bounties yet.</p>;
+    else {
+      const bounties = response.bounties
       content = (
         <Table>
           <TableHeader>
@@ -46,6 +46,7 @@ export function BountiesTable({ programId }: { programId: string }) {
           </TableBody>
         </Table>
       );
+    }
   }
 
   return (

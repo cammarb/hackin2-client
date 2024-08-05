@@ -1,20 +1,18 @@
-import { NavLink } from 'react-router-dom';
-import { cn } from '@/lib/utils';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger
 } from '@/components/ui/tooltip';
-import { Building, PlusSquare } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { Program } from '@/utils/types';
 import { TooltipProvider } from '@radix-ui/react-tooltip';
-import { useSelector } from 'react-redux';
-import { selectCurrentUser } from '@/features/auth/authSlice';
-import { useGetCompanyProgramsQuery } from '@/features/company/companySlice';
+import { Building, PlusSquare } from 'lucide-react';
+import { NavLink } from 'react-router-dom';
 
 interface SidebarProps {
   isCollapsed: boolean;
   setProgram: React.Dispatch<React.SetStateAction<Program | null>>;
+  programs: Program[]
 }
 
 interface NavProps {
@@ -23,16 +21,7 @@ interface NavProps {
   setProgram: React.Dispatch<React.SetStateAction<Program | null>>;
 }
 
-export function Sidebar({ isCollapsed, setProgram }: SidebarProps) {
-  const user = useSelector(selectCurrentUser);
-  const {
-    data: response,
-    isLoading,
-    isSuccess,
-    isError,
-    error
-  } = useGetCompanyProgramsQuery(user);
-
+export function Sidebar({ isCollapsed, setProgram, programs }: SidebarProps) {
   const button = {
     title: 'Add Program',
     icon: PlusSquare,
@@ -40,29 +29,16 @@ export function Sidebar({ isCollapsed, setProgram }: SidebarProps) {
     variant: 'default'
   };
 
-  let content;
-
-  if (isLoading) {
-    content = <>Loading...</>;
-  } else if (isError) {
-    content = <>Error</>;
-  } else if (isSuccess) {
-    let programs = response.programs;
-    content = (
-      <Nav
-        programs={programs}
-        isCollapsed={isCollapsed}
-        setProgram={setProgram}
-      />
-    );
-  }
-
   return (
     <div
       data-collapsed={isCollapsed}
       className="group flex flex-col gap-4 py-2 px-4 data-[collapsed=true]:py-2"
     >
-      {content}
+      <Nav
+        programs={programs}
+        isCollapsed={isCollapsed}
+        setProgram={setProgram}
+      />
       <div className="grid gap-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
         {isCollapsed ? (
           <TooltipProvider>

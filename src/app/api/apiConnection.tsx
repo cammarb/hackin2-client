@@ -1,15 +1,15 @@
+import { RootState } from '@/app/store';
+import {
+  AuthState,
+  removeCredentials,
+  setCredentials
+} from '@/features/auth/authSlice';
 import {
   BaseQueryApi,
   FetchArgs,
   createApi,
   fetchBaseQuery
 } from '@reduxjs/toolkit/query/react';
-import {
-  setCredentials,
-  removeCredentials,
-  AuthState
-} from '@/features/auth/authSlice';
-import { RootState } from '@/app/store';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `${import.meta.env.VITE_API_BASE_URL}`,

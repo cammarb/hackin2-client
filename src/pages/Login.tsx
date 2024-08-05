@@ -1,9 +1,4 @@
-import { useNavigate } from 'react-router-dom';
-import { z, ZodType } from 'zod';
-import { useForm } from 'react-hook-form';
-import { useLoginMutation } from '@/features/auth/authApiSlice';
-import { useDispatch } from 'react-redux';
-import { setCredentials } from '@/features/auth/authSlice';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -20,9 +15,15 @@ import {
   FormLabel,
   FormMessage
 } from '@/components/ui/form';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { toast } from '@/components/ui/use-toast';
+import { useLoginMutation } from '@/features/auth/authApiSlice';
+import { setCredentials } from '@/features/auth/authSlice';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { z, ZodType } from 'zod';
 
 interface LoginData {
   username: string
@@ -58,7 +59,12 @@ export default function Login() {
       form.reset({})
       navigate('/')
     } catch (error) {
-      console.error('Error Loging In:', error);
+      if (error?.status === 401) {
+        toast({
+          title: 'Login failed',
+          description: 'Username or password is incorrect'
+        });
+      } 
     }
   };
 

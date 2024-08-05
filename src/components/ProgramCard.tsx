@@ -1,13 +1,5 @@
-import { useUpdateProgramMutation } from '@/features/company/companySlice';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select';
 import {
   Form,
   FormControl,
@@ -17,11 +9,19 @@ import {
   FormMessage
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { ZodType, z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useUpdateProgramMutation } from '@/features/program/programSlice';
 import { EditableProgram, Program as ProgramData } from '@/utils/types';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { ZodType, z } from 'zod';
 
 export const ProgramCard = ({ program }: { program: ProgramData }) => {
   const [updateProgram] = useUpdateProgramMutation();
@@ -47,7 +47,7 @@ export const ProgramCard = ({ program }: { program: ProgramData }) => {
 
   const submitData = async (data: ProgramData) => {
     try {
-      const updatedProgram = await updateProgram({
+      await updateProgram({
         id: program.id,
         program: {
           id: program.id,

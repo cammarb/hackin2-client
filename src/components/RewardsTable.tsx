@@ -1,21 +1,26 @@
+import { useGetSeverityRewardsQuery, useUpdateSeverityRewardMutation } from '@/features/severityReward/severityRewardSlice';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { MoreHorizontal } from 'lucide-react';
+import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { Badge } from './ui/badge';
 import { Button } from './ui/button';
-import { Card, CardContent, CardTitle, CardHeader } from './ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import {
-  DialogHeader,
-  DialogClose,
   Dialog,
-  DialogTitle,
-  DialogDescription,
+  DialogClose,
   DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
   DialogTrigger
 } from './ui/dialog';
 import {
   DropdownMenu,
+  DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuTrigger,
-  DropdownMenuContent
+  DropdownMenuTrigger
 } from './ui/dropdown-menu';
 import {
   Form,
@@ -34,14 +39,6 @@ import {
   TableHeader,
   TableRow
 } from './ui/table';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  useUpdateRewardMutation,
-  useGetProgramRewardsQuery
-} from '@/features/company/companySlice';
-import { Badge } from './ui/badge';
-import { MoreHorizontal } from 'lucide-react';
 
 type RewardsData = {
   id: string;
@@ -74,7 +71,7 @@ const getBadgeVariant = (severity: string): string | any => {
 };
 
 const RewardRow = ({ reward }: { reward: RewardsData }) => {
-  const [updateReward] = useUpdateRewardMutation();
+  const [updateReward] = useUpdateSeverityRewardMutation();
 
   const form = useForm({
     resolver: zodResolver(rewardSchema),
@@ -89,7 +86,7 @@ const RewardRow = ({ reward }: { reward: RewardsData }) => {
 
   const submitData = async (data: RewardsData) => {
     try {
-      const newReward = await updateReward({
+      await updateReward({
         id: reward.id,
         body: {
           min: data.min,
@@ -97,7 +94,6 @@ const RewardRow = ({ reward }: { reward: RewardsData }) => {
         }
       }).unwrap();
       form.reset({});
-      console.log('Reward updated.');
     } catch (error) {
       console.error('Error updating program:', error);
     }
@@ -198,8 +194,7 @@ export const RewardsTable = ({ programId }: { programId: string }) => {
     isLoading,
     isSuccess,
     isError,
-    error
-  } = useGetProgramRewardsQuery(programId);
+  } = useGetSeverityRewardsQuery({key: 'program', value: programId});
 
   let content;
 

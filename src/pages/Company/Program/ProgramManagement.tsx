@@ -1,17 +1,36 @@
-import { Outlet } from 'react-router-dom';
 import { Sidebar } from '@/components/Sidebar';
-import { Program } from '@/utils/types';
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup
 } from '@/components/ui/resizable';
+import { selectCurrentCompany } from '@/features/auth/authSlice';
+import { useGetCompanyProgramsQuery } from '@/features/program/programSlice';
 import { cn } from '@/lib/utils';
+import { Program } from '@/utils/types';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Outlet } from 'react-router-dom';
 
 export default function ProgramManagement() {
+  const company = useSelector(selectCurrentCompany);
+  const {
+    data: response,
+    isLoading,
+    isSuccess,
+    isError,
+  } = useGetCompanyProgramsQuery(company);
   const [currentProgram, setCurrentProgram] = useState<Program | null>(null);
   const [isCollapsed, setIsCollapsed] = useState(false);
+
+  let content = <></>
+
+  if(isLoading) content = <>Loading</>
+  else if (isError) content = <>Error</>  
+  else if (isSuccess) {
+    const programs = response.programs
+    content = <Sidebar setProgram={setCurrentProgram} programs={programs} isCollapsed={isCollapsed} />
+  }
 
   return (
     <ResizablePanelGroup
@@ -41,7 +60,7 @@ export default function ProgramManagement() {
           isCollapsed && 'min-w-[50px] transition-all duration-300 ease-in-out'
         )}
       >
-        <Sidebar setProgram={setCurrentProgram} isCollapsed={isCollapsed} />
+        {content}
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel>

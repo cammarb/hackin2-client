@@ -1,5 +1,3 @@
-import { z, ZodType } from 'zod';
-import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -10,9 +8,13 @@ import {
   FormMessage
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useAddProgramMutation } from '@/features/company/companySlice';
 import { Textarea } from '@/components/ui/textarea';
+import { selectCurrentCompany } from '@/features/auth/authSlice';
+import { useAddProgramMutation } from '@/features/program/programSlice';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
+import { z, ZodType } from 'zod';
 
 type ProgramData = {
   name: string;
@@ -21,6 +23,7 @@ type ProgramData = {
 };
 
 export default function AddProgram() {
+  const company = useSelector(selectCurrentCompany)
   const [addProgram] = useAddProgramMutation();
 
   const schema: ZodType<ProgramData> = z.object({
@@ -41,10 +44,12 @@ export default function AddProgram() {
   const submitData = async (data: ProgramData) => {
     try {
       const addedProgram = await addProgram({
+        id: company,
+        body: {
         name: data.name,
         description: data.description,
         location: data.location
-      }).unwrap();
+      }}).unwrap();
       form.reset({});
       console.log('Program added:', addedProgram);
     } catch (error) {

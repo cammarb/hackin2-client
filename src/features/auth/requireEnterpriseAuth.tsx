@@ -1,16 +1,16 @@
-import { useNavigate, Outlet, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useToast } from '@/components/ui/use-toast';
 import {
   selectCurrentRole,
   selectCurrentUser
 } from '@/features/auth/authSlice';
-import { useToast } from '@/components/ui/use-toast';
-import { useEffect } from 'react';
 import Forbidden from '@/pages/Error/403';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 const RequireEnterpriseAuth = () => {
-  let user = useSelector(selectCurrentUser);
-  let role = useSelector(selectCurrentRole);
+  const user = useSelector(selectCurrentUser);
+  const role = useSelector(selectCurrentRole);
   const navigate = useNavigate();
   const location = useLocation();
 

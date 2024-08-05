@@ -13,7 +13,7 @@ export const authApiSlice = apiConnection.injectEndpoints({
     logout: builder.mutation({
       query: () => ({
         url: '/auth/logout',
-        method: 'POST'
+        method: 'POST',
       }),
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
@@ -36,8 +36,8 @@ export const authApiSlice = apiConnection.injectEndpoints({
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          const { user, token, role } = data;
-          dispatch(setCredentials({ user: user, token: token, role: role }));
+          const { user, token, role, company } = data;
+          dispatch(setCredentials({ user: user, token: token, role: role, company: company }));
         } catch (err) {
           console.log(err);
         }
