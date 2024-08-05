@@ -1,46 +1,52 @@
-import { Sidebar } from '@/components/Sidebar';
+import { Sidebar } from '@/components/Sidebar'
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup
-} from '@/components/ui/resizable';
-import { selectCurrentCompany } from '@/features/auth/authSlice';
-import { useGetCompanyProgramsQuery } from '@/features/program/programSlice';
-import { cn } from '@/lib/utils';
-import { Program } from '@/utils/types';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Outlet } from 'react-router-dom';
+} from '@/components/ui/resizable'
+import { selectCurrentCompany } from '@/features/auth/authSlice'
+import { useGetCompanyProgramsQuery } from '@/features/program/programSlice'
+import { cn } from '@/lib/utils'
+import type { Program } from '@/utils/types'
+import { useState } from 'react'
+import { useSelector } from 'react-redux'
+import { Outlet } from 'react-router-dom'
 
 export default function ProgramManagement() {
-  const company = useSelector(selectCurrentCompany);
+  const company = useSelector(selectCurrentCompany)
   const {
     data: response,
     isLoading,
     isSuccess,
-    isError,
-  } = useGetCompanyProgramsQuery(company);
-  const [currentProgram, setCurrentProgram] = useState<Program | null>(null);
-  const [isCollapsed, setIsCollapsed] = useState(false);
+    isError
+  } = useGetCompanyProgramsQuery(company)
+  const [currentProgram, setCurrentProgram] = useState<Program | null>(null)
+  const [isCollapsed, setIsCollapsed] = useState(false)
 
   let content = <></>
 
-  if(isLoading) content = <>Loading</>
-  else if (isError) content = <>Error</>  
+  if (isLoading) content = <p>Loading</p>
+  else if (isError) content = <p>Error</p>
   else if (isSuccess) {
     const programs = response.programs
-    content = <Sidebar setProgram={setCurrentProgram} programs={programs} isCollapsed={isCollapsed} />
+    content = (
+      <Sidebar
+        setProgram={setCurrentProgram}
+        programs={programs}
+        isCollapsed={isCollapsed}
+      />
+    )
   }
 
   return (
     <ResizablePanelGroup
-      direction="horizontal"
+      direction='horizontal'
       onLayout={(sizes: number[]) => {
         document.cookie = `react-resizable-panels:layout=${JSON.stringify(
           sizes
-        )}`;
+        )}`
       }}
-      className="h-full items-stretch"
+      className='h-full items-stretch'
     >
       <ResizablePanel
         defaultSize={20}
@@ -49,12 +55,12 @@ export default function ProgramManagement() {
         minSize={15}
         maxSize={20}
         onCollapse={() => {
-          setIsCollapsed(true);
-          document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(true)}`;
+          setIsCollapsed(true)
+          document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(true)}`
         }}
         onExpand={() => {
-          setIsCollapsed(false);
-          document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(false)}`;
+          setIsCollapsed(false)
+          document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(false)}`
         }}
         className={cn(
           isCollapsed && 'min-w-[50px] transition-all duration-300 ease-in-out'
@@ -71,5 +77,5 @@ export default function ProgramManagement() {
         )}
       </ResizablePanel>
     </ResizablePanelGroup>
-  );
+  )
 }

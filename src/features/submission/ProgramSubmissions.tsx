@@ -1,4 +1,4 @@
-import { useGetSubmissionsByProgramQuery } from '@/features/submission/submissionSlice';
+import { useGetSubmissionsByProgramQuery } from '@/features/submission/submissionSlice'
 
 const Submissions = ({ program }: { program: string }) => {
   const {
@@ -6,22 +6,24 @@ const Submissions = ({ program }: { program: string }) => {
     isLoading,
     isError,
     isSuccess
-  } = useGetSubmissionsByProgramQuery(program);
+  } = useGetSubmissionsByProgramQuery(program)
 
   return (
     <div>
       <h1>Submission List</h1>
       {isSuccess ? (
         response.submissions.map((submission) => {
-          <p>{submission.id}</p>;
+          ;<p>{submission.id}</p>
         })
       ) : isLoading ? (
         <>Loading...</>
       ) : isError ? (
         <>Error</>
-      ) : <></>}
+      ) : (
+        <></>
+      )}
     </div>
-  );
-};
+  )
+}
 
-export default Submissions;
+export default Submissions

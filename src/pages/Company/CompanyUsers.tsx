@@ -1,27 +1,27 @@
-import { useSelector } from 'react-redux';
-import { selectCurrentUser } from '@/features/auth/authSlice';
+import { useSelector } from 'react-redux'
+import { selectCurrentUser } from '@/features/auth/authSlice'
 import {
   useAddCompanyMembersMutation,
   useGetCompanyMembersQuery
-} from '@/features/company/companySlice';
-import { MoreHorizontal } from 'lucide-react';
+} from '@/features/company/companySlice'
+import { MoreHorizontal } from 'lucide-react'
 
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle
-} from '@/components/ui/card';
+} from '@/components/ui/card'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
+} from '@/components/ui/dropdown-menu'
 import {
   Table,
   TableBody,
@@ -29,7 +29,7 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '@/components/ui/table';
+} from '@/components/ui/table'
 import {
   Dialog,
   DialogTrigger,
@@ -38,11 +38,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { ZodType, z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { type ZodType, z } from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Form,
   FormControl,
@@ -50,31 +50,31 @@ import {
   FormItem,
   FormLabel,
   FormMessage
-} from '@/components/ui/form';
-import { DialogClose } from '@radix-ui/react-dialog';
+} from '@/components/ui/form'
+import { DialogClose } from '@radix-ui/react-dialog'
 
 type MemberData = {
-  name: string;
-  email: string;
-};
+  name: string
+  email: string
+}
 
 export default function CompanyUsers() {
-  const user = useSelector(selectCurrentUser);
+  const user = useSelector(selectCurrentUser)
   const {
     data: response,
     isLoading,
     isSuccess,
     isError,
     error
-  } = useGetCompanyMembersQuery(user);
-  let content;
+  } = useGetCompanyMembersQuery(user)
+  let content
 
-  const [addCompanyMember] = useAddCompanyMembersMutation();
+  const [addCompanyMember] = useAddCompanyMembersMutation()
 
   const schema: ZodType<MemberData> = z.object({
     name: z.string().min(2).max(100),
     email: z.string().min(2).max(50)
-  });
+  })
 
   const form = useForm<MemberData>({
     resolver: zodResolver(schema),
@@ -82,30 +82,30 @@ export default function CompanyUsers() {
       name: '',
       email: ''
     }
-  });
+  })
 
   const submitData = async (data: MemberData) => {
     try {
       const addedProgram = await addCompanyMember({
         name: data.name,
         email: data.email
-      }).unwrap();
-      form.reset({});
-      console.log('Program added:', addedProgram);
+      }).unwrap()
+      form.reset({})
+      console.log('Program added:', addedProgram)
     } catch (error) {
-      console.error('Error adding program:', error);
+      console.error('Error adding program:', error)
     }
-  };
+  }
 
   if (isLoading) {
-    content = <p>Loading...</p>;
+    content = <p>Loading...</p>
   } else if (isSuccess) {
-    const members = response.members;
+    const members = response.members
     content = (
       <>
-        <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-          <Card x-chunk="dashboard-06-chunk-0">
-            <CardHeader className="flex flex-row justify-between">
+        <main className='grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8'>
+          <Card x-chunk='dashboard-06-chunk-0'>
+            <CardHeader className='flex flex-row justify-between'>
               <div>
                 <CardTitle>Users</CardTitle>
                 <CardDescription>
@@ -115,13 +115,13 @@ export default function CompanyUsers() {
               <div>
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button variant="outline">Invite User</Button>
+                    <Button variant='outline'>Invite User</Button>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-[425px]">
+                  <DialogContent className='sm:max-w-[425px]'>
                     <Form {...form}>
                       <form
                         onSubmit={form.handleSubmit(submitData)}
-                        className="space-y-8"
+                        className='space-y-8'
                       >
                         <DialogHeader>
                           <DialogTitle>Invite User</DialogTitle>
@@ -131,15 +131,15 @@ export default function CompanyUsers() {
                             below.
                           </DialogDescription>
                         </DialogHeader>
-                        <div className="grid gap-4 ">
+                        <div className='grid gap-4 '>
                           <FormField
                             control={form.control}
-                            name="name"
+                            name='name'
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel>Name</FormLabel>
                                 <FormControl>
-                                  <Input placeholder="John Doe" {...field} />
+                                  <Input placeholder='John Doe' {...field} />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -147,13 +147,13 @@ export default function CompanyUsers() {
                           />
                           <FormField
                             control={form.control}
-                            name="email"
+                            name='email'
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel>Email</FormLabel>
                                 <FormControl>
                                   <Input
-                                    placeholder="john.doe@hackin2.com"
+                                    placeholder='john.doe@hackin2.com'
                                     {...field}
                                   />
                                 </FormControl>
@@ -164,7 +164,7 @@ export default function CompanyUsers() {
                         </div>
                         <DialogFooter>
                           <DialogClose asChild>
-                            <Button type="submit">Send Invite</Button>
+                            <Button type='submit'>Send Invite</Button>
                           </DialogClose>
                         </DialogFooter>
                       </form>
@@ -183,7 +183,7 @@ export default function CompanyUsers() {
 
                     <TableHead>Role</TableHead>
                     <TableHead>
-                      <span className="sr-only">Actions</span>
+                      <span className='sr-only'>Actions</span>
                     </TableHead>
                   </TableRow>
                 </TableHeader>
@@ -193,25 +193,25 @@ export default function CompanyUsers() {
                       <TableCell>
                         {member.User.firstName} {member.User.lastName}{' '}
                       </TableCell>
-                      <TableCell className="font-medium">
+                      <TableCell className='font-medium'>
                         {member.User.email}
                       </TableCell>
                       <TableCell>
-                        <Badge variant="outline">{member.companyRole}</Badge>
+                        <Badge variant='outline'>{member.companyRole}</Badge>
                       </TableCell>
                       <TableCell>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Button
-                              aria-haspopup="true"
-                              size="icon"
-                              variant="ghost"
+                              aria-haspopup='true'
+                              size='icon'
+                              variant='ghost'
                             >
-                              <MoreHorizontal className="h-4 w-4" />
-                              <span className="sr-only">Toggle menu</span>
+                              <MoreHorizontal className='h-4 w-4' />
+                              <span className='sr-only'>Toggle menu</span>
                             </Button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
+                          <DropdownMenuContent align='end'>
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             <DropdownMenuItem>Edit</DropdownMenuItem>
                             <DropdownMenuItem>Delete</DropdownMenuItem>
@@ -226,10 +226,10 @@ export default function CompanyUsers() {
           </Card>
         </main>
       </>
-    );
+    )
   } else if (isError) {
-    content = <p>{JSON.stringify(error)}</p>;
+    content = <p>{JSON.stringify(error)}</p>
   }
 
-  return content;
+  return content
 }

@@ -7,7 +7,11 @@
 		"enabled": true,
 		"rules": {
 			"recommended": true
-		}
+		},
+		"ignore": [
+			".env",
+			"node_modules"
+		]
 	},
 	"formatter": {
 		"enabled": true,
@@ -24,9 +28,9 @@
 			"arrowParentheses": "always",
 			"bracketSameLine": false,
 			"bracketSpacing": true,
-			"jsxQuoteStyle": "double",
+			"jsxQuoteStyle": "single",
 			"quoteStyle": "single",
-			"semicolons": "always",
+			"semicolons": "asNeeded",
 			"trailingCommas": "none"
 		}
 	},

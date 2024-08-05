@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "npx vite",
     "build": "tsc && npx vite build",
-    "preview": "npx vite preview",
-    "prettier": "prettier --config .prettierrc --write ."
+    "preview": "npx vite preview"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.6.0",
@@ -31,7 +30,6 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.331.0",
-    "prettier": "^3.2.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.5",
@@ -56,9 +54,6 @@
     "@vitejs/plugin-react": "^4.1.0",
     "@vitejs/plugin-react-swc": "^3.4.0",
     "autoprefixer": "^10.4.17",
-    "eslint": "^8.45.0",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.3",
     "postcss": "^8.4.33",
     "swc": "^1.0.11",
     "tailwindcss": "^3.4.1",
