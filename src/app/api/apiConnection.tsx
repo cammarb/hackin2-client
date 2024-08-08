@@ -1,53 +1,68 @@
+import type { RootState } from '@/app/store'
 import {
-  BaseQueryApi,
-  FetchArgs,
+  type AuthState,
+  removeCredentials,
+  setCredentials
+} from '@/features/auth/authSlice'
+import type { QueryReturnValue } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
+import {
+  type BaseQueryApi,
+  type FetchArgs,
+  type FetchBaseQueryError,
+  type FetchBaseQueryMeta,
   createApi,
   fetchBaseQuery
-} from '@reduxjs/toolkit/query/react';
-import {
-  setCredentials,
-  removeCredentials,
-  AuthState
-} from '@/features/auth/authSlice';
-import { RootState } from '@/app/store';
+} from '@reduxjs/toolkit/query/react'
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `${import.meta.env.VITE_API_BASE_URL}`,
   credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
-    const token = (getState() as RootState).auth.token;
-    if (token) headers.set('Authorization', `Bearer ${token}`);
+    const token = (getState() as RootState).auth.token
+    if (token) headers.set('Authorization', `Bearer ${token}`)
 
-    return headers;
+    return headers
   }
-});
+})
 
 const baseQueryRefresh = async (
-  args: string | FetchArgs = '',
+  args: string | FetchArgs,
   api: BaseQueryApi,
   extraOptions: object
 ) => {
-  let result = await baseQuery(args, api, extraOptions);
-  console.log('Result', result);
-  if (result?.meta?.response?.status === 403 && result?.error?.data?.message == 'Token expired') {
-    const refreshResult = await baseQuery('auth/refresh', api, extraOptions);
-    console.log('Refresh result', refreshResult);
-    if (!refreshResult.data) api.dispatch(removeCredentials());
-    try {
-      const { user, token } = refreshResult.data as AuthState;
-      api.dispatch(setCredentials({ user: user, token: token }));
-      result = await baseQuery(args, api, extraOptions);
-    } catch (error) {
-      console.error('Error refreshing token', error);
-    }
-
+  let result = await baseQuery(args, api, extraOptions)
+  const errorResult = result.error as {
+    status: number
+    data: { message: string }
   }
-
-  return result;
-};
+  if (
+    errorResult?.status === 403 &&
+    errorResult?.data.message === 'jwt expired'
+  ) {
+    const refreshResult = await baseQuery('auth/refresh', api, extraOptions)
+    if (!refreshResult.data) api.dispatch(removeCredentials())
+    try {
+      const { user, token, role } = refreshResult.data as AuthState
+      api.dispatch(setCredentials({ user: user, token: token, role: role }))
+      result = await baseQuery(args, api, extraOptions)
+    } catch (error) {
+      console.error('Error refreshing token', error)
+    }
+  }
+  return result
+}
 
 export const apiConnection = createApi({
   baseQuery: baseQueryRefresh,
-  tagTypes: ['Company', 'Program'],
+  tagTypes: [
+    'Company',
+    'Programs',
+    'Program',
+    'Members',
+    'Bounty',
+    'Scope',
+    'Rewards',
+    'Submissions'
+  ],
   endpoints: () => ({})
-});
+})

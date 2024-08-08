@@ -1,30 +1,38 @@
-import React from 'react';
-import * as ReactDOM from 'react-dom/client';
-import App from '@/App';
-import '@/index.css';
-import { Provider } from 'react-redux';
-import { store } from '@/app/store';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { Toaster } from '@/components/ui/toaster';
+import App from '@/App'
+import { store } from '@/app/store'
+import { Toaster } from '@/components/ui/toaster'
+import '@/index.css'
+import React from 'react'
+import * as ReactDOM from 'react-dom/client'
+import { Provider } from 'react-redux'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
-import NotFound from '@/pages/Error/404';
-import Home from '@/pages/Home';
+import NotFound from '@/pages/Error/404'
+import Home from '@/pages/Home'
 
-import { ThemeProvider } from '@/components/theme-provider';
-import ProgramManagement from './pages/Company/Program/ProgramManagement';
-import Program from './pages/Company/Program/Program';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Dashboard from './pages/Company/Dashboard';
-import CompanyUsers from './pages/Company/CompanyUsers';
-import AddProgram from './pages/Company/Program/AddProgram';
-import RequireAuth from './features/auth/requireAuth';
+import { ThemeProvider } from '@/components/theme-provider'
+import { authLoader } from './features/auth/authLoader'
+import RequireEnterpriseAuth from './features/auth/requireEnterpriseAuth'
+import RequirePentesterAuth from './features/auth/RequirePentesterAuth'
+import CompanyUsers from './features/company/CompanyUsers'
+import Dashboard from './features/company/Dashboard'
+import AddProgram from './features/program/AddProgram'
+import Program from './features/program/Program'
+import ProgramManagement from './features/program/ProgramManagement'
+import Login from './pages/Login'
+import { ProgramApply } from './features/program/ProgramApply'
+import ProgramsList from './features/program/ProgramsList'
+import ProgramView from './features/program/ProgramView'
+import SubmissionsList from './features/submission/SubmissionsList'
+import Register from './pages/Register'
+import SubmissionDetails from './features/submission/SubmissionDetails'
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
     errorElement: <NotFound />,
+    loader: authLoader,
     children: [
       {
         index: true,
@@ -39,52 +47,69 @@ const router = createBrowserRouter([
         element: <Register />
       },
       {
-        element: <RequireAuth />,
+        element: <RequireEnterpriseAuth />,
         children: [
           {
-            path: 'company',
+            path: 'dashboard',
+            element: <Dashboard />
+          },
+          {
+            path: 'programs',
+            element: <ProgramManagement />,
             children: [
+              { index: true, element: <>Click on a program</> },
               {
-                path: 'dashboard',
-                element: <Dashboard />
+                path: ':id',
+                element: <Program />
               },
               {
-                path: 'programs',
-                element: <ProgramManagement />,
-                children: [
-                  {
-                    index: true,
-                    element: <div>Click on a program</div>
-                  },
-                  {
-                    path: ':id',
-                    element: <Program />
-                  },
-                  {
-                    path: 'new',
-                    element: <AddProgram />
-                  }
-                ]
+                path: ':id/submissions/:submissionId',
+                element: <SubmissionDetails />
               },
               {
-                path: 'users',
-                element: <CompanyUsers />
+                path: 'new',
+                element: <AddProgram />
               }
             ]
+          },
+          {
+            path: 'users',
+            element: <CompanyUsers />
+          }
+        ]
+      },
+      {
+        element: <RequirePentesterAuth />,
+        children: [
+          {
+            path: 'bounty-programs',
+            element: <ProgramsList />
+          },
+          {
+            path: 'bounty-programs/:id',
+            element: <ProgramView />
+          },
+          {
+            path: 'bounty-programs/:id/submit/new',
+            element: <ProgramApply />
+          },
+          {
+            path: 'submissions',
+            element: <SubmissionsList />
           }
         ]
       }
     ]
   }
-]);
+])
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
-      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
         <Toaster />
         <RouterProvider router={router} />
       </ThemeProvider>
     </Provider>
   </React.StrictMode>
-);
+)

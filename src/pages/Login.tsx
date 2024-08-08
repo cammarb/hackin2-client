@@ -1,17 +1,12 @@
-import { useNavigate } from 'react-router-dom';
-import { z, ZodType } from 'zod';
-import { useForm } from 'react-hook-form';
-import { useLoginMutation } from '@/features/auth/authApiSlice';
-import { useDispatch } from 'react-redux';
-import { setCredentials } from '@/features/auth/authSlice';
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+  CardTitle
+} from '@/components/ui/card'
 import {
   Form,
   FormControl,
@@ -19,10 +14,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage
-} from '@/components/ui/form';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { zodResolver } from '@hookform/resolvers/zod';
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { toast } from '@/components/ui/use-toast'
+import { useLoginMutation } from '@/features/auth/authApiSlice'
+import { setCredentials } from '@/features/auth/authSlice'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { z, type ZodType } from 'zod'
 
 interface LoginData {
   username: string
@@ -30,37 +31,42 @@ interface LoginData {
 }
 
 export default function Login() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const [login, { isLoading }] = useLoginMutation();
-  const dispatch = useDispatch();
+  const [login, { isLoading }] = useLoginMutation()
+  const dispatch = useDispatch()
 
   const schema: ZodType<LoginData> = z.object({
     username: z.string().min(6),
-    password: z.string().min(8).max(100),
-  });
+    password: z.string().min(8).max(100)
+  })
 
   const form = useForm<LoginData>({
     resolver: zodResolver(schema),
     defaultValues: {
       username: '',
-      password: '',
+      password: ''
     }
-  });
+  })
 
   const submitData = async (data: LoginData) => {
     try {
       const userData = await login({
         username: data.username,
         password: data.password
-      }).unwrap();
+      }).unwrap()
       dispatch(setCredentials({ ...userData }))
       form.reset({})
-      navigate('/company/programs')
+      navigate('/')
     } catch (error) {
-      console.error('Error Loging In:', error);
+      if (error?.status === 401) {
+        toast({
+          title: 'Login failed',
+          description: 'Username or password is incorrect'
+        })
+      }
     }
-  };
+  }
 
   const content = isLoading ? (
     <>
@@ -69,38 +75,43 @@ export default function Login() {
   ) : (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(submitData)}>
-        <Card className="max-w-xl mx-auto">
-          <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl">Log In</CardTitle>
+        <Card className='max-w-xl mx-auto'>
+          <CardHeader className='space-y-1'>
+            <CardTitle className='text-2xl'>Log In</CardTitle>
             <CardDescription>
               Enter your username below to login to your account
             </CardDescription>
           </CardHeader>
-          <CardContent className="grid gap-4">
-            <div className="grid gap-2">
+          <CardContent className='grid gap-4'>
+            <div className='grid gap-2'>
               <FormField
                 control={form.control}
-                name="username"
+                name='username'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Username</FormLabel>
                     <FormControl>
-                      <Input id="username" placeholder="SuperUser" {...field} />
+                      <Input id='username' placeholder='SuperUser' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
-            <div className="grid gap-2">
+            <div className='grid gap-2'>
               <FormField
                 control={form.control}
-                name="password"
+                name='password'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input type="password" id="password" placeholder="" {...field} />
+                      <Input
+                        type='password'
+                        id='password'
+                        placeholder=''
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -108,13 +119,15 @@ export default function Login() {
               />
             </div>
           </CardContent>
-          <CardFooter className="flex flex-col">
-            <Button className="w-full" type="submit">Log In</Button>
+          <CardFooter className='flex flex-col'>
+            <Button className='w-full' type='submit'>
+              Log In
+            </Button>
           </CardFooter>
         </Card>
       </form>
-    </Form >
+    </Form>
   )
 
-  return content;
+  return content
 }

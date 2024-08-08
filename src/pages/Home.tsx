@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
 
 export default function Home() {
@@ -26,7 +27,7 @@ export default function Home() {
               placeholder="Search for the service you need..."
               className="input input-bordered input-primary w-full max-w-xs"
             />
-            <button className="btn btn-primary">Search</button>
+            <Button>Search</Button>
           </div>
         </div>
       </div>
