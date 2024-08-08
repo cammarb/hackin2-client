@@ -16,15 +16,13 @@ import {
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import {
-  useGetProgramSeverityRewardsQuery,
-  useSubmitProgramReportMutation
-} from '@/features/pentester/pentesterSlice'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { ZodType, z } from 'zod'
 import MarkdownEditor from '@uiw/react-markdown-editor'
+import { useGetSeverityRewardsQuery } from '@/features/severityReward/severityRewardSlice'
+import { useAddSubmissionMutation } from '@/features/submission/submissionSlice'
 
 type Application = {
   asset: string
@@ -41,8 +39,9 @@ export const ProgramApply = () => {
     isLoading,
     isError,
     isSuccess
-  } = useGetProgramSeverityRewardsQuery(id)
-  const [submit] = useSubmitProgramReportMutation()
+  } = useGetSeverityRewardsQuery({key: 'program', value: id})
+  const [submit] = useAddSubmissionMutation()
+  const navigate = useNavigate()
 
   const evidenceMd = `## Summary
 
@@ -86,18 +85,17 @@ export const ProgramApply = () => {
         formData.append(`findings[${index}]`, finding)
       })
 
-      // Append other fields to formData
       formData.append('asset', data.asset)
       formData.append('severity', data.severity)
       formData.append('evidence', data.evidence)
       formData.append('impact', data.impact)
+      formData.append('programId', `${id}`)
 
-      const addedSubmission = await submit({
-        id,
-        submission: formData
+      await submit({
+        body: formData
       }).unwrap()
-      console.log('Report submitted:', addedSubmission)
       form.reset({})
+      navigate('/submissions')
     } catch (error) {
       console.error('Error submitting report:', error)
     }

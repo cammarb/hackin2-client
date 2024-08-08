@@ -21,15 +21,15 @@ const RequireEnterpriseAuth = () => {
       })
       navigate('/login', { state: { from: location }, replace: true })
     }
-  }, [])
+  }, [user, role, toast, navigate, location])
 
   if (user && role === 'ENTERPRISE') {
     return <Outlet />
-  } else if ((user && role != 'ENTERPRISE') || !user || !role) {
-    return <Forbidden />
-  } else {
-    return <></>
   }
+  if ((user && role !== 'ENTERPRISE') || !user || !role) {
+    return <Forbidden />
+  }
+  return <></>
 }
 
 export default RequireEnterpriseAuth

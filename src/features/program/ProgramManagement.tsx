@@ -11,6 +11,7 @@ import type { Program } from '@/utils/types'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Outlet } from 'react-router-dom'
+import Breadcrumbs from '@/components/Breadcrumb'
 
 export default function ProgramManagement() {
   const company = useSelector(selectCurrentCompany)
@@ -70,11 +71,12 @@ export default function ProgramManagement() {
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel>
-        {currentProgram ? (
-          <Outlet context={currentProgram} key={currentProgram.id} />
-        ) : (
-          <Outlet />
-        )}
+        <div className='mx-10 my-3'>
+          <Breadcrumbs />
+          <div className='pt-10'>
+            <Outlet />
+          </div>
+        </div>
       </ResizablePanel>
     </ResizablePanelGroup>
   )

@@ -4,9 +4,12 @@ import {
   removeCredentials,
   setCredentials
 } from '@/features/auth/authSlice'
+import type { QueryReturnValue } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
 import {
   type BaseQueryApi,
   type FetchArgs,
+  type FetchBaseQueryError,
+  type FetchBaseQueryMeta,
   createApi,
   fetchBaseQuery
 } from '@reduxjs/toolkit/query/react'
@@ -23,17 +26,20 @@ const baseQuery = fetchBaseQuery({
 })
 
 const baseQueryRefresh = async (
-  args: string | FetchArgs = '',
+  args: string | FetchArgs,
   api: BaseQueryApi,
   extraOptions: object
 ) => {
   let result = await baseQuery(args, api, extraOptions)
+  const errorResult = result.error as {
+    status: number
+    data: { message: string }
+  }
   if (
-    result?.meta?.response?.status === 403 &&
-    result?.error?.data?.message == 'Token expired'
+    errorResult?.status === 403 &&
+    errorResult?.data.message === 'jwt expired'
   ) {
     const refreshResult = await baseQuery('auth/refresh', api, extraOptions)
-    console.log('Refresh result', refreshResult)
     if (!refreshResult.data) api.dispatch(removeCredentials())
     try {
       const { user, token, role } = refreshResult.data as AuthState
@@ -55,7 +61,8 @@ export const apiConnection = createApi({
     'Members',
     'Bounty',
     'Scope',
-    'Rewards'
+    'Rewards',
+    'Submissions'
   ],
   endpoints: () => ({})
 })

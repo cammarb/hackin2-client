@@ -27,19 +27,19 @@ type Links = {
 const enterpriseLinks: Links[] = [
   {
     title: 'Dashboard',
-    url: 'company/dashboard'
+    url: 'dashboard'
   },
   {
     title: 'User and Access Management',
-    url: 'company/users'
+    url: 'users'
   },
   {
     title: 'Program Management',
-    url: 'company/programs'
+    url: 'programs'
   },
   {
     title: 'Settings',
-    url: 'company/settings'
+    url: 'settings'
   }
 ]
 

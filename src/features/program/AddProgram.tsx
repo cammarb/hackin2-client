@@ -52,7 +52,6 @@ export default function AddProgram() {
         }
       }).unwrap()
       form.reset({})
-      console.log('Program added:', addedProgram)
     } catch (error) {
       console.error('Error adding program:', error)
     }
@@ -60,7 +59,7 @@ export default function AddProgram() {
 
   return (
     <>
-      <div className='m-10'>
+      <div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(submitData)} className='space-y-8'>
             <FormField

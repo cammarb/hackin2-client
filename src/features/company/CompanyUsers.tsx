@@ -1,5 +1,3 @@
-import { useSelector } from 'react-redux'
-import { selectCurrentUser } from '@/features/auth/authSlice'
 import {
   useAddCompanyMembersMutation,
   useGetCompanyMembersQuery
@@ -58,16 +56,25 @@ type MemberData = {
   email: string
 }
 
+type Member = {
+  userId: string
+  User: {
+    firstName: string
+    lastName: string
+    email: string
+  }
+  companyRole: string
+}
+
 export default function CompanyUsers() {
-  const user = useSelector(selectCurrentUser)
   const {
     data: response,
     isLoading,
     isSuccess,
     isError,
     error
-  } = useGetCompanyMembersQuery(user)
-  let content
+  } = useGetCompanyMembersQuery({})
+  let content = <></>
 
   const [addCompanyMember] = useAddCompanyMembersMutation()
 
@@ -100,7 +107,7 @@ export default function CompanyUsers() {
   if (isLoading) {
     content = <p>Loading...</p>
   } else if (isSuccess) {
-    const members = response.members
+    const members = response.companyMembers
     content = (
       <>
         <main className='grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8'>
@@ -188,7 +195,7 @@ export default function CompanyUsers() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {members.map((member, index) => (
+                  {members.map((member: Member) => (
                     <TableRow key={member.userId}>
                       <TableCell>
                         {member.User.firstName} {member.User.lastName}{' '}

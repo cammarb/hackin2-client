@@ -16,7 +16,9 @@
 	"formatter": {
 		"enabled": true,
 		"formatWithErrors": false,
-		"ignore": [],
+		"ignore": [
+			"node_modules"
+		],
 		"attributePosition": "auto",
 		"indentStyle": "space",
 		"indentWidth": 2,

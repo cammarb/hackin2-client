@@ -1,5 +1,4 @@
 import { selectCurrentUser } from '@/features/auth/authSlice'
-import { useGetAllUserSubmissionsQuery } from '@/features/pentester/pentesterSlice'
 import { useSelector } from 'react-redux'
 import {
   Table,
@@ -20,6 +19,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { MoreHorizontal } from 'lucide-react'
+import { useGetSubmissionsByUserQuery } from '@/features/submission/submissionSlice'
 
 const SubmissionsList = () => {
   const user = useSelector(selectCurrentUser)
@@ -29,9 +29,9 @@ const SubmissionsList = () => {
     isSuccess,
     isError,
     error
-  } = useGetAllUserSubmissionsQuery(user)
+  } = useGetSubmissionsByUserQuery(user)
 
-  let content
+  let content = <></>
 
   if (isSuccess) {
     const submissions = response.submissions
@@ -49,7 +49,7 @@ const SubmissionsList = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {submissions.map((submission: any) => (
+            {submissions.map((submission) => (
               <TableRow key={submission.programId}>
                 <TableCell className='font-medium'>
                   {submission.Program.name}
@@ -83,7 +83,7 @@ const SubmissionsList = () => {
       </div>
     )
   } else {
-    content = <>no submissions or error</>
+    content = <p>no submissions or error</p>
   }
 
   return (

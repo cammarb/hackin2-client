@@ -5,30 +5,29 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
-import { useGetProgramQuery } from '@/features/pentester/pentesterSlice'
+import { useGetProgramByIdQuery } from '@/features/program/programSlice'
 import type { Program } from '@/utils/types'
 import { Separator } from '@/components/ui/separator'
 import { Link, useParams } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Globe, MapPin } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
-import type { Key } from 'react'
 import { formatDate } from '@/utils/dateFormatter'
 
 export default function ProgramView() {
-  const programId = useParams()
+  const { id } = useParams()
   const {
     data: response,
     isLoading,
     isSuccess,
     isError,
     error
-  } = useGetProgramQuery(programId.id)
+  } = useGetProgramByIdQuery(id)
 
   let program: Program
 
   if (isLoading) return <>Loading...</>
-  else if (isSuccess) {
+  if (isSuccess) {
     program = response.program
     return (
       <main className='m-10 flex flex-col gap-10'>
@@ -83,15 +82,12 @@ export default function ProgramView() {
             <Separator className='my-4' />
             <div className='flex h-14 items-center space-x-10 text-sm'>
               {program.SeverityReward.map(
-                (
-                  severity: {
-                    severity: string
-                    min: string
-                    max: string
-                  },
-                  index: Key | null | undefined
-                ) => (
-                  <div key={index}>
+                (severity: {
+                  severity: string
+                  min: string
+                  max: string
+                }) => (
+                  <div key={severity.severity}>
                     <div className='flex flex-col gap-2 justify-center align-middle items-center'>
                       <Badge variant={'secondary'}>{severity.severity}</Badge>
                       <div>
@@ -113,5 +109,6 @@ export default function ProgramView() {
         </Card>
       </main>
     )
-  } else if (isError) return <>{error}</>
+  }
+  if (isError) return <>{error}</>
 }

@@ -1,4 +1,4 @@
-import { apiConnection } from '@/app/api/apiConnection'
+import { apiConnection } from '@/app/api/apiConnection';
 
 export const companyApiSlice = apiConnection.injectEndpoints({
   endpoints: (builder) => ({
@@ -11,7 +11,7 @@ export const companyApiSlice = apiConnection.injectEndpoints({
     }),
     getCompanyMembers: builder.query({
       query: () => ({
-        url: '/company/members',
+        url: '/members',
         method: 'GET',
         refetchOnMountOrArgChange: 30
       }),
@@ -19,17 +19,17 @@ export const companyApiSlice = apiConnection.injectEndpoints({
     }),
     addCompanyMembers: builder.mutation({
       query: (member) => ({
-        url: '/company/members/invite',
+        url: '/members/new',
         method: 'POST',
         body: member
       }),
       invalidatesTags: ['Members']
     })
   })
-})
+});
 
 export const {
   useGetCompanyQuery,
   useGetCompanyMembersQuery,
   useAddCompanyMembersMutation
-} = companyApiSlice
+} = companyApiSlice;

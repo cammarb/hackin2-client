@@ -14,17 +14,18 @@ import { ThemeProvider } from '@/components/theme-provider'
 import { authLoader } from './features/auth/authLoader'
 import RequireEnterpriseAuth from './features/auth/requireEnterpriseAuth'
 import RequirePentesterAuth from './features/auth/RequirePentesterAuth'
-import CompanyUsers from './pages/Company/CompanyUsers'
-import Dashboard from './pages/Company/Dashboard'
-import AddProgram from './pages/Company/Program/AddProgram'
-import Program from './pages/Company/Program/Program'
-import ProgramManagement from './pages/Company/Program/ProgramManagement'
+import CompanyUsers from './features/company/CompanyUsers'
+import Dashboard from './features/company/Dashboard'
+import AddProgram from './features/program/AddProgram'
+import Program from './features/program/Program'
+import ProgramManagement from './features/program/ProgramManagement'
 import Login from './pages/Login'
-import { ProgramApply } from './pages/Pentester/ProgramApply'
-import ProgramsList from './pages/Pentester/ProgramsList'
-import ProgramView from './pages/Pentester/ProgramView'
-import SubmissionsList from './pages/Pentester/SubmissionsList'
+import { ProgramApply } from './features/program/ProgramApply'
+import ProgramsList from './features/program/ProgramsList'
+import ProgramView from './features/program/ProgramView'
+import SubmissionsList from './features/submission/SubmissionsList'
 import Register from './pages/Register'
+import SubmissionDetails from './features/submission/SubmissionDetails'
 
 const router = createBrowserRouter([
   {
@@ -49,31 +50,31 @@ const router = createBrowserRouter([
         element: <RequireEnterpriseAuth />,
         children: [
           {
-            path: 'company',
+            path: 'dashboard',
+            element: <Dashboard />
+          },
+          {
+            path: 'programs',
+            element: <ProgramManagement />,
             children: [
+              { index: true, element: <>Click on a program</> },
               {
-                path: 'dashboard',
-                element: <Dashboard />
+                path: ':id',
+                element: <Program />
               },
               {
-                path: 'programs',
-                element: <ProgramManagement />,
-                children: [
-                  {
-                    path: ':id',
-                    element: <Program />
-                  },
-                  {
-                    path: 'new',
-                    element: <AddProgram />
-                  }
-                ]
+                path: ':id/submissions/:submissionId',
+                element: <SubmissionDetails />
               },
               {
-                path: 'users',
-                element: <CompanyUsers />
+                path: 'new',
+                element: <AddProgram />
               }
             ]
+          },
+          {
+            path: 'users',
+            element: <CompanyUsers />
           }
         ]
       },

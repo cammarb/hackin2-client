@@ -16,13 +16,13 @@ export default function Program() {
   } = useGetProgramByIdQuery(id)
 
   if (isLoading) {
-    ;<>Loading...</>
+    return <>Loading...</>
   }
   if (isSuccess) {
     const program = response.program
     return (
-      <div className='m-10' key={program.id}>
-        <header className='py-10 flex flex-row items-center justify-between'>
+      <div key={program.id}>
+        <header className='pb-10 flex flex-row items-center justify-between'>
           <h1 className='text-4xl font-medium'>{program.name}</h1>
         </header>
         <Tabs defaultValue='details'>
@@ -39,8 +39,8 @@ export default function Program() {
               <BountiesTable programId={program.id} />
             </div>
           </TabsContent>
-          <TabsContent value='submissions' className='my-10'>
-            <Submissions program={program.id} />
+          <TabsContent id='submissions' value='submissions' className='my-10'>
+            {program.id && <Submissions programId={program.id} />}
           </TabsContent>
           <TabsContent value='user-management' className='my-10'>
             User Management

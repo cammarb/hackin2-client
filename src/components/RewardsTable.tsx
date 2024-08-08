@@ -58,7 +58,8 @@ const rewardSchema = z.object({
   programId: z.string()
 })
 
-const getBadgeVariant = (severity: string): string | any => {
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export const getBadgeVariant = (severity: string): string | any => {
   switch (severity) {
     case 'LOW':
       return 'low'
@@ -199,10 +200,10 @@ export const RewardsTable = ({ programId }: { programId: string }) => {
     isError
   } = useGetSeverityRewardsQuery({ key: 'program', value: programId })
 
-  let content
+  let content = <></>
 
   if (isLoading) {
-    content = <>Loading...</>
+    content = <p>Loading...</p>
   } else if (isSuccess) {
     const rewards = response.severityRewards
 
