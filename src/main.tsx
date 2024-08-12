@@ -1,4 +1,4 @@
-import App from '@/App'
+import { App } from './App'
 import { store } from '@/app/store'
 import { Toaster } from '@/components/ui/toaster'
 import '@/index.css'
@@ -11,14 +11,10 @@ import NotFound from '@/pages/Error/404'
 import Home from '@/pages/Home'
 
 import { ThemeProvider } from '@/components/theme-provider'
-import { authLoader } from './features/auth/authLoader'
-import RequireEnterpriseAuth from './features/auth/requireEnterpriseAuth'
-import RequirePentesterAuth from './features/auth/RequirePentesterAuth'
 import CompanyUsers from './features/company/CompanyUsers'
 import Dashboard from './features/company/Dashboard'
 import AddProgram from './features/program/AddProgram'
 import Program from './features/program/Program'
-import ProgramManagement from './features/program/ProgramManagement'
 import Login from './pages/Login'
 import { ProgramApply } from './features/program/ProgramApply'
 import ProgramsList from './features/program/ProgramsList'
@@ -26,6 +22,14 @@ import ProgramView from './features/program/ProgramView'
 import SubmissionsList from './features/submission/SubmissionsList'
 import Register from './pages/Register'
 import SubmissionDetails from './features/submission/SubmissionDetails'
+import { UserSettings } from './features/user/UserSettings'
+import { GeneralSettings } from './features/user/GeneralSettings'
+import { ChangePassword } from './features/user/ChangePassword'
+import { RequireRole } from './features/auth/RequireRole'
+import { authLoader } from './features/auth/authLoader'
+import { RequireAuthentication } from './features/auth/RequireAuthentication'
+import { Unauthenticated } from './features/auth/Unauthenticated'
+import ProgramManagementPage from './features/program/ProgramManagementPage'
 
 const router = createBrowserRouter([
   {
@@ -39,15 +43,39 @@ const router = createBrowserRouter([
         element: <Home />
       },
       {
-        path: 'login',
-        element: <Login />
+        element: <Unauthenticated />,
+        children: [
+          {
+            path: 'login',
+            element: <Login />
+          },
+          {
+            path: 'register',
+            element: <Register />
+          }
+        ]
       },
       {
-        path: 'register',
-        element: <Register />
+        element: <RequireAuthentication />,
+        children: [
+          {
+            path: 'settings',
+            element: <UserSettings />,
+            children: [
+              {
+                element: <GeneralSettings />,
+                index: true
+              },
+              {
+                path: 'change-password',
+                element: <ChangePassword />
+              }
+            ]
+          }
+        ]
       },
       {
-        element: <RequireEnterpriseAuth />,
+        element: <RequireRole allowedRole='ENTERPRISE' />,
         children: [
           {
             path: 'dashboard',
@@ -55,7 +83,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'programs',
-            element: <ProgramManagement />,
+            element: <ProgramManagementPage />,
             children: [
               { index: true, element: <>Click on a program</> },
               {
@@ -79,7 +107,7 @@ const router = createBrowserRouter([
         ]
       },
       {
-        element: <RequirePentesterAuth />,
+        element: <RequireRole allowedRole='PENTESTER' />,
         children: [
           {
             path: 'bounty-programs',

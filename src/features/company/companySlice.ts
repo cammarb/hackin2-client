@@ -1,19 +1,17 @@
-import { apiConnection } from '@/app/api/apiConnection';
+import { apiConnection } from '@/app/api/apiConnection'
 
 export const companyApiSlice = apiConnection.injectEndpoints({
   endpoints: (builder) => ({
     getCompany: builder.query({
       query: () => ({
         url: '/company',
-        method: 'GET',
-        refetchOnMountOrArgChange: 30
+        method: 'GET'
       })
     }),
     getCompanyMembers: builder.query({
       query: () => ({
         url: '/members',
-        method: 'GET',
-        refetchOnMountOrArgChange: 30
+        method: 'GET'
       }),
       providesTags: ['Members']
     }),
@@ -26,10 +24,10 @@ export const companyApiSlice = apiConnection.injectEndpoints({
       invalidatesTags: ['Members']
     })
   })
-});
+})
 
 export const {
   useGetCompanyQuery,
   useGetCompanyMembersQuery,
   useAddCompanyMembersMutation
-} = companyApiSlice;
+} = companyApiSlice

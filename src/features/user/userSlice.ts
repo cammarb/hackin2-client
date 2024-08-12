@@ -3,18 +3,19 @@ import { apiConnection } from '@/app/api/apiConnection'
 export const userApiSlice = apiConnection.injectEndpoints({
   endpoints: (builder) => ({
     getUser: builder.query({
-      query: () => ({
-        url: '/user/account',
-        method: 'GET',
-        refetchOnMountOrArgChange: 30
-      })
+      query: (id) => ({
+        url: `/users/${id}`,
+        method: 'GET'
+      }),
+      providesTags: ['User']
     }),
-    putUser: builder.query({
-      query: (userDetails) => ({
-        url: '/user/account/edit',
+    editUser: builder.mutation({
+      query: ({ id, body }) => ({
+        url: `/users/${id}/edit`,
         method: 'PUT',
-        body: { ...userDetails }
-      })
+        body
+      }),
+      invalidatesTags: ['User']
     }),
     newUser: builder.mutation({
       query: (userDetails) => ({
@@ -26,5 +27,5 @@ export const userApiSlice = apiConnection.injectEndpoints({
   })
 })
 
-export const { useGetUserQuery, useNewUserMutation, usePutUserQuery } =
+export const { useGetUserQuery, useNewUserMutation, useEditUserMutation } =
   userApiSlice

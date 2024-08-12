@@ -90,7 +90,7 @@ export const Header = () => {
   }
 
   return (
-    <header className='sticky top-0 flex h-16 mb-10 items-center border-b bg-background px-4 md:px-6'>
+    <header className='fixed top-0 w-dvw flex h-16 items-center border-b bg-background px-4 md:px-6'>
       <img src={logo} alt='Logo' className='h-8 w-auto' />
 
       {user ? (
@@ -113,7 +113,7 @@ export const Header = () => {
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                  <Link to={'account-settings'}>Settings</Link>
+                  <Link to={'settings'}>Settings</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>Support</DropdownMenuItem>
                 <DropdownMenuSeparator />

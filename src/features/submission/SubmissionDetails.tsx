@@ -19,8 +19,8 @@ const SubmissionDetails = () => {
   if (isSuccess) {
     const submission: Submission = response.submission
     return (
-      <div className='grid prose dark:prose-invert'>
-        <div className='grid grid-cols-2 grid-rows-3 gap-4 mb-6'>
+      <div className='max-w-[700px] grid prose dark:prose-invert'>
+        <div className='w-full grid grid-cols-2 grid-rows-3 gap-4 mb-6'>
           <h4 className='my-auto'>Submission by:</h4>
           <p className='my-auto ml-auto'>{submission.User.username}</p>
 
@@ -36,31 +36,31 @@ const SubmissionDetails = () => {
           <Badge className='ml-auto'>{submission.status}</Badge>
         </div>
         <Separator />
-        <div>
+        <div className='w-full'>
           <h4>Asset</h4>
           <p>{submission.asset}</p>
         </div>
         <Separator />
-        <div>
+        <div className='w-full'>
           <h4>Evidence Report</h4>
           <Markdown className='prose dark:prose-invert h-fit min-w-full'>
             {submission.evidence}
           </Markdown>
         </div>
         <Separator />
-        <div>
+        <div className='w-full break-words whitespace-normal'>
           <h4>Impact</h4>
-          <p>{submission.impact}</p>
+          <p className=''>{submission.impact}</p>
         </div>
         <Separator />
-        <div>
+        <div className='w-full'>
           <h4>Findings (Attached Files):</h4>
           {submission.findings.map((finding: string, index: number) => (
             <img src={finding} key={finding} alt={`File number ${index + 1}`} />
           ))}
         </div>
         <Separator />
-        <div>
+        <div className='w-full'>
           <p>Created: {formatDate(submission.createdAt)}</p>
           <p>Last updated: {formatDate(submission.updatedAt)}</p>
         </div>

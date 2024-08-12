@@ -4,12 +4,9 @@ import {
   removeCredentials,
   setCredentials
 } from '@/features/auth/authSlice'
-import type { QueryReturnValue } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
 import {
   type BaseQueryApi,
   type FetchArgs,
-  type FetchBaseQueryError,
-  type FetchBaseQueryMeta,
   createApi,
   fetchBaseQuery
 } from '@reduxjs/toolkit/query/react'
@@ -42,8 +39,15 @@ const baseQueryRefresh = async (
     const refreshResult = await baseQuery('auth/refresh', api, extraOptions)
     if (!refreshResult.data) api.dispatch(removeCredentials())
     try {
-      const { user, token, role } = refreshResult.data as AuthState
-      api.dispatch(setCredentials({ user: user, token: token, role: role }))
+      const { user, token, role, company } = refreshResult.data as AuthState
+      api.dispatch(
+        setCredentials({
+          user: user,
+          token: token,
+          role: role,
+          company: company
+        })
+      )
       result = await baseQuery(args, api, extraOptions)
     } catch (error) {
       console.error('Error refreshing token', error)
@@ -62,7 +66,8 @@ export const apiConnection = createApi({
     'Bounty',
     'Scope',
     'Rewards',
-    'Submissions'
+    'Submissions',
+    'User'
   ],
   endpoints: () => ({})
 })

@@ -5,16 +5,14 @@ export const severityRewardSlice = apiConnection.injectEndpoints({
     getSeverityRewards: builder.query({
       query: ({ key, value }) => ({
         url: `/severity-rewards?${key}=${value}`,
-        method: 'GET',
-        refetchOnMountOrArgChange: 30
+        method: 'GET'
       }),
       providesTags: ['Rewards']
     }),
     getSeverityRewardById: builder.query({
       query: (id) => ({
         url: `/severity-rewards/${id}`,
-        method: 'GET',
-        refetchOnMountOrArgChange: 30
+        method: 'GET'
       }),
       providesTags: ['Rewards']
     }),

@@ -1,13 +1,13 @@
 import { Outlet } from 'react-router-dom'
-import { Header } from '@/components/Header'
+import { Header } from './components/Header'
 
-function App() {
+export const App = () => {
   return (
     <>
       <Header />
-      <Outlet />
+      <main className='min-h-dvh w-dvw pt-[7rem]'>
+        <Outlet />
+      </main>
     </>
   )
 }
-
-export default App
