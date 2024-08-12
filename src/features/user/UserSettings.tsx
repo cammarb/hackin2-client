@@ -4,6 +4,15 @@ import { selectCurrentUser } from '../auth/authSlice'
 import { useGetUserQuery } from './userSlice'
 import { NavLink } from 'react-router-dom'
 
+export type UserData = {
+  id: string
+  firstName: string
+  lastName: string
+  username: string
+  email: string
+  role: string
+}
+
 export const UserSettings = () => {
   const user = useSelector(selectCurrentUser)
 
@@ -38,6 +47,7 @@ export const UserSettings = () => {
                       ? 'font-semibold text-primary'
                       : ''
                 }
+                end
               >
                 {link.title}
               </NavLink>

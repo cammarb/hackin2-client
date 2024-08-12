@@ -20,15 +20,7 @@ import {
 import { z, type ZodSchema } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-
-type UserData = {
-  id: string
-  firstName: string
-  lastName: string
-  username: string
-  email: string
-  role: string
-}
+import type { UserData } from './UserSettings'
 
 const schema = z.object({
   firstName: z.string().optional(),
