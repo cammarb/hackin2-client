@@ -30,6 +30,9 @@ const schema = z.object({
   role: z.string().optional()
 })
 
+type EditUserMutation = ReturnType<typeof useEditUserMutation>[0]
+type UserFormData = Omit<UserData, 'id'>
+
 export const GeneralSettings = () => {
   const [editUser] = useEditUserMutation()
   const userContext = useOutletContext() as UserData
@@ -53,7 +56,7 @@ const UserForm = ({
   user,
   editUser,
   schema
-}: { user: UserData; editUser: any; schema: ZodSchema }) => {
+}: { user: UserData; editUser: EditUserMutation; schema: ZodSchema }) => {
   const form = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -65,7 +68,7 @@ const UserForm = ({
     }
   })
 
-  const onSubmit = async (data: UserData) => {
+  const onSubmit = async (data: UserFormData) => {
     try {
       await editUser({
         id: user.id,

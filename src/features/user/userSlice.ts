@@ -23,9 +23,20 @@ export const userApiSlice = apiConnection.injectEndpoints({
         method: 'POST',
         body: { ...userDetails }
       })
+    }),
+    changeUserPassword: builder.mutation({
+      query: ({ id, body }) => ({
+        url: `/users/${id}/change-password`,
+        method: 'PATCH',
+        body
+      })
     })
   })
 })
 
-export const { useGetUserQuery, useNewUserMutation, useEditUserMutation } =
-  userApiSlice
+export const {
+  useGetUserQuery,
+  useNewUserMutation,
+  useEditUserMutation,
+  useChangeUserPasswordMutation
+} = userApiSlice

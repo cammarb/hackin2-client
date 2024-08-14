@@ -8,7 +8,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useOutletContext } from 'react-router-dom'
-import { useEditUserMutation } from './userSlice'
+import { useChangeUserPasswordMutation } from './userSlice'
 import {
   Form,
   FormControl,
@@ -22,13 +22,17 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { UserData } from './UserSettings'
 
+type ChangeUserPasswordMutation = ReturnType<
+  typeof useChangeUserPasswordMutation
+>[0]
+
 const schema = z.object({
   currentPassword: z.string().min(8),
   newPassword: z.string().min(8)
 })
 
 export const ChangePassword = () => {
-  const [editUser] = useEditUserMutation()
+  const [changePassword] = useChangeUserPasswordMutation()
   const userContext = useOutletContext() as UserData
 
   return (
@@ -42,7 +46,7 @@ export const ChangePassword = () => {
       <CardContent>
         <PasswordChangeForm
           user={userContext}
-          editUser={editUser}
+          changePassword={changePassword}
           schema={schema}
         />
       </CardContent>
@@ -52,9 +56,13 @@ export const ChangePassword = () => {
 
 const PasswordChangeForm = ({
   user,
-  editUser,
+  changePassword,
   schema
-}: { user: UserData; editUser: any; schema: ZodSchema }) => {
+}: {
+  user: UserData
+  changePassword: ChangeUserPasswordMutation
+  schema: ZodSchema
+}) => {
   const form = useForm<{ currentPassword: string; newPassword: string }>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -68,7 +76,7 @@ const PasswordChangeForm = ({
     newPassword: string
   }) => {
     try {
-      await editUser({
+      await changePassword({
         id: user.id,
         body: {
           currentPassword: data.currentPassword,
@@ -90,7 +98,7 @@ const PasswordChangeForm = ({
             <FormItem>
               <FormLabel>Current Password</FormLabel>
               <FormControl>
-                <Input type='text' {...field} />
+                <Input type='password' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -103,7 +111,7 @@ const PasswordChangeForm = ({
             <FormItem>
               <FormLabel>New Password</FormLabel>
               <FormControl>
-                <Input type='text' {...field} />
+                <Input type='password' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

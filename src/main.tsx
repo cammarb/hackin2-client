@@ -71,59 +71,59 @@ const router = createBrowserRouter([
                 element: <ChangePassword />
               }
             ]
-          }
-        ]
-      },
-      {
-        element: <RequireRole allowedRole='ENTERPRISE' />,
-        children: [
-          {
-            path: 'dashboard',
-            element: <Dashboard />
           },
           {
-            path: 'programs',
-            element: <ProgramManagementPage />,
+            element: <RequireRole allowedRole='ENTERPRISE' />,
             children: [
-              { index: true, element: <>Click on a program</> },
               {
-                path: ':id',
-                element: <Program />
+                path: 'dashboard',
+                element: <Dashboard />
               },
               {
-                path: ':id/submissions/:submissionId',
-                element: <SubmissionDetails />
+                path: 'programs',
+                element: <ProgramManagementPage />,
+                children: [
+                  { index: true, element: <>Click on a program</> },
+                  {
+                    path: ':id',
+                    element: <Program />
+                  },
+                  {
+                    path: ':id/submissions/:submissionId',
+                    element: <SubmissionDetails />
+                  },
+                  {
+                    path: 'new',
+                    element: <AddProgram />
+                  }
+                ]
               },
               {
-                path: 'new',
-                element: <AddProgram />
+                path: 'users',
+                element: <CompanyUsers />
               }
             ]
           },
           {
-            path: 'users',
-            element: <CompanyUsers />
-          }
-        ]
-      },
-      {
-        element: <RequireRole allowedRole='PENTESTER' />,
-        children: [
-          {
-            path: 'bounty-programs',
-            element: <ProgramsList />
-          },
-          {
-            path: 'bounty-programs/:id',
-            element: <ProgramView />
-          },
-          {
-            path: 'bounty-programs/:id/submit/new',
-            element: <ProgramApply />
-          },
-          {
-            path: 'submissions',
-            element: <SubmissionsList />
+            element: <RequireRole allowedRole='PENTESTER' />,
+            children: [
+              {
+                path: 'bounty-programs',
+                element: <ProgramsList />
+              },
+              {
+                path: 'bounty-programs/:id',
+                element: <ProgramView />
+              },
+              {
+                path: 'bounty-programs/:id/submit/new',
+                element: <ProgramApply />
+              },
+              {
+                path: 'submissions',
+                element: <SubmissionsList />
+              }
+            ]
           }
         ]
       }
