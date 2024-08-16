@@ -30,6 +30,7 @@ import { authLoader } from './features/auth/authLoader'
 import { RequireAuthentication } from './features/auth/RequireAuthentication'
 import { Unauthenticated } from './features/auth/Unauthenticated'
 import ProgramManagementPage from './features/program/ProgramManagementPage'
+import { ApplicationsPage } from './features/application/ApplicationsPage'
 
 const router = createBrowserRouter([
   {
@@ -122,6 +123,10 @@ const router = createBrowserRouter([
               {
                 path: 'submissions',
                 element: <SubmissionsList />
+              },
+              {
+                path: 'applications',
+                element: <ApplicationsPage />
               }
             ]
           }

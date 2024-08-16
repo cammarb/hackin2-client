@@ -13,6 +13,9 @@ import { Button } from '@/components/ui/button'
 import { Globe, MapPin } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { formatDate } from '@/utils/dateFormatter'
+import { useNewApplicationMutation } from '../application/applicationApiSlice'
+import { toast, useToast } from '@/components/ui/use-toast'
+import { ToastAction } from '@/components/ui/toast'
 
 export default function ProgramView() {
   const { id } = useParams()
@@ -23,12 +26,26 @@ export default function ProgramView() {
     isError,
     error
   } = useGetProgramByIdQuery(id)
+  const [apply] = useNewApplicationMutation()
+  const { toast } = useToast()
 
   let program: Program
 
   if (isLoading) return <>Loading...</>
   if (isSuccess) {
     program = response.program
+    const applyToProgram = async () => {
+      try {
+        await apply({ programId: id })
+        toast({
+          title: 'Success!',
+          description: `You've applied to ${program.name}`
+        })
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
     return (
       <main className='m-10 flex flex-col gap-10'>
         <Card
@@ -100,11 +117,7 @@ export default function ProgramView() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button asChild>
-              <Link to={`/bounty-programs/${program.id}/submit/new`}>
-                Submit report
-              </Link>
-            </Button>
+            <Button onClick={applyToProgram}>Apply</Button>
           </CardFooter>
         </Card>
       </main>

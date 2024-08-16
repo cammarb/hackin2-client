@@ -51,6 +51,10 @@ const pentesterLinks: Links[] = [
   {
     title: 'Submissions',
     url: 'submissions'
+  },
+  {
+    title: 'Applications',
+    url: 'applications'
   }
 ]
 

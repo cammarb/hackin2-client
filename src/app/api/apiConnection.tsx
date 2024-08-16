@@ -67,7 +67,8 @@ export const apiConnection = createApi({
     'Scope',
     'Rewards',
     'Submissions',
-    'User'
+    'User',
+    'Applications'
   ],
   endpoints: () => ({})
 })
