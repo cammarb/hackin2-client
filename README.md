@@ -1,6 +1,6 @@
 # Hackin2 Client
 
-This repository contains the frontend code built with React Typescript and Vite. It is designed to work in conjunction with the [Hackin2 API](https://github.com/Hackin2-company/hackin2-api) backend to provide a seamless user experience.
+This repository contains the frontend code built with React Typescript and Vite. It is designed to work in conjunction with the [Hackin2 API](https://github.com/cammarb/hackin2-api) backend to provide a seamless user experience.
 
 ### Table of Contents
 - Introduction
