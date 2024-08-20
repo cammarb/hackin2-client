@@ -30,12 +30,12 @@ const enterpriseLinks: Links[] = [
     url: 'dashboard'
   },
   {
-    title: 'User and Access Management',
-    url: 'users'
-  },
-  {
     title: 'Program Management',
     url: 'programs'
+  },
+  {
+    title: 'User and Access Management',
+    url: 'users'
   },
   {
     title: 'Settings',
@@ -49,12 +49,16 @@ const pentesterLinks: Links[] = [
     url: 'bounty-programs'
   },
   {
-    title: 'Submissions',
-    url: 'submissions'
-  },
-  {
     title: 'Applications',
     url: 'applications'
+  },
+  {
+    title: 'Bounties',
+    url: 'bounties'
+  },
+  {
+    title: 'Submissions',
+    url: 'submissions'
   }
 ]
 
@@ -76,7 +80,7 @@ export const Header = () => {
   const navigate = useNavigate()
   const { theme } = useTheme()
 
-  const logo = theme === 'light' ? blackLogo : whiteLogo
+  const logo = theme === 'light' || theme === 'system' ? blackLogo : whiteLogo
 
   useEffect(() => {
     if (isSuccess) {

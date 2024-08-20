@@ -3,8 +3,8 @@ import { apiConnection } from '@/app/api/apiConnection'
 export const companyApiSlice = apiConnection.injectEndpoints({
   endpoints: (builder) => ({
     getCompany: builder.query({
-      query: () => ({
-        url: '/company',
+      query: (id) => ({
+        url: `/companies/${id}`,
         method: 'GET'
       })
     }),

@@ -26,8 +26,8 @@ export const applicationApiSlice = apiConnection.injectEndpoints({
       providesTags: ['Applications']
     }),
     getApplications: builder.query({
-      query: () => ({
-        url: '/applications',
+      query: ({ key, value }) => ({
+        url: `/applications?${key}=${value}`,
         method: 'GET'
       }),
       providesTags: ['Applications']

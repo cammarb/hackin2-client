@@ -1,14 +1,20 @@
-import { formatDate } from '@/utils/dateFormatter'
+import { Skeleton } from '@/components/ui/skeleton'
 import { useGetApplicationsQuery } from './applicationApiSlice'
+import { ApplicationsTable } from './pentester/ApplicationsTable'
 
 export type Application = {
   id: string
   userId: string
   status: string
+  programId: string
   createdAt: string
   updatedAt: string
   Program: {
     name: string
+  }
+  User: {
+    id: string
+    username: string
   }
 }
 
@@ -20,21 +26,15 @@ export const ApplicationsPage = () => {
     isSuccess
   } = useGetApplicationsQuery({})
 
-  if (isLoading) return <p>Loading...</p>
-  if (isError) return <p>Error</p>
+  if (isLoading) return <Skeleton className='h-4 w-[250px]' />
+  if (isError) return <p> Error</p>
   if (isSuccess) {
     const applications: Application[] = response.applications
     return (
-      <div>
-        {applications.map((application: Application) => (
-          <div key={application.id}>
-            <p>{application.Program.name}</p>
-            <p>{application.status}</p>
-            <p>{formatDate(application.createdAt)}</p>
-            <p>{formatDate(application.updatedAt)}</p>
-          </div>
-        ))}
-      </div>
+      <main className='m-10 flex flex-col gap-10 mx-auto sm:w-[100%] md:w-[80%] lg:w-[60%]'>
+        <h1 className='text-2xl font-medium'>Applications</h1>
+        <ApplicationsTable applications={applications} />
+      </main>
     )
   }
 }

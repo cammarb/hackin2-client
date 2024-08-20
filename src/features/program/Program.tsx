@@ -6,6 +6,10 @@ import { useGetProgramByIdQuery } from '@/features/program/programSlice'
 import Submissions from '@/features/submission/ProgramSubmissions'
 import { NavLink } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
+import {
+  ApplicationsTab,
+  ApplicationsTable
+} from '../application/enterprise/ApplicationsTab'
 
 export default function Program() {
   const { id } = useParams()
@@ -31,11 +35,11 @@ export default function Program() {
             <TabsTrigger value='details' asChild>
               <NavLink to={'#details'}>Details</NavLink>
             </TabsTrigger>
+            <TabsTrigger value='applications' asChild>
+              <NavLink to={'#applications'}>Applications</NavLink>
+            </TabsTrigger>
             <TabsTrigger value='submissions' asChild>
               <NavLink to={'#submissions'}>Submissions</NavLink>
-            </TabsTrigger>
-            <TabsTrigger value='user-management' asChild>
-              <NavLink to={'#user-management'}>User Management</NavLink>
             </TabsTrigger>
           </TabsList>
 
@@ -46,15 +50,11 @@ export default function Program() {
               <BountiesTable programId={program.id} />
             </div>
           </TabsContent>
+          <TabsContent id='applications' value='applications' className='my-10'>
+            <ApplicationsTab program={program.id} />
+          </TabsContent>
           <TabsContent id='submissions' value='submissions' className='my-10'>
             {program.id && <Submissions programId={program.id} />}
-          </TabsContent>
-          <TabsContent
-            id='user-management'
-            value='user-management'
-            className='my-10'
-          >
-            User Management
           </TabsContent>
         </Tabs>
       </div>
