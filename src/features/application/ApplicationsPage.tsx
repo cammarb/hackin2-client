@@ -1,6 +1,8 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import { useGetApplicationsQuery } from './applicationApiSlice'
 import { ApplicationsTable } from './pentester/ApplicationsTable'
+import { useSelector } from 'react-redux'
+import { selectCurrentUser } from '../auth/authSlice'
 
 export type Application = {
   id: string
@@ -19,12 +21,13 @@ export type Application = {
 }
 
 export const ApplicationsPage = () => {
+  const user = useSelector(selectCurrentUser)
   const {
     data: response,
     isLoading,
     isError,
     isSuccess
-  } = useGetApplicationsQuery({key: 'user', value: ''})
+  } = useGetApplicationsQuery({ key: 'user', value: user?.id })
 
   if (isLoading) return <Skeleton className='h-4 w-[250px]' />
   if (isError) return <p>Error</p>
