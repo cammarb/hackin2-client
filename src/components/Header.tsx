@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { useLogoutMutation } from '@/features/auth/authApiSlice'
-import { selectCurrentRole, selectCurrentUser } from '@/features/auth/authSlice'
+import { selectCurrentUser } from '@/features/auth/authSlice'
 import { CircleUser } from 'lucide-react'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
@@ -75,7 +75,7 @@ const authLinks: Links[] = [
 
 export const Header = () => {
   const user = useSelector(selectCurrentUser)
-  const role = useSelector(selectCurrentRole)
+  const role = user?.role
   const [logout, { isSuccess }] = useLogoutMutation()
   const navigate = useNavigate()
   const { theme } = useTheme()

@@ -1,5 +1,5 @@
 import { useToast } from '@/components/ui/use-toast'
-import { selectCurrentRole } from '@/features/auth/authSlice'
+import { selectCurrentUser } from '@/features/auth/authSlice'
 import Forbidden from '@/pages/Error/403'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
@@ -8,7 +8,8 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 export type Role = 'ENTERPRISE' | 'PENTESTER'
 
 export const RequireRole = ({ allowedRole }: { allowedRole: Role }) => {
-  const role = useSelector(selectCurrentRole)
+  const user = useSelector(selectCurrentUser)
+  const role = user?.role
   const navigate = useNavigate()
   const location = useLocation()
 

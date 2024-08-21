@@ -1,4 +1,4 @@
-import { selectCurrentCompany } from '@/features/auth/authSlice'
+import { selectCurrentUser } from '@/features/auth/authSlice'
 import { useGetCompanyProgramsQuery } from '@/features/program/programSlice'
 import { useSelector } from 'react-redux'
 import { ProgramManagement } from './ProgramManagement'
@@ -11,7 +11,8 @@ export default function ProgramManagementPage() {
   const defaultLayout = layout ? JSON.parse(layout) : undefined
   const defaultCollapsed = collapsed ? JSON.parse(collapsed) : undefined
 
-  const company = useSelector(selectCurrentCompany)
+  const user = useSelector(selectCurrentUser)
+  const company = user?.company?.id
   const {
     data: response,
     isLoading,

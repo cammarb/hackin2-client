@@ -1,9 +1,10 @@
 import { useSelector } from 'react-redux'
-import { selectCurrentCompany } from '@/features/auth/authSlice'
+import { selectCurrentUser } from '@/features/auth/authSlice'
 import { useGetCompanyQuery } from '@/features/company/companySlice'
 
 export default function Dashboard() {
-  const companyId = useSelector(selectCurrentCompany)
+  const user = useSelector(selectCurrentUser)
+  const companyId = user?.company?.id
   const {
     data: company,
     isLoading,

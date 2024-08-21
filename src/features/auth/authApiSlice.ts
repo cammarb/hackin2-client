@@ -37,13 +37,10 @@ export const authApiSlice = apiConnection.injectEndpoints({
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled
-          const { user, token, role, company } = data
+          const { user } = data
           dispatch(
             setCredentials({
-              user: user,
-              token: token,
-              role: role,
-              company: company
+              user: user
             })
           )
         } catch (err) {

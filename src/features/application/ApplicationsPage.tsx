@@ -24,10 +24,10 @@ export const ApplicationsPage = () => {
     isLoading,
     isError,
     isSuccess
-  } = useGetApplicationsQuery({})
+  } = useGetApplicationsQuery({key: 'user', value: ''})
 
   if (isLoading) return <Skeleton className='h-4 w-[250px]' />
-  if (isError) return <p> Error</p>
+  if (isError) return <p>Error</p>
   if (isSuccess) {
     const applications: Application[] = response.applications
     return (

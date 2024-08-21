@@ -15,7 +15,7 @@ const baseQuery = fetchBaseQuery({
   baseUrl: `${import.meta.env.VITE_API_BASE_URL}`,
   credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
-    const token = (getState() as RootState).auth.token
+    const token = (getState() as RootState).auth.user?.token
     if (token) headers.set('Authorization', `Bearer ${token}`)
 
     return headers
@@ -39,13 +39,10 @@ const baseQueryRefresh = async (
     const refreshResult = await baseQuery('auth/refresh', api, extraOptions)
     if (!refreshResult.data) api.dispatch(removeCredentials())
     try {
-      const { user, token, role, company } = refreshResult.data as AuthState
+      const { user } = refreshResult.data as AuthState
       api.dispatch(
         setCredentials({
-          user: user,
-          token: token,
-          role: role,
-          company: company
+          user: user
         })
       )
       result = await baseQuery(args, api, extraOptions)
