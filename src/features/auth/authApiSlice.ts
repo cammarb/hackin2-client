@@ -1,5 +1,6 @@
 import { apiConnection } from '@/app/api/apiConnection'
 import { removeCredentials, setCredentials } from '@/features/auth/authSlice'
+import { setSession } from './sessionApiSlice'
 
 export const authApiSlice = apiConnection.injectEndpoints({
   endpoints: (builder) => ({
@@ -36,15 +37,27 @@ export const authApiSlice = apiConnection.injectEndpoints({
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled
-          const { user, token, role, company } = data
+          const { user } = data
           dispatch(
             setCredentials({
-              user: user,
-              token: token,
-              role: role,
-              company: company
+              user: user
             })
           )
+        } catch (err) {
+          console.log(err)
+        }
+      }
+    }),
+    session: builder.query({
+      query: () => ({
+        url: '/auth/session',
+        method: 'GET'
+      }),
+      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
+        try {
+          const response = await queryFulfilled
+          if (response.meta?.response?.status === 200)
+            dispatch(setSession({ isLoggedIn: true }))
         } catch (err) {
           console.log(err)
         }
@@ -53,5 +66,9 @@ export const authApiSlice = apiConnection.injectEndpoints({
   })
 })
 
-export const { useLoginMutation, useLogoutMutation, useRefreshQuery } =
-  authApiSlice
+export const {
+  useLoginMutation,
+  useLogoutMutation,
+  useRefreshQuery,
+  useSessionQuery
+} = authApiSlice

@@ -4,12 +4,9 @@ import {
   removeCredentials,
   setCredentials
 } from '@/features/auth/authSlice'
-import type { QueryReturnValue } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
 import {
   type BaseQueryApi,
   type FetchArgs,
-  type FetchBaseQueryError,
-  type FetchBaseQueryMeta,
   createApi,
   fetchBaseQuery
 } from '@reduxjs/toolkit/query/react'
@@ -18,7 +15,7 @@ const baseQuery = fetchBaseQuery({
   baseUrl: `${import.meta.env.VITE_API_BASE_URL}`,
   credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
-    const token = (getState() as RootState).auth.token
+    const token = (getState() as RootState).auth.user?.token
     if (token) headers.set('Authorization', `Bearer ${token}`)
 
     return headers
@@ -42,8 +39,12 @@ const baseQueryRefresh = async (
     const refreshResult = await baseQuery('auth/refresh', api, extraOptions)
     if (!refreshResult.data) api.dispatch(removeCredentials())
     try {
-      const { user, token, role } = refreshResult.data as AuthState
-      api.dispatch(setCredentials({ user: user, token: token, role: role }))
+      const { user } = refreshResult.data as AuthState
+      api.dispatch(
+        setCredentials({
+          user: user
+        })
+      )
       result = await baseQuery(args, api, extraOptions)
     } catch (error) {
       console.error('Error refreshing token', error)
@@ -62,7 +63,9 @@ export const apiConnection = createApi({
     'Bounty',
     'Scope',
     'Rewards',
-    'Submissions'
+    'Submissions',
+    'User',
+    'Applications'
   ],
   endpoints: () => ({})
 })

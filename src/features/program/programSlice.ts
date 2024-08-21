@@ -5,23 +5,20 @@ export const programSlice = apiConnection.injectEndpoints({
     getActivePrograms: builder.query({
       query: () => ({
         url: '/programs?status=active',
-        method: 'GET',
-        refetchOnMountOrArgChange: 30
+        method: 'GET'
       })
     }),
     getCompanyPrograms: builder.query({
       query: (id) => ({
         url: `/programs?company=${id}`,
-        method: 'GET',
-        refetchOnMountOrArgChange: 30
+        method: 'GET'
       }),
       providesTags: ['Programs']
     }),
     getProgramById: builder.query({
       query: (id) => ({
         url: `/programs/${id}`,
-        method: 'GET',
-        refetchOnMountOrArgChange: 30
+        method: 'GET'
       }),
       providesTags: ['Programs']
     }),
@@ -44,8 +41,7 @@ export const programSlice = apiConnection.injectEndpoints({
     getProgramBounties: builder.query({
       query: (id) => ({
         url: `/bounties?program=${id}`,
-        method: 'GET',
-        refetchOnMountOrArgChange: 30
+        method: 'GET'
       })
     })
   })

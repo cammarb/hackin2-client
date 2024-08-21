@@ -1,36 +1,34 @@
-import { Button } from '@/components/ui/button';
-import { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { useEffect, useState } from 'react'
 
 export default function Home() {
-  const [text, setText] = useState('mentor');
+  const [text, setText] = useState('bounty program')
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      // Check the current text and update accordingly
       setText((prevText) =>
-        prevText.includes('mentor') ? 'mentee' : 'mentor'
-      );
-    }, 2500);
-    return () => clearInterval(intervalId);
-  }, []);
+        prevText.includes('bounty program') ? 'pentester' : 'bounty program'
+      )
+    }, 2000)
+    return () => clearInterval(intervalId)
+  }, [])
 
   return (
-    <div>
-      <div className="hero min-h-screen">
-        <div className="hero-content text-center">
-          <div className="max-w-md">
-            <h1 className="text-5xl font-bold">
-              Find the right {text} for you
-            </h1>
-            <input
-              type="text"
-              placeholder="Search for the service you need..."
-              className="input input-bordered input-primary w-full max-w-xs"
-            />
-            <Button>Search</Button>
-          </div>
+    <div className='place-content-center'>
+      <div className='flex flex-col max-w-lg mx-auto text-center items-center'>
+        <div className='text-5xl leading-snug font-semibold mb-8'>
+          <h1>Find the right</h1>
+          <h1 className='font-bold'>{text}</h1>
+          <h1>
+            for <span className='italic underline underline-offset-2'>you</span>
+          </h1>
+        </div>
+        <div className='flex w-full max-w-sm items-center space-x-2'>
+          <Input type='text' placeholder='Search for the service you need...' />
+          <Button>Search</Button>
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -6,15 +6,17 @@ const NotFound = () => {
   return (
     <>
       <Header />
-      <div className='m-4 flex flex-col gap-10 justify-center items-center'>
-        <div className='flex flex-col gap-2'>
-          <h1 className='text-9xl'>404</h1>
-          <h4 className='text-3xl'>Page Not Found</h4>
+      <main className='w-dvw h-dvh pt-[7rem]'>
+        <div className='max-w-md mx-auto flex flex-col gap-8 items-center'>
+          <div className='flex flex-col gap-2'>
+            <h1 className='text-9xl'>404</h1>
+            <h4 className='text-3xl'>Page Not Found</h4>
+          </div>
+          <Button asChild className='w-fit'>
+            <Link to={'/'}>Go to Home</Link>
+          </Button>
         </div>
-        <Button asChild>
-          <Link to={'/'}>Go to Home</Link>
-        </Button>
-      </div>
+      </main>
     </>
   )
 }

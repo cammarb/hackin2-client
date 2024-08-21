@@ -4,6 +4,7 @@ import { isRejectedWithValue } from '@reduxjs/toolkit'
 
 export const rtkQueryErrorLogger: Middleware = () => (next) => (action) => {
   if (isRejectedWithValue(action)) {
+    console.log(action)
     toast({
       title: 'Uh oh! Something went wrong.',
       description:

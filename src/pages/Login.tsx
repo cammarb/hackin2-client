@@ -19,6 +19,7 @@ import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
 import { useLoginMutation } from '@/features/auth/authApiSlice'
 import { setCredentials } from '@/features/auth/authSlice'
+import { setSession } from '@/features/auth/sessionApiSlice'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
@@ -56,6 +57,7 @@ export default function Login() {
         password: data.password
       }).unwrap()
       dispatch(setCredentials({ ...userData }))
+      dispatch(setSession({ isLoggedIn: true }))
       form.reset({})
       navigate('/')
     } catch (error) {

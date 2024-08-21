@@ -7,9 +7,9 @@ export function Navbar({
 }: { className?: string; links: { title: string; url: string }[] }) {
   return (
     <nav className={cn('flex items-center gap-2', className)}>
-      {links.map((item, index) => (
+      {links.map((item) => (
         <NavLink
-          key={index}
+          key={item.title}
           to={item.url}
           className={({ isActive }) =>
             cn(

@@ -5,24 +5,21 @@ export const submissionSlice = apiConnection.injectEndpoints({
     getSubmissionsByProgram: builder.query({
       query: (program) => ({
         url: `/submissions?program=${program}`,
-        method: 'GET',
-        refetchOnMountOrArgChange: 30
+        method: 'GET'
       }),
       providesTags: ['Submissions']
     }),
     getSubmissionsByUser: builder.query({
       query: (user) => ({
         url: `/submissions?user=${user}`,
-        method: 'GET',
-        refetchOnMountOrArgChange: 30
+        method: 'GET'
       }),
       providesTags: ['Submissions']
     }),
     getSubmissionsById: builder.query({
       query: (id) => ({
         url: `/submissions/${id}`,
-        method: 'GET',
-        refetchOnMountOrArgChange: 30
+        method: 'GET'
       }),
       providesTags: ['Submissions']
     }),

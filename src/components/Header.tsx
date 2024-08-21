@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { useLogoutMutation } from '@/features/auth/authApiSlice'
-import { selectCurrentRole, selectCurrentUser } from '@/features/auth/authSlice'
+import { selectCurrentUser } from '@/features/auth/authSlice'
 import { CircleUser } from 'lucide-react'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
@@ -30,12 +30,12 @@ const enterpriseLinks: Links[] = [
     url: 'dashboard'
   },
   {
-    title: 'User and Access Management',
-    url: 'users'
-  },
-  {
     title: 'Program Management',
     url: 'programs'
+  },
+  {
+    title: 'User and Access Management',
+    url: 'users'
   },
   {
     title: 'Settings',
@@ -47,6 +47,14 @@ const pentesterLinks: Links[] = [
   {
     title: 'Bounty Programs',
     url: 'bounty-programs'
+  },
+  {
+    title: 'Applications',
+    url: 'applications'
+  },
+  {
+    title: 'Bounties',
+    url: 'bounties'
   },
   {
     title: 'Submissions',
@@ -67,12 +75,12 @@ const authLinks: Links[] = [
 
 export const Header = () => {
   const user = useSelector(selectCurrentUser)
-  const role = useSelector(selectCurrentRole)
+  const role = user?.role
   const [logout, { isSuccess }] = useLogoutMutation()
   const navigate = useNavigate()
   const { theme } = useTheme()
 
-  const logo = theme === 'light' ? blackLogo : whiteLogo
+  const logo = theme === 'light' || theme === 'system' ? blackLogo : whiteLogo
 
   useEffect(() => {
     if (isSuccess) {
@@ -90,7 +98,7 @@ export const Header = () => {
   }
 
   return (
-    <header className='sticky top-0 flex h-16 mb-10 items-center border-b bg-background px-4 md:px-6'>
+    <header className='fixed top-0 w-dvw flex h-16 items-center border-b bg-background px-4 md:px-6'>
       <img src={logo} alt='Logo' className='h-8 w-auto' />
 
       {user ? (
@@ -113,7 +121,7 @@ export const Header = () => {
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                  <Link to={'account-settings'}>Settings</Link>
+                  <Link to={'settings'}>Settings</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>Support</DropdownMenuItem>
                 <DropdownMenuSeparator />

@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { selectCurrentCompany } from '@/features/auth/authSlice'
+import { selectCurrentUser } from '@/features/auth/authSlice'
 import { useAddProgramMutation } from '@/features/program/programSlice'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -23,7 +23,8 @@ type ProgramData = {
 }
 
 export default function AddProgram() {
-  const company = useSelector(selectCurrentCompany)
+  const user = useSelector(selectCurrentUser)
+  const company = user?.company?.id
   const [addProgram] = useAddProgramMutation()
 
   const schema: ZodType<ProgramData> = z.object({

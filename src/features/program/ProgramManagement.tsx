@@ -4,40 +4,23 @@ import {
   ResizablePanel,
   ResizablePanelGroup
 } from '@/components/ui/resizable'
-import { selectCurrentCompany } from '@/features/auth/authSlice'
-import { useGetCompanyProgramsQuery } from '@/features/program/programSlice'
 import { cn } from '@/lib/utils'
-import type { Program } from '@/utils/types'
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
 import { Outlet } from 'react-router-dom'
 import Breadcrumbs from '@/components/Breadcrumb'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import type { Program } from '@/utils/types'
 
-export default function ProgramManagement() {
-  const company = useSelector(selectCurrentCompany)
-  const {
-    data: response,
-    isLoading,
-    isSuccess,
-    isError
-  } = useGetCompanyProgramsQuery(company)
-  const [currentProgram, setCurrentProgram] = useState<Program | null>(null)
-  const [isCollapsed, setIsCollapsed] = useState(false)
-
-  let content = <></>
-
-  if (isLoading) content = <p>Loading</p>
-  else if (isError) content = <p>Error</p>
-  else if (isSuccess) {
-    const programs = response.programs
-    content = (
-      <Sidebar
-        setProgram={setCurrentProgram}
-        programs={programs}
-        isCollapsed={isCollapsed}
-      />
-    )
-  }
+export const ProgramManagement = ({
+  programs,
+  defaultLayout = [20, 80],
+  defaultCollapsed
+}: {
+  programs: Program[]
+  defaultLayout: number[] | undefined
+  defaultCollapsed: boolean
+}) => {
+  const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed)
 
   return (
     <ResizablePanelGroup
@@ -47,36 +30,40 @@ export default function ProgramManagement() {
           sizes
         )}`
       }}
-      className='h-full items-stretch'
+      className='h-full fixed mt-[-3rem]'
     >
       <ResizablePanel
-        defaultSize={20}
+        defaultSize={defaultLayout[0]}
         collapsedSize={4}
         collapsible={true}
         minSize={15}
         maxSize={20}
         onCollapse={() => {
           setIsCollapsed(true)
-          document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(true)}`
+          document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
+            true
+          )}`
         }}
-        onExpand={() => {
+        onResize={() => {
           setIsCollapsed(false)
-          document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(false)}`
+          document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
+            false
+          )}`
         }}
         className={cn(
           isCollapsed && 'min-w-[50px] transition-all duration-300 ease-in-out'
         )}
       >
-        {content}
+        <Sidebar programs={programs} isCollapsed={isCollapsed} />
       </ResizablePanel>
-      <ResizableHandle withHandle />
-      <ResizablePanel>
-        <div className='mx-10 my-3'>
-          <Breadcrumbs />
+      <ResizableHandle />
+      <ResizablePanel defaultSize={defaultLayout[1]}>
+        <ScrollArea className='h-[calc(100dvh-4rem)] px-10 pt-10'>
+          <Breadcrumbs root='programs' />
           <div className='pt-10'>
             <Outlet />
           </div>
-        </div>
+        </ScrollArea>
       </ResizablePanel>
     </ResizablePanelGroup>
   )

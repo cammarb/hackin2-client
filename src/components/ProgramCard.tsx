@@ -115,7 +115,7 @@ export const ProgramCard = ({ program }: { program: ProgramData }) => {
                 name='programStatus'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Status</FormLabel>
+                    <FormLabel htmlFor='status'>Status</FormLabel>
                     <FormControl>
                       <Select
                         value={field.value}
