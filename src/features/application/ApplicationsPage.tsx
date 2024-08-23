@@ -18,6 +18,7 @@ export type Application = {
     id: string
     username: string
   }
+  bounty?: string
 }
 
 export const ApplicationsPage = () => {

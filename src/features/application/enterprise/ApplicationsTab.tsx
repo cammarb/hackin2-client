@@ -42,7 +42,7 @@ export const ApplicationsTab = ({ program }: { program: string }) => {
         <TableCaption>A list of the Program's applications.</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className='w-[200px]'>Program</TableHead>
+            <TableHead className='w-[200px]'>User</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Created At</TableHead>
             <TableHead>Updated At</TableHead>
@@ -62,7 +62,11 @@ export const ApplicationsTab = ({ program }: { program: string }) => {
 const ApplicationRow = ({ application }: { application: Application }) => {
   return (
     <TableRow key={application.id}>
-      <TableCell className='font-medium'>{application.User.username}</TableCell>
+      <TableCell className='font-medium'>
+        <Link to={`/profiles/${application.User.username}`}>
+          {application.User.username}
+        </Link>
+      </TableCell>
       <TableCell>
         <Badge>{capitalizeFirstLetter(application.status)}</Badge>
       </TableCell>
