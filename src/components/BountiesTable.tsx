@@ -10,6 +10,7 @@ import { useGetProgramBountiesQuery } from '@/features/program/programSlice'
 import { Link } from 'react-router-dom'
 import { Button } from './ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
+import { capitalizeFirstLetter } from '@/utils/stringFormatter'
 
 export function BountiesTable({ programId }: { programId: string }) {
   const {
@@ -39,6 +40,10 @@ export function BountiesTable({ programId }: { programId: string }) {
             {bounties.map((bounty) => (
               <TableRow key={bounty.id}>
                 <TableCell>{bounty.title}</TableCell>
+                <TableCell>{capitalizeFirstLetter(bounty.status)}</TableCell>
+                <TableCell>{bounty.description}</TableCell>
+                <TableCell>{bounty.requirements}</TableCell>
+                <TableCell>{bounty.rules}</TableCell>
               </TableRow>
             ))}
           </TableBody>
