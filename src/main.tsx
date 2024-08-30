@@ -30,7 +30,7 @@ import { authLoader } from './features/auth/authLoader'
 import { RequireAuthentication } from './features/auth/RequireAuthentication'
 import { Unauthenticated } from './features/auth/Unauthenticated'
 import ProgramManagementPage from './features/program/ProgramManagementPage'
-import { ApplicationsPage } from './features/application/ApplicationsPage'
+import { ApplicationsPage } from './features/application/pentester/ApplicationsPage'
 
 const router = createBrowserRouter([
   {
