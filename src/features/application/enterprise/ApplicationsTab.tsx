@@ -23,7 +23,10 @@ import { Link } from 'react-router-dom'
 import type { Application } from '../pentester/ApplicationsPage'
 import { Badge } from '@/components/ui/badge'
 import { capitalizeFirstLetter } from '@/utils/stringFormatter'
-import { useGetApplicationsQuery } from '../applicationApiSlice'
+import {
+  useEditApplicationMutation,
+  useGetApplicationsQuery
+} from '../applicationApiSlice'
 import {
   Dialog,
   DialogContent,
@@ -108,8 +111,31 @@ const ApplicationRow = ({ application }: { application: Application }) => {
     isError,
     isSuccess
   } = useGetProgramBountiesQuery(application.programId)
+  const [updateApplication] = useEditApplicationMutation()
   const [dialogContent, setDialogContent] = useState<string | null>(null)
 
+  const declineApplication = async () => {
+    try {
+      await updateApplication({
+        id: application.id,
+        body: {
+          status: 'REJECTED'
+        }
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const acceptApplication = async () => {
+    await updateApplication({
+      id: application.id,
+      body: {
+        user: application.userId,
+        status: 'ACCEPTED'
+      }
+    })
+  }
   return (
     <>
       <Dialog>
@@ -203,7 +229,7 @@ const ApplicationRow = ({ application }: { application: Application }) => {
               </div>
 
               <DialogFooter>
-                <Button type='submit'>Assign</Button>
+                <Button onClick={acceptApplication}>Assign</Button>
               </DialogFooter>
             </>
           ) : (
@@ -216,7 +242,11 @@ const ApplicationRow = ({ application }: { application: Application }) => {
               </DialogHeader>
 
               <DialogFooter>
-                <Button type='submit' variant={'destructive'}>
+                <Button
+                  type='submit'
+                  onClick={declineApplication}
+                  variant={'destructive'}
+                >
                   Decline
                 </Button>
               </DialogFooter>
