@@ -45,6 +45,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
+import { useGetProgramBountiesQuery } from '@/features/program/programSlice'
 
 export const ApplicationsTab = ({ program }: { program: string }) => {
   const {
@@ -101,6 +102,12 @@ export const ApplicationsTab = ({ program }: { program: string }) => {
 }
 
 const ApplicationRow = ({ application }: { application: Application }) => {
+  const {
+    data: response,
+    isLoading,
+    isError,
+    isSuccess
+  } = useGetProgramBountiesQuery(application.programId)
   const [dialogContent, setDialogContent] = useState<string | null>(null)
 
   return (
@@ -152,8 +159,8 @@ const ApplicationRow = ({ application }: { application: Application }) => {
               <DialogHeader>
                 <DialogTitle>Assign a Bounty</DialogTitle>
                 <DialogDescription>
-                  Select the Bounty you want to assign to the user and click on
-                  save.
+                  Select the Bounty you want to assign to the user.
+                  <br /> Click on Assign to save your changes.
                 </DialogDescription>
               </DialogHeader>
 
@@ -169,8 +176,34 @@ const ApplicationRow = ({ application }: { application: Application }) => {
                 />
               </div>
 
+              <div className='grid grid-cols-4 items-center gap-4'>
+                <Label htmlFor='bounty' className='text-right'>
+                  Bounty
+                </Label>
+
+                <Select>
+                  <SelectTrigger className='col-span-3'>
+                    <SelectValue placeholder='Select Bounty' />
+                  </SelectTrigger>
+                  <SelectContent id='bounty'>
+                    <SelectGroup>
+                      <SelectLabel>Bounty</SelectLabel>
+                      {isSuccess && response.bounties ? (
+                        response.bounties.map((bounty) => (
+                          <SelectItem key={bounty.id} value={bounty.id}>
+                            {bounty.id}
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <>...loading</>
+                      )}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+
               <DialogFooter>
-                <Button type='submit'>Save changes</Button>
+                <Button type='submit'>Assign</Button>
               </DialogFooter>
             </>
           ) : (
