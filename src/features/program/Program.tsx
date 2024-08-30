@@ -4,15 +4,21 @@ import { RewardsTable } from '@/components/RewardsTable'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useGetProgramByIdQuery } from '@/features/program/programSlice'
 import Submissions from '@/features/submission/ProgramSubmissions'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
-import {
-  ApplicationsTab,
-  ApplicationsTable
-} from '../application/enterprise/ApplicationsTab'
+import { ApplicationsTab } from '../application/enterprise/ApplicationsTab'
+import { useNavigate } from 'react-router-dom'
 
 export default function Program() {
   const { id } = useParams()
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  const currentTab = location.hash.slice(1) || 'details'
+  const handleTabChange = (value: string) => {
+    navigate(`#${value}`, { replace: true })
+  }
+
   const {
     data: response,
     isLoading,
@@ -30,7 +36,7 @@ export default function Program() {
         <header className='pb-10 flex flex-row items-center justify-between'>
           <h1 className='text-4xl font-medium'>{program.name}</h1>
         </header>
-        <Tabs defaultValue='details'>
+        <Tabs value={currentTab} onValueChange={handleTabChange}>
           <TabsList className=''>
             <TabsTrigger value='details' asChild>
               <NavLink to={'#details'}>Details</NavLink>
