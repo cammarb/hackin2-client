@@ -1,4 +1,4 @@
-import { BountiesTable } from '@/components/BountiesTable'
+import { BountiesTable } from '@/features/bounty/BountiesTable'
 import { ProgramCard } from '@/components/ProgramCard'
 import { RewardsTable } from '@/components/RewardsTable'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -6,10 +6,7 @@ import { useGetProgramByIdQuery } from '@/features/program/programSlice'
 import Submissions from '@/features/submission/ProgramSubmissions'
 import { NavLink } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
-import {
-  ApplicationsTab,
-  ApplicationsTable
-} from '../application/enterprise/ApplicationsTab'
+import { ApplicationsTab } from '../application/enterprise/ApplicationsTab'
 
 export default function Program() {
   const { id } = useParams()

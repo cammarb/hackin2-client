@@ -37,12 +37,6 @@ export const programSlice = apiConnection.injectEndpoints({
         body: program
       }),
       invalidatesTags: ['Programs']
-    }),
-    getProgramBounties: builder.query({
-      query: (id) => ({
-        url: `/bounties?program=${id}`,
-        method: 'GET'
-      })
     })
   })
 })
@@ -52,6 +46,5 @@ export const {
   useGetCompanyProgramsQuery,
   useGetProgramByIdQuery,
   useUpdateProgramMutation,
-  useGetProgramBountiesQuery,
   useAddProgramMutation
 } = programSlice
