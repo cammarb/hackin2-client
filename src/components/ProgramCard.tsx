@@ -64,7 +64,7 @@ export const ProgramCard = ({ program }: { program: ProgramData }) => {
 
   return (
     <>
-      <Card className='col-span-2'>
+      <Card>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(submitData)}>
             <CardHeader className='flex flex-row items-center justify-between'>

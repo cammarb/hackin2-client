@@ -31,6 +31,11 @@ import { RequireAuthentication } from './features/auth/RequireAuthentication'
 import { Unauthenticated } from './features/auth/Unauthenticated'
 import ProgramManagementPage from './features/program/ProgramManagementPage'
 import { ApplicationsPage } from './features/application/ApplicationsPage'
+import ProgramDetails from './features/program/ProgramDetails'
+import { ApplicationsTab } from './features/application/enterprise/ApplicationsTab'
+import { BountiesTable } from './features/bounty/BountiesTable'
+import { AllProgramsTable } from './features/program/AllProgramsTable'
+import { AllProgramsPage } from './features/program/AllProgramsPage'
 
 const router = createBrowserRouter([
   {
@@ -82,22 +87,39 @@ const router = createBrowserRouter([
               },
               {
                 path: 'programs',
-                element: <ProgramManagementPage />,
+                element: <AllProgramsPage />,
                 children: [
-                  { index: true, element: <>Click on a program</> },
                   {
-                    path: ':id',
-                    element: <Program />
-                  },
-                  {
-                    path: ':id/submissions/:submissionId',
-                    element: <SubmissionDetails />
+                    index: true,
+                    element: <AllProgramsTable />
                   },
                   {
                     path: 'new',
                     element: <AddProgram />
                   }
                 ]
+              },
+              {
+                path: 'programs/:id',
+                element: <ProgramManagementPage />,
+                children: [
+                  {
+                    index: true,
+                    element: <ProgramDetails />
+                  },
+                  {
+                    path: 'bounties',
+                    element: <BountiesTable />
+                  },
+                  {
+                    path: 'applications',
+                    element: <ApplicationsTab />
+                  }
+                ]
+              },
+              {
+                path: ':id/submissions/:submissionId',
+                element: <SubmissionDetails />
               },
               {
                 path: 'users',

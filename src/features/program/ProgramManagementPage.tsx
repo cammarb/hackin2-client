@@ -1,8 +1,7 @@
-import { selectCurrentUser } from '@/features/auth/authSlice'
-import { useGetCompanyProgramsQuery } from '@/features/program/programSlice'
-import { useSelector } from 'react-redux'
+import { useGetProgramByIdQuery } from '@/features/program/programSlice'
 import { ProgramManagement } from './ProgramManagement'
 import { findCookie } from '@/utils/cookieFinder'
+import { useParams } from 'react-router-dom'
 
 export default function ProgramManagementPage() {
   const layout = findCookie('react-resizable-panels:layout')
@@ -11,24 +10,22 @@ export default function ProgramManagementPage() {
   const defaultLayout = layout ? JSON.parse(layout) : undefined
   const defaultCollapsed = collapsed ? JSON.parse(collapsed) : undefined
 
-  const user = useSelector(selectCurrentUser)
-  const company = user?.company?.id
+  const { id } = useParams()
+
   const {
     data: response,
     isLoading,
     isSuccess,
     isError
-  } = useGetCompanyProgramsQuery(company)
-
-  let programs = null
+  } = useGetProgramByIdQuery(id)
 
   if (isLoading) return <p>Loading...</p>
   if (isError) return <p>Error</p>
   if (isSuccess) {
-    programs = response.programs
+    const program = response.program
     return (
       <ProgramManagement
-        programs={programs}
+        program={program}
         defaultLayout={defaultLayout}
         defaultCollapsed={defaultCollapsed}
       />

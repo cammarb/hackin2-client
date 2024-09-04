@@ -20,7 +20,15 @@ const badgeVariants = cva(
           'border-transparent bg-yellow-500 text-neutral-50 shadow hover:bg-yellow-500/80 dark:bg-yellow-200 dark:text-neutral-900 dark:hover:bg-yellow-200/80',
         high: 'border-transparent bg-orange-500 text-neutral-50 shadow hover:bg-orange-500/80 dark:bg-orange-200 dark:text-neutral-900 dark:hover:bg-orange-200/80',
         critical:
-          'border-transparent bg-red-500 text-neutral-50 shadow hover:bg-red-500/80 dark:bg-red-200 dark:text-neutral-900 dark:hover:bg-red-200/80'
+          'border-transparent bg-red-500 text-neutral-50 shadow hover:bg-red-500/80 dark:bg-red-200 dark:text-neutral-900 dark:hover:bg-red-200/80',
+        active:
+          'border-transparent bg-primary text-neutral-50 shadow hover:bg-primary-500/80 dark:bg-primary-200 dark:text-neutral-900 dark:hover:bg-primary-200/80',
+        draft:
+          'border-transparent bg-neutral-100 text-neutral-900 hover:bg-neutral-100/80 dark:bg-neutral-800 dark:text-neutral-50 dark:hover:bg-neutral-800/80',
+        paused:
+          'border-transparent bg-yellow-300 text-neutral-50 shadow hover:bg-yellow-300/80 dark:bg-yellow-100 dark:text-neutral-900 dark:hover:bg-yellow-100/80',
+        complete:
+          'border-transparent bg-green-300 text-neutral-50 shadow hover:bg-green-300/80 dark:bg-green-100 dark:text-neutral-900 dark:hover:bg-green-100/80'
       }
     },
     defaultVariants: {

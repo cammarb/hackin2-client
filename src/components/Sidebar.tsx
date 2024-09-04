@@ -7,13 +7,13 @@ import {
 import { cn } from '@/lib/utils'
 import type { Program } from '@/utils/types'
 import { TooltipProvider } from '@radix-ui/react-tooltip'
-import { Building, PlusSquare } from 'lucide-react'
+import { Building, Crosshair, List, Send } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
-import { Fragment } from 'react/jsx-runtime'
+import { Separator } from '@/components/ui/separator'
 
 interface SidebarProps {
   isCollapsed: boolean
-  programs: Program[]
+  program: Program
 }
 
 interface NavItemProps {
@@ -23,29 +23,42 @@ interface NavItemProps {
   icon: React.JSX.Element
 }
 
-export function Sidebar({ isCollapsed, programs }: SidebarProps) {
+interface ProgramTitleItemProps {
+  isCollapsed: boolean
+  programTitle: string
+  icon: React.JSX.Element
+}
+
+export function Sidebar({ isCollapsed, program }: SidebarProps) {
   return (
     <div
       data-collapsed={isCollapsed}
       className='group flex flex-col gap-4 py-2 px-4 data-[collapsed=true]:py-2'
     >
       <nav className='grid gap-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2'>
-        {programs.map((program) => (
-          <Fragment key={program.id}>
-            <NavItem
-              isCollapsed={isCollapsed}
-              key={program.id}
-              navLink={program.id}
-              navName={program.name}
-              icon={<Building className='w-4 h-4' />}
-            />
-          </Fragment>
-        ))}
+        <ProgramTitleItem
+          programTitle={program.name}
+          isCollapsed={isCollapsed}
+          icon={<Building className='w-4 h-4' />}
+        />
+        <Separator />
         <NavItem
           isCollapsed={isCollapsed}
-          navLink='new'
-          navName='New Program'
-          icon={<PlusSquare className='w-4 h-4' />}
+          navLink={''}
+          navName={'Details'}
+          icon={<List className='w-4 h-4' />}
+        />
+        <NavItem
+          isCollapsed={isCollapsed}
+          navLink={'bounties'}
+          navName={'Bounties'}
+          icon={<Crosshair className='w-4 h-4' />}
+        />
+        <NavItem
+          isCollapsed={isCollapsed}
+          navLink={'applications'}
+          navName={'Applications'}
+          icon={<Send className='w-4 h-4' />}
         />
       </nav>
     </div>
@@ -57,20 +70,22 @@ function NavItem({ isCollapsed, navLink, navName, icon }: NavItemProps) {
     <TooltipProvider>
       <Tooltip delayDuration={0}>
         <TooltipTrigger asChild>
-          <NavLink
-            to={navLink}
-            className={({ isActive }) =>
-              cn(
-                'flex w-full items-center gap-4 rounded-md p-3 border hover:underline',
-                {
-                  'bg-muted': isActive
-                }
-              )
-            }
-          >
-            {icon}
-            <span className='sr-only'>{navName}</span>
-          </NavLink>
+          <span>
+            <NavLink
+              to={navLink}
+              className={({ isActive }) =>
+                cn(
+                  'flex w-full items-center gap-4 rounded-md p-3 hover:bg-muted',
+                  {
+                    'bg-muted text-primary': isActive
+                  }
+                )
+              }
+            >
+              {icon}
+              <span className='sr-only'>{navName}</span>
+            </NavLink>
+          </span>
         </TooltipTrigger>
         <TooltipContent side='right' className='flex items-center gap-4'>
           {navName}
@@ -81,16 +96,49 @@ function NavItem({ isCollapsed, navLink, navName, icon }: NavItemProps) {
     <NavLink
       to={navLink}
       className={({ isActive }) =>
-        cn(
-          'flex w-full items-center gap-4 rounded-md p-3 border hover:underline',
-          {
-            'bg-muted': isActive
-          }
-        )
+        cn('flex w-full items-center gap-4 rounded-md p-3 hover:bg-muted', {
+          'bg-muted text-primary': isActive
+        })
       }
+      end={true}
     >
       {icon}
       {navName}
     </NavLink>
+  )
+}
+
+function ProgramTitleItem({
+  isCollapsed,
+  programTitle,
+  icon
+}: ProgramTitleItemProps) {
+  return isCollapsed ? (
+    <TooltipProvider>
+      <Tooltip delayDuration={0}>
+        <TooltipTrigger asChild>
+          <div
+            className={
+              'flex w-full items-center gap-4 rounded-md p-3 justify-center text-center text-2xl font-semibold'
+            }
+          >
+            {icon}
+            <span className='sr-only'>{programTitle}</span>
+          </div>
+        </TooltipTrigger>
+        <TooltipContent side='right' className='flex items-center gap-4'>
+          {programTitle}
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  ) : (
+    <div
+      className={
+        'flex w-full items-center gap-4 rounded-md p-3 justify-center text-center text-2xl font-semibold'
+      }
+    >
+      {icon}
+      {programTitle}
+    </div>
   )
 }

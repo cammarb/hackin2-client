@@ -19,42 +19,46 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel
 } from '@/components/ui/dropdown-menu'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import type { Application } from '../ApplicationsPage'
 import { Badge } from '@/components/ui/badge'
 import { capitalizeFirstLetter } from '@/utils/stringFormatter'
 import { useGetApplicationsQuery } from '../applicationApiSlice'
 
-export const ApplicationsTab = ({ program }: { program: string }) => {
+export const ApplicationsTab = () => {
+  const { id } = useParams()
   const {
     data: response,
     isLoading,
     isError,
     isSuccess
-  } = useGetApplicationsQuery({ key: 'program', value: program })
+  } = useGetApplicationsQuery({ key: 'program', value: id })
 
   if (isLoading) return <p>is loading</p>
   if (isError) return <p>is error</p>
   if (isSuccess) {
     const applications = response.applications
     return (
-      <Table>
-        <TableCaption>A list of the Program's applications.</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className='w-[200px]'>Program</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Created At</TableHead>
-            <TableHead>Updated At</TableHead>
-            <TableHead className='text-right'>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {applications.map((application: Application) => (
-            <ApplicationRow application={application} key={application.id} />
-          ))}
-        </TableBody>
-      </Table>
+      <>
+        <div className='my-7 font-semibold text-2xl'>Applications</div>
+        <Table>
+          <TableCaption>A list of the Program's applications.</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead className='w-[200px]'>Program</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Created At</TableHead>
+              <TableHead>Updated At</TableHead>
+              <TableHead className='text-right'>Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {applications.map((application: Application) => (
+              <ApplicationRow application={application} key={application.id} />
+            ))}
+          </TableBody>
+        </Table>
+      </>
     )
   }
 }
