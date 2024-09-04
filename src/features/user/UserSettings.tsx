@@ -47,7 +47,7 @@ export const UserSettings = () => {
                       ? 'font-semibold text-primary'
                       : ''
                 }
-                end
+                end={true}
               >
                 {link.title}
               </NavLink>

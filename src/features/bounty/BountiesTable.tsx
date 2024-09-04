@@ -10,7 +10,7 @@ import {
   useGetBountiesQuery,
   useNewBountyMutation
 } from '@/features/bounty/bountyApiSlice'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { Button } from '../../components/ui/button'
 import {
   Card,
@@ -51,13 +51,14 @@ import {
 } from '@/components/ui/select'
 import { useGetSeverityRewardsQuery } from '../severityReward/severityRewardSlice'
 
-export function BountiesTable({ programId }: { programId: string }) {
+export function BountiesTable() {
+  const { id } = useParams()
   const {
     data: response,
     isLoading,
     isSuccess,
     isError
-  } = useGetBountiesQuery({ key: 'program', value: programId })
+  } = useGetBountiesQuery({ key: 'program', value: id })
 
   // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
   let content
@@ -101,7 +102,7 @@ export function BountiesTable({ programId }: { programId: string }) {
             <Button variant='outline'>Add Bounty</Button>
           </DialogTrigger>
 
-          <BountyForm programId={programId} />
+          <BountyForm programId={id} />
         </Dialog>
       </CardHeader>
       <CardContent>{content}</CardContent>

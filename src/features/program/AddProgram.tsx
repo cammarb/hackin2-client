@@ -1,5 +1,12 @@
 import { Button } from '@/components/ui/button'
 import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card'
+import {
   Form,
   FormControl,
   FormField,
@@ -9,11 +16,13 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { useToast } from '@/components/ui/use-toast'
 import { selectCurrentUser } from '@/features/auth/authSlice'
 import { useAddProgramMutation } from '@/features/program/programSlice'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { z, type ZodType } from 'zod'
 
 type ProgramData = {
@@ -26,6 +35,9 @@ export default function AddProgram() {
   const user = useSelector(selectCurrentUser)
   const company = user?.company?.id
   const [addProgram] = useAddProgramMutation()
+
+  const { toast } = useToast()
+  const navigate = useNavigate()
 
   const schema: ZodType<ProgramData> = z.object({
     name: z.string().min(2).max(30),
@@ -44,7 +56,7 @@ export default function AddProgram() {
 
   const submitData = async (data: ProgramData) => {
     try {
-      const addedProgram = await addProgram({
+      await addProgram({
         id: company,
         body: {
           name: data.name,
@@ -52,7 +64,11 @@ export default function AddProgram() {
           location: data.location
         }
       }).unwrap()
-      form.reset({})
+      toast({
+        title: 'Success!',
+        description: `You've added program ${data.name}.`
+      })
+      navigate('/programs')
     } catch (error) {
       console.error('Error adding program:', error)
     }
@@ -61,50 +77,66 @@ export default function AddProgram() {
   return (
     <>
       <div>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(submitData)} className='space-y-8'>
-            <FormField
-              control={form.control}
-              name='name'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder='Program Name' {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='description'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder='Program description' {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='location'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Location</FormLabel>
-                  <FormControl>
-                    <Input placeholder='e.g Berlin' {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type='submit'>Submit</Button>
-          </form>
-        </Form>
+        <Card>
+          <CardHeader>
+            <CardTitle>Add new Program</CardTitle>
+            <CardDescription>
+              Enter the details for the new Program to be created.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(submitData)}
+                className='space-y-8'
+              >
+                <FormField
+                  control={form.control}
+                  name='name'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder='Program Name' {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='description'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Description</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder='Program description'
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='location'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Location</FormLabel>
+                      <FormControl>
+                        <Input placeholder='e.g Berlin' {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type='submit'>Create</Button>
+              </form>
+            </Form>
+          </CardContent>
+        </Card>
       </div>
     </>
   )

@@ -22,6 +22,7 @@ import whiteLogo from '/Hackin2_logo_white.svg'
 type Links = {
   title: string
   url: string
+  children?: Links[]
 }
 
 const enterpriseLinks: Links[] = [
@@ -30,8 +31,12 @@ const enterpriseLinks: Links[] = [
     url: 'dashboard'
   },
   {
-    title: 'Program Management',
-    url: 'programs'
+    title: 'Programs',
+    url: 'programs',
+    children: [
+      { title: 'All Programs', url: 'programs' },
+      { title: 'New Program', url: 'programs/new' }
+    ]
   },
   {
     title: 'User and Access Management',

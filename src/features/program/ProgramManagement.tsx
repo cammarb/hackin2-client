@@ -12,11 +12,11 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import type { Program } from '@/utils/types'
 
 export const ProgramManagement = ({
-  programs,
+  program,
   defaultLayout = [20, 80],
   defaultCollapsed
 }: {
-  programs: Program[]
+  program: Program
   defaultLayout: number[] | undefined
   defaultCollapsed: boolean
 }) => {
@@ -54,7 +54,7 @@ export const ProgramManagement = ({
           isCollapsed && 'min-w-[50px] transition-all duration-300 ease-in-out'
         )}
       >
-        <Sidebar programs={programs} isCollapsed={isCollapsed} />
+        <Sidebar program={program} isCollapsed={isCollapsed} />
       </ResizablePanel>
       <ResizableHandle />
       <ResizablePanel defaultSize={defaultLayout[1]}>
