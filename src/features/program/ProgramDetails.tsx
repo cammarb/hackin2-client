@@ -1,12 +1,7 @@
-import { BountiesTable } from '@/features/bounty/BountiesTable'
 import { ProgramCard } from '@/components/ProgramCard'
 import { RewardsTable } from '@/components/RewardsTable'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useGetProgramByIdQuery } from '@/features/program/programSlice'
-import Submissions from '@/features/submission/ProgramSubmissions'
-import { NavLink } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
-import { ApplicationsTab } from '../application/enterprise/ApplicationsTab'
 
 export default function ProgramDetails() {
   const { id } = useParams()
@@ -28,7 +23,7 @@ export default function ProgramDetails() {
           <h1 className='text-4xl font-medium'>{program.name}</h1>
         </header>
 
-        <div className='my-5 grid grid-cols-2 gap-5'>
+        <div className='my-5 grid gap-5 lg:grid-cols-2'>
           <ProgramCard program={program} />
           <RewardsTable programId={program.id} />
         </div>

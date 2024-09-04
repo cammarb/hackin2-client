@@ -58,8 +58,8 @@ export const ProgramManagement = ({
       </ResizablePanel>
       <ResizableHandle />
       <ResizablePanel defaultSize={defaultLayout[1]}>
-        <ScrollArea className='h-[calc(100dvh-4rem)] px-10 pt-10'>
-          <Breadcrumbs root='programs' />
+        <ScrollArea className='h-[calc(100dvh-4rem)] px-10'>
+          {/* <Breadcrumbs root='programs' /> */}
           <div className='pt-10'>
             <Outlet />
           </div>
