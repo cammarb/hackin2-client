@@ -22,6 +22,7 @@ import whiteLogo from '/Hackin2_logo_white.svg'
 type Links = {
   title: string
   url: string
+  children?: Links[]
 }
 
 const enterpriseLinks: Links[] = [
@@ -30,8 +31,9 @@ const enterpriseLinks: Links[] = [
     url: 'dashboard'
   },
   {
-    title: 'Program Management',
-    url: 'programs'
+    title: 'Programs',
+    url: 'programs',
+    children: [{ title: 'New Program', url: 'programs/new' }]
   },
   {
     title: 'User and Access Management',
@@ -98,7 +100,7 @@ export const Header = () => {
   }
 
   return (
-    <header className='fixed top-0 w-dvw flex h-16 items-center border-b bg-background px-4 md:px-6'>
+    <header className='fixed top-0 w-dvw flex h-16 items-center border-b bg-background px-4 md:px-6 z-50'>
       <img src={logo} alt='Logo' className='h-8 w-auto' />
 
       {user ? (

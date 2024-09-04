@@ -19,44 +19,20 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel
 } from '@/components/ui/dropdown-menu'
-import { Link } from 'react-router-dom'
-import type { Application } from '../pentester/ApplicationsPage'
+import { Link, useParams } from 'react-router-dom'
+import type { Application } from '../ApplicationsPage'
 import { Badge } from '@/components/ui/badge'
 import { capitalizeFirstLetter } from '@/utils/stringFormatter'
-import {
-  useEditApplicationMutation,
-  useGetApplicationsQuery
-} from '../applicationApiSlice'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { useState } from 'react'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
-import { useGetProgramBountiesQuery } from '@/features/program/programSlice'
+import { useGetApplicationsQuery } from '../applicationApiSlice'
 
-export const ApplicationsTab = ({ program }: { program: string }) => {
+export const ApplicationsTab = () => {
+  const { id } = useParams()
   const {
     data: response,
     isLoading,
     isError,
     isSuccess
-  } = useGetApplicationsQuery({ key: 'program', value: program })
+  } = useGetApplicationsQuery({ key: 'program', value: id })
 
   if (isLoading) return <p>is loading</p>
   if (isError) return <p>is error</p>
@@ -64,29 +40,12 @@ export const ApplicationsTab = ({ program }: { program: string }) => {
     const applications = response.applications
     return (
       <>
-        <div className='w-full p-2 flex gap-4 justify-end items-center'>
-          Filter by:
-          <Select>
-            <SelectTrigger className='w-[180px]'>
-              <SelectValue placeholder='All' />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Filter by</SelectLabel>
-                <SelectItem value='all'>All</SelectItem>
-                <SelectItem value='accepted'>Accepted</SelectItem>
-                <SelectItem value='rejected'>Rejected</SelectItem>
-                <SelectItem value='rejected'>Pending</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <Table className='mt-10'>
+        <div className='my-7 font-semibold text-2xl'>Applications</div>
+        <Table>
           <TableCaption>A list of the Program's applications.</TableCaption>
           <TableHeader>
             <TableRow>
-              <TableHead className='w-[200px]'>User</TableHead>
+              <TableHead className='w-[200px]'>Program</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Created At</TableHead>
               <TableHead>Updated At</TableHead>
