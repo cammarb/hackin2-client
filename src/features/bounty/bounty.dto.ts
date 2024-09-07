@@ -5,4 +5,6 @@ type Bounty = {
   severityRewardId: string
   programId: string
   status: string
+  scope?: string
+  notes?: string
 }

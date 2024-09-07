@@ -31,9 +31,11 @@ import { Unauthenticated } from './features/auth/Unauthenticated'
 import ProgramManagementPage from './features/program/ProgramManagementPage'
 import ProgramDetails from './features/program/ProgramDetails'
 import { ApplicationsTab } from './features/application/enterprise/ApplicationsTab'
-import { BountiesTable } from './features/bounty/BountiesTable'
 import { AllProgramsTable } from './features/program/AllProgramsTable'
 import { AllProgramsPage } from './features/program/AllProgramsPage'
+import { BountiesPage } from './features/bounty/enterprise/BountiesPage'
+import { BountiesTablePage } from './features/bounty/enterprise/BountiesTablePage'
+import { BountyDetailsPage } from './features/bounty/enterprise/BountyDetailsPage'
 import { ApplicationsPage } from './features/application/pentester/ApplicationsPage'
 
 const router = createBrowserRouter([
@@ -108,7 +110,17 @@ const router = createBrowserRouter([
                   },
                   {
                     path: 'bounties',
-                    element: <BountiesTable />
+                    element: <BountiesPage />,
+                    children: [
+                      {
+                        index: true,
+                        element: <BountiesTablePage />
+                      },
+                      {
+                        path: ':bountyId',
+                        element: <BountyDetailsPage />
+                      }
+                    ]
                   },
                   {
                     path: 'applications',

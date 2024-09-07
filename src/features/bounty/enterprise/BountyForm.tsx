@@ -1,37 +1,20 @@
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@/components/ui/table'
-import {
-  useGetBountiesQuery,
+  useEditBountyMutation,
   useNewBountyMutation
 } from '@/features/bounty/bountyApiSlice'
-import { Link, useParams } from 'react-router-dom'
-import { Button } from '../../components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle
-} from '../../components/ui/card'
+import { Button } from '../../../components/ui/button'
 import { capitalizeFirstLetter } from '@/utils/stringFormatter'
 import {
-  Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
-  DialogTrigger
+  DialogTitle
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { useForm } from 'react-hook-form'
+import { useForm, type UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
@@ -49,66 +32,7 @@ import {
   SelectContent,
   SelectItem
 } from '@/components/ui/select'
-import { useGetSeverityRewardsQuery } from '../severityReward/severityRewardSlice'
-
-export function BountiesTable() {
-  const { id } = useParams()
-  const {
-    data: response,
-    isLoading,
-    isSuccess,
-    isError
-  } = useGetBountiesQuery({ key: 'program', value: id })
-
-  // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
-  let content
-  if (isLoading) {
-    content = <p>Loading...</p>
-  } else if (isError) {
-    content = <p>Error</p>
-  } else if (isSuccess) {
-    if (!response.bounties) content = <p>No Bounties yet.</p>
-    else {
-      const bounties = response.bounties
-      content = (
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className='w-[100px]'>Title</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {bounties.map((bounty: Bounty) => (
-              <TableRow key={bounty.id}>
-                <TableCell>{bounty.title}</TableCell>
-                <TableCell>{capitalizeFirstLetter(bounty.status)}</TableCell>
-                <TableCell>{bounty.description}</TableCell>
-                {/* <TableCell>{bounty.requirements}</TableCell> */}
-                {/* <TableCell>{bounty.rules}</TableCell> */}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      )
-    }
-  }
-
-  return (
-    <Card className='col-span-3'>
-      <CardHeader className='flex flex-row items-center justify-between'>
-        <CardTitle>Bounties</CardTitle>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant='outline'>Add Bounty</Button>
-          </DialogTrigger>
-
-          <BountyForm programId={id} />
-        </Dialog>
-      </CardHeader>
-      <CardContent>{content}</CardContent>
-    </Card>
-  )
-}
+import { useGetSeverityRewardsQuery } from '../../severityReward/severityRewardSlice'
 
 const formSchema = z.object({
   title: z.string(),
@@ -118,7 +42,11 @@ const formSchema = z.object({
   notes: z.string()
 })
 
-export const BountyForm = ({ programId }: { programId: string }) => {
+export const BountyForm = ({
+  variant,
+  programId,
+  bounty
+}: { programId: string; variant: 'create' | 'edit'; bounty?: Bounty }) => {
   const {
     data: response,
     isLoading,
@@ -126,8 +54,11 @@ export const BountyForm = ({ programId }: { programId: string }) => {
     isSuccess
   } = useGetSeverityRewardsQuery({ key: 'program', value: programId })
   const [addBounty] = useNewBountyMutation()
+  const [editBounty] = useEditBountyMutation()
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  let form: UseFormReturn<z.infer<typeof formSchema>> = useForm<
+    z.infer<typeof formSchema>
+  >({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: '',
@@ -137,31 +68,66 @@ export const BountyForm = ({ programId }: { programId: string }) => {
       notes: ''
     }
   })
-  const submitData = async (data: any) => {
+
+  if (variant === 'edit' && bounty && isSuccess) {
+    form = useForm<z.infer<typeof formSchema>>({
+      resolver: zodResolver(formSchema),
+      defaultValues: {
+        title: bounty.title,
+        description: bounty.description,
+        severity: bounty.severityRewardId,
+        scope: bounty.scope,
+        notes: bounty.notes
+      }
+    })
+  }
+
+  const submitData = async (data: z.infer<typeof formSchema>) => {
     try {
-      await addBounty({
-        programId: programId,
-        title: data.title,
-        description: data.description,
-        severityRewardId: data.severity,
-        scope: data.scope,
-        notes: data.notes
-      }).unwrap()
+      if (variant === 'edit') {
+        console.log('before editing')
+        await editBounty({
+          id: bounty?.id,
+          body: {
+            programId: programId,
+            title: data.title,
+            description: data.description,
+            severityRewardId: data.severity,
+            scope: data.scope,
+            notes: data.notes
+          }
+        }).unwrap()
+        console.log('after editing')
+      }
+      if (variant === 'create') {
+        await addBounty({
+          programId: programId,
+          title: data.title,
+          description: data.description,
+          severityRewardId: data.severity,
+          scope: data.scope,
+          notes: data.notes
+        }).unwrap()
+      }
     } catch (error) {
-      console.error('Error updating program:', error)
+      console.error(`Error ${variant} bounty:`, error)
     }
   }
 
   return (
-    <DialogContent className='sm:max-w-[425px]'>
+    <DialogContent className='sm:max-w-[425px] sm:max-h-screen'>
       <DialogHeader>
-        <DialogTitle>Create Bounty</DialogTitle>
+        <DialogTitle>{capitalizeFirstLetter(variant)} Bounty</DialogTitle>
         <DialogDescription>
-          Create your bounty here. Click save when you're done.
+          {capitalizeFirstLetter(variant)} your bounty here. Click save when
+          you're done.
         </DialogDescription>
       </DialogHeader>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(submitData)}>
+        <form
+          onSubmit={form.handleSubmit(submitData)}
+          className='px-2 grid gap-3 max-h-[80vh] overflow-y-auto'
+        >
           <FormField
             control={form.control}
             name='title'
@@ -193,21 +159,38 @@ export const BountyForm = ({ programId }: { programId: string }) => {
             name='severity'
             render={({ field }) => (
               <FormItem>
-                <FormLabel htmlFor='status'>Status</FormLabel>
+                <FormLabel htmlFor='severity'>Severity</FormLabel>
                 <FormControl>
                   <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger id='status' aria-label='Select severity'>
-                      <SelectValue placeholder={'Select a status'} {...field} />
+                    <SelectTrigger id='severity' aria-label='Select severity'>
+                      <SelectValue
+                        placeholder={'Select a severity'}
+                        {...field}
+                      />
                     </SelectTrigger>
                     <SelectContent>
-                      {response.severityRewards.map((severityReward) => (
-                        <SelectItem
-                          key={severityReward.id}
-                          value={severityReward.id}
-                        >
-                          {capitalizeFirstLetter(severityReward.severity)}
+                      {isLoading && (
+                        <SelectItem value={'loading'}>Loading...</SelectItem>
+                      )}
+                      {isError && (
+                        <SelectItem value={'error'}>
+                          Error loading severities
                         </SelectItem>
-                      ))}
+                      )}
+                      {isSuccess &&
+                        response.severityRewards.map(
+                          (severityReward: {
+                            id: string
+                            severity: string
+                          }) => (
+                            <SelectItem
+                              key={severityReward.id}
+                              value={severityReward.id}
+                            >
+                              {capitalizeFirstLetter(severityReward.severity)}
+                            </SelectItem>
+                          )
+                        )}
                     </SelectContent>
                   </Select>
                 </FormControl>
@@ -238,14 +221,16 @@ export const BountyForm = ({ programId }: { programId: string }) => {
               <FormItem>
                 <FormLabel>Notes</FormLabel>
                 <FormControl>
-                  <Input placeholder='e.g Terms and conditions' {...field} />
+                  <Textarea placeholder='e.g Terms and conditions' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
           <DialogFooter className='mt-4'>
-            <Button type='submit'>Save</Button>
+            <DialogClose asChild>
+              <Button type='submit'>Save</Button>
+            </DialogClose>
           </DialogFooter>
         </form>
       </Form>
