@@ -1,0 +1,108 @@
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card'
+import { useGetBountyByIdQuery } from '../bountyApiSlice'
+import { useParams } from 'react-router-dom'
+import { Button } from '@/components/ui/button'
+import { formatDateTime } from '@/utils/dateFormatter'
+import { Separator } from '@/components/ui/separator'
+import { useGetSeverityRewardByIdQuery } from '@/features/severityReward/severityRewardSlice'
+import { Badge } from '@/components/ui/badge'
+
+export const BountyDetailsPage = () => {
+  const { bountyId } = useParams()
+  const {
+    data: response,
+    isLoading,
+    isError,
+    isSuccess
+  } = useGetBountyByIdQuery(bountyId)
+
+  if (isLoading) return <p>is loading</p>
+  if (isError) return <p>is error</p>
+  if (isSuccess) {
+    const bounty = response.bounty
+    return (
+      <main className='my-10 flex flex-col gap-10'>
+        <Card className='max-w-screen-lg' key={bounty.id}>
+          <CardHeader>
+            <div className='flex justify-between'>
+              <CardTitle className='text-xl'>{bounty.title}</CardTitle>
+              <div className='flex gap-3'>
+                <Button variant={'secondary'}>{bounty.status}</Button>
+                <Button>Edit</Button>
+              </div>
+            </div>
+          </CardHeader>
+
+          <CardContent className='grid gap-8'>
+            <div className='grid gap-2'>
+              <h4 className='text-sm font-medium leading-none mb-2'>
+                Description
+              </h4>
+              <Separator />
+              {bounty.description}
+            </div>
+
+            <div className='grid gap-2'>
+              <h4 className='text-sm font-medium leading-none mb-2'>
+                Severity Reward (€)
+              </h4>
+              <Separator />
+              <SeverityRewardBadge severityRewardId={bounty.severityRewardId} />
+            </div>
+
+            <div className='grid gap-2'>
+              <h4 className='text-sm font-medium leading-none mb-2'>Notes</h4>
+              <Separator />
+              {bounty.description}
+            </div>
+
+            <div className='py-2 text-sm flex flex-col gap-2'>
+              <div>
+                <span className='font-semibold'>Created: </span>
+                {formatDateTime(bounty.createdAt)}
+              </div>
+              <div>
+                <span className='font-semibold'>Updated: </span>
+                {formatDateTime(bounty.updatedAt)}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </main>
+    )
+  }
+}
+
+const SeverityRewardBadge = ({
+  severityRewardId
+}: { severityRewardId: string }) => {
+  const {
+    data: response,
+    isLoading,
+    isError,
+    isSuccess
+  } = useGetSeverityRewardByIdQuery(severityRewardId)
+
+  if (isLoading) return
+  if (isError) return
+  if (isSuccess) {
+    const severityReward = response.severityReward
+    const severity: 'high' | 'low' | 'medium' | 'critical' =
+      severityReward.severity.toLowerCase()
+    return (
+      <div className='flex items-center space-x-10 text-sm'>
+        <Badge variant={severity}>{severityReward.severity}</Badge>
+        <div>
+          {severityReward.min} - {severityReward.max}
+        </div>
+      </div>
+    )
+  }
+}

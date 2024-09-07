@@ -14,7 +14,6 @@ import { ThemeProvider } from '@/components/theme-provider'
 import CompanyUsers from './features/company/CompanyUsers'
 import Dashboard from './features/company/Dashboard'
 import AddProgram from './features/program/AddProgram'
-import Program from './features/program/Program'
 import Login from './pages/Login'
 import { ProgramApply } from './features/program/ProgramApply'
 import ProgramsList from './features/program/ProgramsList'
@@ -33,9 +32,11 @@ import ProgramManagementPage from './features/program/ProgramManagementPage'
 import { ApplicationsPage } from './features/application/ApplicationsPage'
 import ProgramDetails from './features/program/ProgramDetails'
 import { ApplicationsTab } from './features/application/enterprise/ApplicationsTab'
-import { BountiesTable } from './features/bounty/BountiesTable'
 import { AllProgramsTable } from './features/program/AllProgramsTable'
 import { AllProgramsPage } from './features/program/AllProgramsPage'
+import { BountiesPage } from './features/bounty/enterprise/BountiesPage'
+import { BountiesTablePage } from './features/bounty/enterprise/BountiesTablePage'
+import { BountyDetailsPage } from './features/bounty/enterprise/BountyDetailsPage'
 
 const router = createBrowserRouter([
   {
@@ -109,7 +110,17 @@ const router = createBrowserRouter([
                   },
                   {
                     path: 'bounties',
-                    element: <BountiesTable />
+                    element: <BountiesPage />,
+                    children: [
+                      {
+                        index: true,
+                        element: <BountiesTablePage />
+                      },
+                      {
+                        path: ':bountyId',
+                        element: <BountyDetailsPage />
+                      }
+                    ]
                   },
                   {
                     path: 'applications',
