@@ -93,14 +93,13 @@ export default function CompanyUsers() {
 
   const submitData = async (data: MemberData) => {
     try {
-      const addedProgram = await addCompanyMember({
+      await addCompanyMember({
         name: data.name,
         email: data.email
       }).unwrap()
       form.reset({})
-      console.log('Program added:', addedProgram)
     } catch (error) {
-      console.error('Error adding program:', error)
+      console.error('Error inviting user:', error)
     }
   }
 
