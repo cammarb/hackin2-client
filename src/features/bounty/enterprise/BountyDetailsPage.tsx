@@ -1,11 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useGetBountyByIdQuery } from '../bountyApiSlice'
 import { useParams } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
@@ -13,6 +6,8 @@ import { formatDateTime } from '@/utils/dateFormatter'
 import { Separator } from '@/components/ui/separator'
 import { useGetSeverityRewardByIdQuery } from '@/features/severityReward/severityRewardSlice'
 import { Badge } from '@/components/ui/badge'
+import { Dialog, DialogTrigger } from '@/components/ui/dialog'
+import { BountyForm } from './BountyForm'
 
 export const BountyDetailsPage = () => {
   const { bountyId } = useParams()
@@ -34,8 +29,19 @@ export const BountyDetailsPage = () => {
             <div className='flex justify-between'>
               <CardTitle className='text-xl'>{bounty.title}</CardTitle>
               <div className='flex gap-3'>
-                <Button variant={'secondary'}>{bounty.status}</Button>
-                <Button>Edit</Button>
+                <Button variant={'secondary'} asChild>
+                  <p>{bounty.status}</p>
+                </Button>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant='outline'>Edit</Button>
+                  </DialogTrigger>
+                  <BountyForm
+                    variant='edit'
+                    bounty={bounty}
+                    programId={bounty.programId}
+                  />
+                </Dialog>
               </div>
             </div>
           </CardHeader>
@@ -55,6 +61,12 @@ export const BountyDetailsPage = () => {
               </h4>
               <Separator />
               <SeverityRewardBadge severityRewardId={bounty.severityRewardId} />
+            </div>
+
+            <div className='grid gap-2'>
+              <h4 className='text-sm font-medium leading-none mb-2'>Scope</h4>
+              <Separator />
+              {bounty.description}
             </div>
 
             <div className='grid gap-2'>

@@ -1,5 +1,5 @@
 import { Outlet, useLocation, useParams } from 'react-router-dom'
-import { BountyForm } from './BountiesTable'
+import { BountyForm } from './BountyForm'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import Breadcrumbs from '@/components/Breadcrumb'
@@ -19,7 +19,7 @@ export const BountiesPage = () => {
           <DialogTrigger asChild>
             <Button>Add Bounty</Button>
           </DialogTrigger>
-          {id && <BountyForm programId={id} />}
+          {id && <BountyForm programId={id} variant='create' />}
         </Dialog>
       </div>
       <div>
