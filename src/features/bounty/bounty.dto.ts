@@ -7,4 +7,6 @@ type Bounty = {
   status: string
   scope?: string
   notes?: string
+  createdAt: string
+  updatedAt: string
 }

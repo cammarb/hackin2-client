@@ -8,6 +8,7 @@ import { useGetSeverityRewardByIdQuery } from '@/features/severityReward/severit
 import { Badge } from '@/components/ui/badge'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { BountyForm } from './BountyForm'
+import { useGetUserQuery } from '@/features/user/userSlice'
 
 export const BountyDetailsPage = () => {
   const { bountyId } = useParams()
@@ -24,71 +25,109 @@ export const BountyDetailsPage = () => {
     const bounty = response.bounty
     return (
       <main className='my-10 flex flex-col gap-10'>
-        <Card className='max-w-screen-lg' key={bounty.id}>
-          <CardHeader>
-            <div className='flex justify-between'>
-              <CardTitle className='text-xl'>{bounty.title}</CardTitle>
-              <div className='flex gap-3'>
-                <Button variant={'secondary'} asChild>
-                  <p>{bounty.status}</p>
-                </Button>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button variant='outline'>Edit</Button>
-                  </DialogTrigger>
-                  <BountyForm
-                    variant='edit'
-                    bounty={bounty}
-                    programId={bounty.programId}
-                  />
-                </Dialog>
-              </div>
-            </div>
-          </CardHeader>
-
-          <CardContent className='grid gap-8'>
-            <div className='grid gap-2'>
-              <h4 className='text-sm font-medium leading-none mb-2'>
-                Description
-              </h4>
-              <Separator />
-              {bounty.description}
-            </div>
-
-            <div className='grid gap-2'>
-              <h4 className='text-sm font-medium leading-none mb-2'>
-                Severity Reward (€)
-              </h4>
-              <Separator />
-              <SeverityRewardBadge severityRewardId={bounty.severityRewardId} />
-            </div>
-
-            <div className='grid gap-2'>
-              <h4 className='text-sm font-medium leading-none mb-2'>Scope</h4>
-              <Separator />
-              {bounty.description}
-            </div>
-
-            <div className='grid gap-2'>
-              <h4 className='text-sm font-medium leading-none mb-2'>Notes</h4>
-              <Separator />
-              {bounty.description}
-            </div>
-
-            <div className='py-2 text-sm flex flex-col gap-2'>
-              <div>
-                <span className='font-semibold'>Created: </span>
-                {formatDateTime(bounty.createdAt)}
-              </div>
-              <div>
-                <span className='font-semibold'>Updated: </span>
-                {formatDateTime(bounty.updatedAt)}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <BountyCard bounty={bounty} />
+        <AssignedUsersCard assignedUsers={bounty.assignedUsers} />
       </main>
     )
+  }
+}
+
+export const BountyCard = ({ bounty }: { bounty: Bounty }) => {
+  return (
+    <Card className='max-w-screen-lg' key={bounty.id}>
+      <CardHeader>
+        <div className='flex justify-between'>
+          <CardTitle className='text-xl'>{bounty.title}</CardTitle>
+          <div className='flex gap-3'>
+            <Button variant={'secondary'} asChild>
+              <p>{bounty.status}</p>
+            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant='outline'>Edit</Button>
+              </DialogTrigger>
+              <BountyForm
+                variant='edit'
+                bounty={bounty}
+                programId={bounty.programId}
+              />
+            </Dialog>
+          </div>
+        </div>
+      </CardHeader>
+
+      <CardContent className='grid gap-8'>
+        <div className='grid gap-2'>
+          <h4 className='text-sm font-medium leading-none mb-2'>Description</h4>
+          <Separator />
+          {bounty.description}
+        </div>
+
+        <div className='grid gap-2'>
+          <h4 className='text-sm font-medium leading-none mb-2'>
+            Severity Reward (€)
+          </h4>
+          <Separator />
+          <SeverityRewardBadge severityRewardId={bounty.severityRewardId} />
+        </div>
+
+        <div className='grid gap-2'>
+          <h4 className='text-sm font-medium leading-none mb-2'>Scope</h4>
+          <Separator />
+          {bounty.description}
+        </div>
+
+        <div className='grid gap-2'>
+          <h4 className='text-sm font-medium leading-none mb-2'>Notes</h4>
+          <Separator />
+          {bounty.description}
+        </div>
+
+        <div className='py-2 text-sm flex flex-col gap-2'>
+          <div>
+            <span className='font-semibold'>Created: </span>
+            {formatDateTime(bounty.createdAt)}
+          </div>
+          <div>
+            <span className='font-semibold'>Updated: </span>
+            {formatDateTime(bounty.updatedAt)}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+export const AssignedUsersCard = ({
+  assignedUsers
+}: { assignedUsers: object }) => {
+  return (
+    <Card>
+      <CardHeader>
+        <div className='flex justify-between'>
+          <CardTitle className='text-xl'>Assigned Users</CardTitle>
+        </div>
+      </CardHeader>
+      <CardContent>
+        {assignedUsers.map((user) => {
+          return <User key={user.userId} userId={user.userId} />
+        })}
+      </CardContent>
+    </Card>
+  )
+}
+
+export const User = ({ userId }: { userId: string }) => {
+  const {
+    data: response,
+    isLoading,
+    isError,
+    isSuccess
+  } = useGetUserQuery(userId)
+
+  if (isSuccess) {
+    const user = response.user
+    return <p>{user.username}</p>
   }
 }
 
