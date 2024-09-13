@@ -1,24 +1,28 @@
 import { Badge } from '@/components/ui/badge'
 import { formatDateTime } from '@/utils/dateFormatter'
 import type { ColumnDef } from '@tanstack/react-table'
-import { NavLink } from 'react-router-dom'
-import { ArrowUpDown, MoreHorizontal } from 'lucide-react'
+import { NavLink, useParams } from 'react-router-dom'
+import { ArrowUpDown, Ban, Check, MoreHorizontal } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { capitalizeFirstLetter } from '@/utils/stringFormatter'
 import type { Application } from '../pentester/ApplicationsPage'
+import { Dialog, DialogTrigger } from '@/components/ui/dialog'
+import { UpdateApplicationForm } from '../enterprise/ApplicationUpdateForm'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useGetBountyAssignmentsQuery } from '@/features/bounty/bountyApiSlice'
 
 export const columns: ColumnDef<Application>[] = [
   {
-    accessorKey: 'User',
+    accessorFn: (row) => row.User.username,
+    id: 'username',
     header: ({ column }) => {
       return (
         <Button
@@ -31,10 +35,10 @@ export const columns: ColumnDef<Application>[] = [
       )
     },
     cell: ({ row }) => {
-      const user: string = row.getValue('User')
+      const user: string = row.getValue('username')
       return (
         <div className='hover:text-primary'>
-          <NavLink to={`${user.id}`}>{user.username}</NavLink>
+          <NavLink to={`${user}`}>{user}</NavLink>
         </div>
       )
     }
@@ -44,17 +48,17 @@ export const columns: ColumnDef<Application>[] = [
     header: 'Status',
     cell: ({ row }) => {
       const status: string = row.getValue('status')
-      let variant: 'draft' | 'active' | 'complete' | null | undefined
+      let variant: 'draft' | 'destructive' | 'complete' | null | undefined
       switch (status) {
         case 'PENDING': {
           variant = 'draft'
           break
         }
-        case 'IN_PROGRESS': {
-          variant = 'active'
+        case 'REJECTED': {
+          variant = 'destructive'
           break
         }
-        case 'DONE': {
+        case 'ACCEPTED': {
           variant = 'complete'
           break
         }
@@ -107,31 +111,57 @@ export const columns: ColumnDef<Application>[] = [
     id: 'actions',
     cell: ({ row }) => {
       const application = row.original
+      const { data: response, isSuccess } = useGetBountyAssignmentsQuery({
+        key: 'user',
+        value: application.userId
+      })
+
+      const [dialogContent, setDialogContent] = useState<string | null>(null)
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant='ghost' className='h-8 w-8 p-0'>
-              <span className='sr-only'>Open menu</span>
-              <MoreHorizontal className='h-4 w-4' />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align='end'>
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(application.id)}
-            >
-              Copy Application ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link to={`bounties/${application.bounty}`}>
-                View Bounty Assigned
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>View Submissions</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <Dialog>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant='ghost' className='h-8 w-8 p-0'>
+                <span className='sr-only'>Open menu</span>
+                <MoreHorizontal className='h-4 w-4' />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align='end'>
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuItem onClick={() => setDialogContent('accept')}>
+                <DialogTrigger className='w-full flex gap-2 items-center'>
+                  Accept
+                  <Check size={16} />
+                </DialogTrigger>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setDialogContent('decline')}>
+                <DialogTrigger
+                  content='decline'
+                  className='w-full flex gap-2 items-center'
+                >
+                  Decline
+                  <Ban size={16} />
+                </DialogTrigger>
+              </DropdownMenuItem>
+              {application.status === 'ACCEPTED' ? (
+                <DropdownMenuItem asChild>
+                  {isSuccess ? (
+                    <Link
+                      to={`/programs/${application.programId}/bounties/${response.bountyAssignments[0].bountyId}`}
+                    >
+                      View Bounty
+                    </Link>
+                  ) : null}
+                </DropdownMenuItem>
+              ) : null}
+            </DropdownMenuContent>
+            <UpdateApplicationForm
+              application={application}
+              dialog={dialogContent}
+            />
+          </DropdownMenu>
+        </Dialog>
       )
     }
   }

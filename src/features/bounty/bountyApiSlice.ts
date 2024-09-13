@@ -31,6 +31,13 @@ export const bountyApiSlice = apiConnection.injectEndpoints({
         method: 'GET'
       }),
       providesTags: ['Bounty']
+    }),
+    getBountyAssignments: builder.query({
+      query: ({ key, value }) => ({
+        url: `/bounty-assignments?${key}=${value}`,
+        method: 'GET'
+      }),
+      providesTags: ['Bounty']
     })
   })
 })
@@ -39,5 +46,6 @@ export const {
   useNewBountyMutation,
   useEditBountyMutation,
   useGetBountyByIdQuery,
-  useGetBountiesQuery
+  useGetBountiesQuery,
+  useGetBountyAssignmentsQuery
 } = bountyApiSlice

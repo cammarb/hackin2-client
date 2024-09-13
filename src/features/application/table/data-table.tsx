@@ -29,6 +29,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
+import { useGetBountyAssignmentsQuery } from '@/features/bounty/bountyApiSlice'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -41,6 +42,11 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const { data: response, isSuccess } = useGetBountyAssignmentsQuery({
+    key: 'bounty',
+    value: '7db22c34-3ba5-4342-ab88-ad616edde722'
+  })
+  console.log(response)
 
   const table = useReactTable({
     data,
@@ -62,9 +68,11 @@ export function DataTable<TData, TValue>({
       <div className='flex gap-4 items-center py-4'>
         <Input
           placeholder='Search Users'
-          value={(table.getColumn('User')?.getFilterValue() as string) ?? ''}
+          value={
+            (table.getColumn('username')?.getFilterValue() as string) ?? ''
+          }
           onChange={(event) =>
-            table.getColumn('User')?.setFilterValue(event.target.value)
+            table.getColumn('username')?.setFilterValue(event.target.value)
           }
           className='max-w-sm'
         />
@@ -81,9 +89,9 @@ export function DataTable<TData, TValue>({
             <SelectGroup>
               <SelectLabel>Status</SelectLabel>
               <SelectItem value={null}>All</SelectItem>
+              <SelectItem value='ACCEPTED'>Accepted</SelectItem>
+              <SelectItem value='REJECTED'>Rejected</SelectItem>
               <SelectItem value='PENDING'>Pending</SelectItem>
-              <SelectItem value='IN_PROGRESS'>In Progress</SelectItem>
-              <SelectItem value='DONE'>Done</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
