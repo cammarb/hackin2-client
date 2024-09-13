@@ -17,9 +17,35 @@ import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { UpdateApplicationForm } from '../enterprise/ApplicationUpdateForm'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useGetBountyAssignmentsQuery } from '@/features/bounty/bountyApiSlice'
 
 export const columns: ColumnDef<Application>[] = [
+  {
+    accessorFn: (row) => row.Bounty.title,
+    id: 'title',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Bounty
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+      )
+    },
+    cell: ({ row }) => {
+      const application: Application = row.original
+      return (
+        <div className='hover:text-primary'>
+          <NavLink
+            to={`/programs/${application.Bounty.programId}/bounties/${application.bountyId}`}
+          >
+            {application.Bounty.title}
+          </NavLink>
+        </div>
+      )
+    }
+  },
   {
     accessorFn: (row) => row.User.username,
     id: 'username',
@@ -111,10 +137,6 @@ export const columns: ColumnDef<Application>[] = [
     id: 'actions',
     cell: ({ row }) => {
       const application = row.original
-      const { data: response, isSuccess } = useGetBountyAssignmentsQuery({
-        key: 'user',
-        value: application.userId
-      })
 
       const [dialogContent, setDialogContent] = useState<string | null>(null)
 
@@ -129,13 +151,13 @@ export const columns: ColumnDef<Application>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end'>
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem onClick={() => setDialogContent('accept')}>
+              <DropdownMenuItem onClick={() => setDialogContent('Accept')}>
                 <DialogTrigger className='w-full flex gap-2 items-center'>
                   Accept
                   <Check size={16} />
                 </DialogTrigger>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setDialogContent('decline')}>
+              <DropdownMenuItem onClick={() => setDialogContent('Decline')}>
                 <DialogTrigger
                   content='decline'
                   className='w-full flex gap-2 items-center'
@@ -146,13 +168,11 @@ export const columns: ColumnDef<Application>[] = [
               </DropdownMenuItem>
               {application.status === 'ACCEPTED' ? (
                 <DropdownMenuItem asChild>
-                  {isSuccess ? (
-                    <Link
-                      to={`/programs/${application.programId}/bounties/${response.bountyAssignments[0].bountyId}`}
-                    >
-                      View Bounty
-                    </Link>
-                  ) : null}
+                  <Link
+                    to={`/programs/${application.Bounty.programId}/bounties/${application.bountyId}`}
+                  >
+                    View Bounty
+                  </Link>
                 </DropdownMenuItem>
               ) : null}
             </DropdownMenuContent>

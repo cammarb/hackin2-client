@@ -1,6 +1,7 @@
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle
@@ -10,15 +11,19 @@ import type { Program } from '@/utils/types'
 import { Separator } from '@/components/ui/separator'
 import { Link, useParams } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
-import { Globe, MapPin } from 'lucide-react'
+import { Building2, Globe, MapIcon, MapPin, NotebookTabs } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { formatDate } from '@/utils/dateFormatter'
 import { useNewApplicationMutation } from '../application/applicationApiSlice'
-import { toast, useToast } from '@/components/ui/use-toast'
-import { ToastAction } from '@/components/ui/toast'
+import { useToast } from '@/components/ui/use-toast'
+import { useSelector } from 'react-redux'
+import { selectCurrentUser } from '../auth/authSlice'
+import { useGetBountiesQuery } from '@/features/bounty/bountyApiSlice'
+import { MagnifyingGlassIcon } from '@radix-ui/react-icons'
 
 export default function ProgramView() {
   const { id } = useParams()
+
   const {
     data: response,
     isLoading,
@@ -26,26 +31,12 @@ export default function ProgramView() {
     isError,
     error
   } = useGetProgramByIdQuery(id)
-  const [apply] = useNewApplicationMutation()
-  const { toast } = useToast()
 
   let program: Program
 
   if (isLoading) return <>Loading...</>
   if (isSuccess) {
     program = response.program
-    const applyToProgram = async () => {
-      try {
-        await apply({ programId: id })
-        toast({
-          title: 'Success!',
-          description: `You've applied to ${program.name}`
-        })
-      } catch (error) {
-        console.error(error)
-      }
-    }
-
     return (
       <main className='m-10 flex flex-col gap-10'>
         <Card
@@ -116,12 +107,89 @@ export default function ProgramView() {
               )}
             </div>
           </CardContent>
-          <CardFooter>
-            <Button onClick={applyToProgram}>Apply</Button>
-          </CardFooter>
         </Card>
+        {id && <BountyCard programId={id} />}
       </main>
     )
   }
   if (isError) return <>{error}</>
+}
+
+export const BountyCard = ({ programId }: { programId: string }) => {
+  const {
+    data: response,
+    isLoading,
+    isError,
+    isSuccess
+  } = useGetBountiesQuery({ key: 'program', value: programId })
+  const user = useSelector(selectCurrentUser)
+  const [apply] = useNewApplicationMutation()
+  const { toast } = useToast()
+
+  const applyToBounty = async (id: string) => {
+    try {
+      const application = await apply({ bountyId: id, userId: user?.id })
+
+      if ('data' in application) {
+        toast({
+          title: 'Success!',
+          description: `You've applied to the Bounty ${id}`
+        })
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  if (isSuccess) {
+    const bounties = response.bounties
+
+    return (
+      <div>
+        {bounties.map(
+          (bounty: {
+            id: string
+            title: string
+            description: string
+            scope: string
+            notes: string
+            updatedAt: string
+          }) => (
+            <Card
+              key={bounty.id}
+              className='mx-auto sm:w-[100%] md:w-[80%] lg:w-[60%]'
+            >
+              <CardHeader className='grid grid-cols-[1fr_110px] items-start gap-4 space-y-0'>
+                <div className='space-y-1'>
+                  <CardTitle>{bounty.title}</CardTitle>
+                  <CardDescription>{bounty.description} </CardDescription>
+                </div>
+                <Button onClick={() => applyToBounty(bounty.id)}>Apply</Button>
+              </CardHeader>
+              <CardContent>
+                <div className='grid gap-4'>
+                  <div>
+                    <div className='flex items-center text-muted-foreground'>
+                      <NotebookTabs className='mr-1 h-3 w-3' />
+                      Notes
+                    </div>
+                    {bounty.notes}
+                  </div>
+                  <div>
+                    <div className='flex items-center text-muted-foreground'>
+                      <MagnifyingGlassIcon className='mr-1 h-4 w-4' />
+                      Scope
+                    </div>
+                    {bounty.scope}
+                  </div>
+                  <div>Last updated: {formatDate(bounty.updatedAt)}</div>
+                </div>
+              </CardContent>
+            </Card>
+          )
+        )}
+      </div>
+    )
+  }
+  return <></>
 }
