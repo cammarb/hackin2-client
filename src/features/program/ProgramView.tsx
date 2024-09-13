@@ -2,7 +2,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
@@ -11,7 +10,7 @@ import type { Program } from '@/utils/types'
 import { Separator } from '@/components/ui/separator'
 import { Link, useParams } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
-import { Building2, Globe, MapIcon, MapPin, NotebookTabs } from 'lucide-react'
+import { Globe, MapPin, NotebookTabs } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { formatDate } from '@/utils/dateFormatter'
 import { useNewApplicationMutation } from '../application/applicationApiSlice'
@@ -121,7 +120,10 @@ export const BountyCard = ({ programId }: { programId: string }) => {
     isLoading,
     isError,
     isSuccess
-  } = useGetBountiesQuery({ key: 'program', value: programId })
+  } = useGetBountiesQuery([
+    { key: 'program', value: programId },
+    { key: 'status', value: 'IN_PROGRESS' }
+  ])
   const user = useSelector(selectCurrentUser)
   const [apply] = useNewApplicationMutation()
   const { toast } = useToast()
@@ -141,7 +143,9 @@ export const BountyCard = ({ programId }: { programId: string }) => {
     }
   }
 
-  if (isSuccess) {
+  if (isLoading) return <p>is loading</p>
+  if (isError) return <p>errro</p>
+  if (isSuccess && response.bounties) {
     const bounties = response.bounties
 
     return (
@@ -191,5 +195,9 @@ export const BountyCard = ({ programId }: { programId: string }) => {
       </div>
     )
   }
+  if (isSuccess && response.message) {
+    return <>{response.message}</>
+  }
+
   return <></>
 }

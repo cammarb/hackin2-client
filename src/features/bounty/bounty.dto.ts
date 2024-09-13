@@ -10,3 +10,10 @@ type Bounty = {
   createdAt: string
   updatedAt: string
 }
+
+type BountyAssignment = {
+  id: string
+  bountyId: string
+  userId: string
+  assignedAt: string
+}

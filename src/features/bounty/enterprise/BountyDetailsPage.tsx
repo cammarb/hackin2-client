@@ -1,5 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { useGetBountyByIdQuery } from '../bountyApiSlice'
+import {
+  useGetBountyAssignmentsQuery,
+  useGetBountyByIdQuery
+} from '../bountyApiSlice'
 import { useParams } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { formatDateTime } from '@/utils/dateFormatter'
@@ -22,11 +25,11 @@ export const BountyDetailsPage = () => {
   if (isLoading) return <p>is loading</p>
   if (isError) return <p>is error</p>
   if (isSuccess) {
-    const bounty = response.bounty
+    const bounty: Bounty = response.bounty
     return (
       <main className='my-10 flex flex-col gap-10'>
         <BountyCard bounty={bounty} />
-        <AssignedUsersCard assignedUsers={bounty.assignedUsers} />
+        <AssignedUsersCard bountyId={bounty.id} />
       </main>
     )
   }
@@ -98,9 +101,30 @@ export const BountyCard = ({ bounty }: { bounty: Bounty }) => {
   )
 }
 
-export const AssignedUsersCard = ({
-  assignedUsers
-}: { assignedUsers: object }) => {
+export const AssignedUsersCard = ({ bountyId }: { bountyId: string }) => {
+  const {
+    data: response,
+    isLoading,
+    isError,
+    isSuccess
+  } = useGetBountyAssignmentsQuery({ key: 'bounty', value: bountyId })
+
+  let assignedUsers = []
+  if (isSuccess) {
+    const bountyAssignments = response.bountyAssignments
+    assignedUsers = bountyAssignments.map(
+      (bountyAssignment: BountyAssignment) => {
+        return (
+          <div key={bountyAssignment.id}>
+            <User userId={bountyAssignment.userId} />
+          </div>
+        )
+      }
+    )
+  }
+  if (isLoading) return <p>is loading</p>
+  if (isLoading) return <p>error</p>
+
   return (
     <Card>
       <CardHeader>
@@ -108,11 +132,7 @@ export const AssignedUsersCard = ({
           <CardTitle className='text-xl'>Assigned Users</CardTitle>
         </div>
       </CardHeader>
-      <CardContent>
-        {assignedUsers.map((user) => {
-          return <User key={user.userId} userId={user.userId} />
-        })}
-      </CardContent>
+      <CardContent>{assignedUsers}</CardContent>
     </Card>
   )
 }
