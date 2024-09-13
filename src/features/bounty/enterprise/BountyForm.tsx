@@ -37,6 +37,7 @@ import { useGetSeverityRewardsQuery } from '../../severityReward/severityRewardS
 const formSchema = z.object({
   title: z.string(),
   description: z.string(),
+  status: z.string(),
   severity: z.string(),
   scope: z.string(),
   notes: z.string()
@@ -64,6 +65,7 @@ export const BountyForm = ({
       title: '',
       description: '',
       severity: '',
+      status: '',
       scope: '',
       notes: ''
     }
@@ -75,6 +77,7 @@ export const BountyForm = ({
       defaultValues: {
         title: bounty.title,
         description: bounty.description,
+        status: bounty.status,
         severity: bounty.severityRewardId,
         scope: bounty.scope,
         notes: bounty.notes
@@ -85,19 +88,18 @@ export const BountyForm = ({
   const submitData = async (data: z.infer<typeof formSchema>) => {
     try {
       if (variant === 'edit') {
-        console.log('before editing')
         await editBounty({
           id: bounty?.id,
           body: {
             programId: programId,
             title: data.title,
             description: data.description,
+            status: data.status,
             severityRewardId: data.severity,
             scope: data.scope,
             notes: data.notes
           }
         }).unwrap()
-        console.log('after editing')
       }
       if (variant === 'create') {
         await addBounty({
@@ -149,6 +151,28 @@ export const BountyForm = ({
                 <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Textarea placeholder='Bounty description' {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='status'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor='status'>Status</FormLabel>
+                <FormControl>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger id='status' aria-label='Select status'>
+                      <SelectValue placeholder={'Select status'} {...field} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value={'PENDING'}>Pending</SelectItem>
+                      <SelectItem value={'IN_PROGRESS'}>In Progress</SelectItem>
+                      <SelectItem value={'DONE'}>Done</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormMessage />
               </FormItem>
