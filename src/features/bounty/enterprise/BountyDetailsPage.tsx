@@ -123,7 +123,7 @@ export const AssignedUsersCard = ({ bountyId }: { bountyId: string }) => {
     )
   }
   if (isLoading) return <p>is loading</p>
-  if (isLoading) return <p>error</p>
+  if (isError) return <p>error</p>
 
   return (
     <Card>
@@ -149,6 +149,8 @@ export const User = ({ userId }: { userId: string }) => {
     const user = response.user
     return <p>{user.username}</p>
   }
+  if (isLoading) return <p>is loading</p>
+  if (isError) return <p>error</p>
 }
 
 const SeverityRewardBadge = ({
