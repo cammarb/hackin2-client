@@ -81,6 +81,7 @@ function NavItem({ isCollapsed, navLink, navName, icon }: NavItemProps) {
                   }
                 )
               }
+              end={true}
             >
               {icon}
               <span className='sr-only'>{navName}</span>

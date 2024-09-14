@@ -11,33 +11,34 @@ import NotFound from '@/pages/Error/404'
 import Home from '@/pages/Home'
 
 import { ThemeProvider } from '@/components/theme-provider'
-import CompanyUsers from './features/company/CompanyUsers'
-import Dashboard from './features/company/Dashboard'
-import AddProgram from './features/program/AddProgram'
+import CompanyUsers from '@/features/company/CompanyUsers'
+import Dashboard from '@/features/company/Dashboard'
+import AddProgram from '@/features/program/AddProgram'
 import Login from './pages/Login'
-import { ProgramApply } from './features/program/ProgramApply'
-import ProgramsList from './features/program/ProgramsList'
-import ProgramView from './features/program/ProgramView'
-import SubmissionsList from './features/submission/SubmissionsList'
+import { ProgramApply } from '@/features/program/ProgramApply'
+import ProgramsList from '@/features/program/ProgramsList'
+import ProgramView from '@/features/program/ProgramView'
+import SubmissionsList from '@/features/submission/SubmissionsList'
 import Register from './pages/Register'
-import SubmissionDetails from './features/submission/SubmissionDetails'
-import { UserSettings } from './features/user/UserSettings'
-import { GeneralSettings } from './features/user/GeneralSettings'
-import { ChangePassword } from './features/user/ChangePassword'
-import { RequireRole } from './features/auth/RequireRole'
-import { authLoader } from './features/auth/authLoader'
-import { RequireAuthentication } from './features/auth/RequireAuthentication'
-import { Unauthenticated } from './features/auth/Unauthenticated'
-import ProgramManagementPage from './features/program/ProgramManagementPage'
-import ProgramDetails from './features/program/ProgramDetails'
-import { AllProgramsTable } from './features/program/AllProgramsTable'
-import { AllProgramsPage } from './features/program/AllProgramsPage'
-import { BountiesPage } from './features/bounty/enterprise/BountiesPage'
-import { BountiesTablePage } from './features/bounty/enterprise/BountiesTablePage'
-import { BountyDetailsPage } from './features/bounty/enterprise/BountyDetailsPage'
-import { ApplicationsPage } from './features/application/pentester/ApplicationsPage'
-import { ApplicationsPage as ApplicationsPageEnterprise } from './features/application/enterprise/ApplicationsPage'
-import { ApplicationsTablePage } from './features/application/enterprise/ApplicationsTablePage'
+import SubmissionDetails from '@/features/submission/SubmissionDetails'
+import { UserSettings } from '@/features/user/UserSettings'
+import { GeneralSettings } from '@/features/user/GeneralSettings'
+import { ChangePassword } from '@/features/user/ChangePassword'
+import { RequireRole } from '@/features/auth/RequireRole'
+import { authLoader } from '@/features/auth/authLoader'
+import { RequireAuthentication } from '@/features/auth/RequireAuthentication'
+import { Unauthenticated } from '@/features/auth/Unauthenticated'
+import ProgramManagementPage from '@/features/program/ProgramManagementPage'
+import ProgramDetails from '@/features/program/ProgramDetails'
+import { AllProgramsTable } from '@/features/program/AllProgramsTable'
+import { AllProgramsPage } from '@/features/program/AllProgramsPage'
+import { BountiesPage } from '@/features/bounty/enterprise/BountiesPage'
+import { BountiesTablePage } from '@/features/bounty/enterprise/BountiesTablePage'
+import { BountyDetailsPage } from '@/features/bounty/enterprise/BountyDetailsPage'
+import { ApplicationsPage } from '@/features/application/pentester/ApplicationsPage'
+import { ApplicationsPage as ApplicationsPageEnterprise } from '@/features/application/enterprise/ApplicationsPage'
+import { ApplicationsTablePage } from '@/features/application/enterprise/ApplicationsTablePage'
+import { BountyPage } from './features/bounty/BountyPage'
 
 const router = createBrowserRouter([
   {
@@ -167,6 +168,10 @@ const router = createBrowserRouter([
               {
                 path: 'applications',
                 element: <ApplicationsPage />
+              },
+              {
+                path: 'bounties',
+                element: <BountyPage />
               }
             ]
           }

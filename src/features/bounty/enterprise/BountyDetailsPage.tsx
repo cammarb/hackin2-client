@@ -12,6 +12,8 @@ import { Badge } from '@/components/ui/badge'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { BountyForm } from './BountyForm'
 import { useGetUserQuery } from '@/features/user/userSlice'
+import { DataTable } from '../AssignmentTable/data-table'
+import { columns } from '../AssignmentTable/columns'
 
 export const BountyDetailsPage = () => {
   const { bountyId } = useParams()
@@ -109,18 +111,10 @@ export const AssignedUsersCard = ({ bountyId }: { bountyId: string }) => {
     isSuccess
   } = useGetBountyAssignmentsQuery({ key: 'bounty', value: bountyId })
 
-  let assignedUsers = []
+  let assignedUsers
   if (isSuccess) {
     const bountyAssignments = response.bountyAssignments
-    assignedUsers = bountyAssignments.map(
-      (bountyAssignment: BountyAssignment) => {
-        return (
-          <div key={bountyAssignment.id}>
-            <User userId={bountyAssignment.userId} />
-          </div>
-        )
-      }
-    )
+    assignedUsers = <DataTable columns={columns} data={bountyAssignments} />
   }
   if (isLoading) return <p>is loading</p>
   if (isError) return <p>error</p>

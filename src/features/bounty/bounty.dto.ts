@@ -16,4 +16,11 @@ type BountyAssignment = {
   bountyId: string
   userId: string
   assignedAt: string
+  status: string
+  User?: {
+    username: string
+  }
+  Bounty?: {
+    title: string
+  }
 }
