@@ -1,8 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import {
-  useGetBountyAssignmentsQuery,
-  useGetBountyByIdQuery
-} from '../bountyApiSlice'
+import { useGetBountyByIdQuery } from '../bountyApiSlice'
 import { useParams } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { formatDateTime } from '@/utils/dateFormatter'
@@ -14,9 +11,27 @@ import { BountyForm } from './BountyForm'
 import { useGetUserQuery } from '@/features/user/userSlice'
 import { DataTable } from '../AssignmentTable/data-table'
 import { columns } from '../AssignmentTable/columns'
+import { useGetBountyAssignmentsQuery } from '@/features/assignedBounty/assignedBountyApiSlice'
+import { useSelector } from 'react-redux'
+import { selectCurrentUser } from '@/features/auth/authSlice'
 
 export const BountyDetailsPage = () => {
   const { bountyId } = useParams()
+
+  return (
+    <main className='my-10 flex flex-col gap-10'>
+      {bountyId && (
+        <>
+          <BountyCard bountyId={bountyId} />
+          <AssignedUsersCard bountyId={bountyId} />
+        </>
+      )}
+    </main>
+  )
+}
+
+export const BountyCard = ({ bountyId }: { bountyId: string }) => {
+  const user = useSelector(selectCurrentUser)
   const {
     data: response,
     isLoading,
@@ -29,78 +44,73 @@ export const BountyDetailsPage = () => {
   if (isSuccess) {
     const bounty: Bounty = response.bounty
     return (
-      <main className='my-10 flex flex-col gap-10'>
-        <BountyCard bounty={bounty} />
-        <AssignedUsersCard bountyId={bounty.id} />
-      </main>
+      <Card className='w-full' key={bounty.id}>
+        <CardHeader>
+          <div className='flex justify-between'>
+            <CardTitle className='text-xl'>{bounty.title}</CardTitle>
+            <div className='flex gap-3'>
+              <Button variant={'secondary'} asChild>
+                <p>{bounty.status}</p>
+              </Button>
+              {user?.role && user.role === 'ENTERPRISE' ? (
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant='outline'>Edit</Button>
+                  </DialogTrigger>
+                  <BountyForm
+                    variant='edit'
+                    bounty={bounty}
+                    programId={bounty.programId}
+                  />
+                </Dialog>
+              ) : undefined}
+            </div>
+          </div>
+        </CardHeader>
+
+        <CardContent className='grid gap-8'>
+          <div className='grid gap-2'>
+            <h4 className='text-sm font-medium leading-none mb-2'>
+              Description
+            </h4>
+            <Separator />
+            {bounty.description}
+          </div>
+
+          <div className='grid gap-2'>
+            <h4 className='text-sm font-medium leading-none mb-2'>
+              Severity Reward (€)
+            </h4>
+            <Separator />
+            <SeverityRewardBadge severityRewardId={bounty.severityRewardId} />
+          </div>
+
+          <div className='grid gap-2'>
+            <h4 className='text-sm font-medium leading-none mb-2'>Scope</h4>
+            <Separator />
+            {bounty.description}
+          </div>
+
+          <div className='grid gap-2'>
+            <h4 className='text-sm font-medium leading-none mb-2'>Notes</h4>
+            <Separator />
+            {bounty.description}
+          </div>
+
+          <div className='py-2 text-sm flex flex-col gap-2'>
+            <div>
+              <span className='font-semibold'>Created: </span>
+              {formatDateTime(bounty.createdAt)}
+            </div>
+            <div>
+              <span className='font-semibold'>Updated: </span>
+              {formatDateTime(bounty.updatedAt)}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     )
   }
-}
-
-export const BountyCard = ({ bounty }: { bounty: Bounty }) => {
-  return (
-    <Card className='max-w-screen-lg' key={bounty.id}>
-      <CardHeader>
-        <div className='flex justify-between'>
-          <CardTitle className='text-xl'>{bounty.title}</CardTitle>
-          <div className='flex gap-3'>
-            <Button variant={'secondary'} asChild>
-              <p>{bounty.status}</p>
-            </Button>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant='outline'>Edit</Button>
-              </DialogTrigger>
-              <BountyForm
-                variant='edit'
-                bounty={bounty}
-                programId={bounty.programId}
-              />
-            </Dialog>
-          </div>
-        </div>
-      </CardHeader>
-
-      <CardContent className='grid gap-8'>
-        <div className='grid gap-2'>
-          <h4 className='text-sm font-medium leading-none mb-2'>Description</h4>
-          <Separator />
-          {bounty.description}
-        </div>
-
-        <div className='grid gap-2'>
-          <h4 className='text-sm font-medium leading-none mb-2'>
-            Severity Reward (€)
-          </h4>
-          <Separator />
-          <SeverityRewardBadge severityRewardId={bounty.severityRewardId} />
-        </div>
-
-        <div className='grid gap-2'>
-          <h4 className='text-sm font-medium leading-none mb-2'>Scope</h4>
-          <Separator />
-          {bounty.description}
-        </div>
-
-        <div className='grid gap-2'>
-          <h4 className='text-sm font-medium leading-none mb-2'>Notes</h4>
-          <Separator />
-          {bounty.description}
-        </div>
-
-        <div className='py-2 text-sm flex flex-col gap-2'>
-          <div>
-            <span className='font-semibold'>Created: </span>
-            {formatDateTime(bounty.createdAt)}
-          </div>
-          <div>
-            <span className='font-semibold'>Updated: </span>
-            {formatDateTime(bounty.updatedAt)}
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  )
 }
 
 export const AssignedUsersCard = ({ bountyId }: { bountyId: string }) => {
@@ -111,6 +121,7 @@ export const AssignedUsersCard = ({ bountyId }: { bountyId: string }) => {
     isSuccess
   } = useGetBountyAssignmentsQuery({ key: 'bounty', value: bountyId })
 
+  // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
   let assignedUsers
   if (isSuccess) {
     const bountyAssignments = response.bountyAssignments
@@ -120,7 +131,7 @@ export const AssignedUsersCard = ({ bountyId }: { bountyId: string }) => {
   if (isError) return <p>error</p>
 
   return (
-    <Card>
+    <Card className='max-w-screen-lg'>
       <CardHeader>
         <div className='flex justify-between'>
           <CardTitle className='text-xl'>Assigned Users</CardTitle>

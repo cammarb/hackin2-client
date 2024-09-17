@@ -4,7 +4,7 @@ export interface AuthState {
   user: {
     id: string
     username: string
-    role: string
+    role: 'PENTESTER' | 'ENTERPRISE'
     token: string
     company: {
       id: string

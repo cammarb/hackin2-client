@@ -39,6 +39,10 @@ import { ApplicationsPage } from '@/features/application/pentester/ApplicationsP
 import { ApplicationsPage as ApplicationsPageEnterprise } from '@/features/application/enterprise/ApplicationsPage'
 import { ApplicationsTablePage } from '@/features/application/enterprise/ApplicationsTablePage'
 import { BountyPage } from './features/bounty/BountyPage'
+import { AssignedBountiesPage } from './features/assignedBounty/AssignedBountiesPage'
+import { AssignedBountiesTable } from './features/assignedBounty/AssignedBountiesTable'
+import { AssignedBountyDetails } from './features/assignedBounty/AssignedBountyDetails'
+import { SubmitBountyReportPage } from './features/submission/SubmitBountyReportPage'
 
 const router = createBrowserRouter([
   {
@@ -158,10 +162,6 @@ const router = createBrowserRouter([
                 element: <ProgramView />
               },
               {
-                path: 'bounty-programs/:id/submit/new',
-                element: <ProgramApply />
-              },
-              {
                 path: 'submissions',
                 element: <SubmissionsList />
               },
@@ -170,8 +170,22 @@ const router = createBrowserRouter([
                 element: <ApplicationsPage />
               },
               {
-                path: 'bounties',
-                element: <BountyPage />
+                path: 'assigned-bounties',
+                element: <AssignedBountiesPage />,
+                children: [
+                  {
+                    index: true,
+                    element: <AssignedBountiesTable />
+                  },
+                  {
+                    path: ':id',
+                    element: <AssignedBountyDetails />
+                  },
+                  {
+                    path: ':id/submit',
+                    element: <SubmitBountyReportPage />
+                  }
+                ]
               }
             ]
           }

@@ -1,11 +1,5 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card'
-import { useGetBountyAssignmentsQuery } from './bountyApiSlice'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { useGetBountyAssignmentsQuery } from '@/features/assignedBounty/assignedBountyApiSlice'
 import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '../auth/authSlice'
 import { DataTable } from './AssignmentTable/data-table'
