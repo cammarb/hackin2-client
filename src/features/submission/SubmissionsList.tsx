@@ -29,7 +29,7 @@ const SubmissionsList = () => {
     isSuccess,
     isError,
     error
-  } = useGetSubmissionsByUserQuery(user)
+  } = useGetSubmissionsByUserQuery(user?.id)
 
   let content = <></>
 

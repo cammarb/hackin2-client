@@ -3,7 +3,8 @@ import { useParams } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Link } from 'react-router-dom'
 import { useGetBountyAssignmentByIdQuery } from './assignedBountyApiSlice'
-import SubmissionsList from '../submission/SubmissionsList'
+import SubmissionDetails from '../submission/SubmissionDetails'
+import type { Submission } from '@/utils/types'
 
 export const AssignedBountyDetails = () => {
   const { id } = useParams()
@@ -19,13 +20,16 @@ export const AssignedBountyDetails = () => {
   if (isSuccess) {
     const bountyAssignment = response.bountyAssignment as {
       bountyId: string
-      Submissions: object[]
+      Submission: Submission
     }
+
     return (
       <>
         <BountyCard bountyId={bountyAssignment.bountyId} />
-        {bountyAssignment.Submissions && <SubmissionsList />}
-        <Button asChild disabled={bountyAssignment.Submissions ? true : false}>
+        {bountyAssignment.Submission && (
+          <SubmissionDetails submission={bountyAssignment.Submission} />
+        )}
+        <Button asChild>
           <Link to={'submit'}>Submit Report</Link>
         </Button>
       </>

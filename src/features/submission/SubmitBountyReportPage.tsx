@@ -30,7 +30,7 @@ export const SubmitBountyReportPage = () => {
 
 export const SubmitBountyReportForm = () => {
   const { id } = useParams()
-  console.log(id)
+
   const [submit] = useAddSubmissionMutation()
   const navigate = useNavigate()
 
@@ -84,7 +84,7 @@ export const SubmitBountyReportForm = () => {
         body: formData
       }).unwrap()
       form.reset({})
-      navigate(`/bounty-assignment/${id}`)
+      navigate(`/assigned-bounties/${id}`)
     } catch (error) {
       console.error('Error submitting report:', error)
     }
