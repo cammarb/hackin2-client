@@ -21,8 +21,9 @@ export const BountyPage = () => {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Bounties assigned</CardTitle>
-          {/* <CardDescription></CardDescription> */}
+          <CardTitle>
+            {user?.role === 'ENTERPRISE' ? 'Bounties assigned' : ''}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <DataTable columns={columns} data={bountiesAssigned} />

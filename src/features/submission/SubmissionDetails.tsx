@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge'
 
 const SubmissionDetails = ({ submission }: { submission: Submission }) => {
   return (
-    <div className='max-w-[700px] grid prose dark:prose-invert'>
+    <div className='max-w-6xl grid prose dark:prose-invert'>
       <div className='w-full grid grid-cols-2 grid-rows-3 gap-4 mb-6'>
         {/* <h4 className='my-auto'>Submission by:</h4>
         <p className='my-auto ml-auto'>{submission.User.username}</p>

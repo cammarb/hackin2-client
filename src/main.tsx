@@ -15,12 +15,10 @@ import CompanyUsers from '@/features/company/CompanyUsers'
 import Dashboard from '@/features/company/Dashboard'
 import AddProgram from '@/features/program/AddProgram'
 import Login from './pages/Login'
-import { ProgramApply } from '@/features/program/ProgramApply'
 import ProgramsList from '@/features/program/ProgramsList'
 import ProgramView from '@/features/program/ProgramView'
 import SubmissionsList from '@/features/submission/SubmissionsList'
 import Register from './pages/Register'
-import SubmissionDetails from '@/features/submission/SubmissionDetails'
 import { UserSettings } from '@/features/user/UserSettings'
 import { GeneralSettings } from '@/features/user/GeneralSettings'
 import { ChangePassword } from '@/features/user/ChangePassword'
@@ -40,7 +38,6 @@ import { ApplicationsPage as ApplicationsPageEnterprise } from '@/features/appli
 import { ApplicationsTablePage } from '@/features/application/enterprise/ApplicationsTablePage'
 import { BountyPage } from './features/bounty/BountyPage'
 import { AssignedBountiesPage } from './features/assignedBounty/AssignedBountiesPage'
-import { AssignedBountiesTable } from './features/assignedBounty/AssignedBountiesTable'
 import { AssignedBountyDetails } from './features/assignedBounty/AssignedBountyDetails'
 import { SubmitBountyReportPage } from './features/submission/SubmitBountyReportPage'
 
@@ -141,10 +138,6 @@ const router = createBrowserRouter([
                 ]
               },
               {
-                path: ':id/submissions/:submissionId',
-                element: <SubmissionDetails />
-              },
-              {
                 path: 'users',
                 element: <CompanyUsers />
               }
@@ -175,7 +168,7 @@ const router = createBrowserRouter([
                 children: [
                   {
                     index: true,
-                    element: <AssignedBountiesTable />
+                    element: <BountyPage />
                   },
                   {
                     path: ':id',

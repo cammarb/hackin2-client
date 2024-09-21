@@ -34,10 +34,10 @@ export const columns: ColumnDef<BountyAssignment>[] = [
     },
     cell: ({ row }) => {
       const usernameOrBounty: string = row.getValue('usernameOrBounty')
-      const id: string = row.original.id
+      const bountyId: string = row.original.bountyId
       return (
         <div className='hover:text-primary'>
-          <NavLink to={`${id}`}>{usernameOrBounty}</NavLink>
+          <NavLink to={`${bountyId}`}>{usernameOrBounty}</NavLink>
         </div>
       )
     }

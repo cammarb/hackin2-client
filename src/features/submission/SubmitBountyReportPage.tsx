@@ -15,6 +15,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { z } from 'zod'
 import MarkdownEditor from '@uiw/react-markdown-editor'
 import { useAddSubmissionMutation } from '@/features/submission/submissionSlice'
+import { useSelector } from 'react-redux'
+import { selectCurrentUser } from '../auth/authSlice'
 
 type Application = {
   asset: string
@@ -29,6 +31,7 @@ export const SubmitBountyReportPage = () => {
 }
 
 export const SubmitBountyReportForm = () => {
+  const user = useSelector(selectCurrentUser)
   const { id } = useParams()
 
   const [submit] = useAddSubmissionMutation()
@@ -78,7 +81,8 @@ export const SubmitBountyReportForm = () => {
       formData.append('asset', data.asset)
       formData.append('evidence', data.evidence)
       formData.append('impact', data.impact)
-      formData.append('bountyAssignmentId', `${id}`)
+      formData.append('bountyId', `${id}`)
+      formData.append('userId', `${user?.id}`)
 
       await submit({
         body: formData
