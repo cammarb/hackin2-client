@@ -33,7 +33,7 @@ import { AllProgramsPage } from '@/features/program/AllProgramsPage'
 import { BountiesPage } from '@/features/bounty/enterprise/BountiesPage'
 import { BountiesTablePage } from '@/features/bounty/enterprise/BountiesTablePage'
 import { BountyDetailsPage } from '@/features/bounty/enterprise/BountyDetailsPage'
-import { ApplicationsPage as ApplicationsPageEnterprise } from '@/features/application/ApplicationsPage'
+import { ApplicationsPage } from '@/features/application/ApplicationsPage'
 import { ApplicationsTablePage } from '@/features/application/ApplicationsTablePage'
 import { BountyPage } from './features/bounty/BountyPage'
 import { AssignedBountiesPage } from './features/assignedBounty/AssignedBountiesPage'
@@ -127,7 +127,7 @@ const router = createBrowserRouter([
                   },
                   {
                     path: 'applications',
-                    element: <ApplicationsPageEnterprise />,
+                    element: <ApplicationsPage />,
                     children: [
                       {
                         index: true,
@@ -160,7 +160,13 @@ const router = createBrowserRouter([
               },
               {
                 path: 'applications',
-                element: <ApplicationsTablePage />
+                element: <ApplicationsPage />,
+                children: [
+                  {
+                    index: true,
+                    element: <ApplicationsTablePage />
+                  }
+                ]
               },
               {
                 path: 'assigned-bounties',

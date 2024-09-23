@@ -18,17 +18,18 @@ export const BountyPage = () => {
   if (isError) return <p>is error</p>
   if (isSuccess) {
     const bountiesAssigned = response.bountyAssignments
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>
-            {user?.role === 'ENTERPRISE' ? 'Bounties assigned' : ''}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <DataTable columns={columns} data={bountiesAssigned} />
-        </CardContent>
-      </Card>
-    )
+    if (user?.role === 'ENTERPRISE')
+      return (
+        <Card>
+          <CardHeader>
+            <CardTitle>Bounty assignment</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <DataTable columns={columns} data={bountiesAssigned} />
+          </CardContent>
+        </Card>
+      )
+    if (user?.role === 'PENTESTER')
+      return <DataTable columns={columns} data={bountiesAssigned} />
   }
 }

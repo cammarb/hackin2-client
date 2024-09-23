@@ -9,7 +9,7 @@ export const ApplicationsPage = () => {
   const isRoot = pathnames[pathnames.length - 1] === root
 
   return (
-    <div>
+    <div className='max-w-6xl mx-auto'>
       <div className='mb-8 flex gap-8'>
         <h1 className='text-3xl font-semibold'>Applications</h1>
       </div>
