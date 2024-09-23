@@ -8,7 +8,7 @@ export function BountiesTable({ programId }: { programId: string }) {
     isLoading,
     isSuccess,
     isError
-  } = useGetBountiesQuery({ key: 'program', value: programId })
+  } = useGetBountiesQuery([{ key: 'program', value: programId }])
 
   if (isLoading) {
     return <p>Loading...</p>

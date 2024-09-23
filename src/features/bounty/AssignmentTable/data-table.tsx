@@ -61,10 +61,15 @@ export function DataTable<TData, TValue>({
     <div>
       <div className='flex gap-4 items-center py-4'>
         <Input
-          placeholder='Search Bounty'
-          value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
+          placeholder='Search'
+          value={
+            (table.getColumn('usernameOrBounty')?.getFilterValue() as string) ??
+            ''
+          }
           onChange={(event) =>
-            table.getColumn('title')?.setFilterValue(event.target.value)
+            table
+              .getColumn('usernameOrBounty')
+              ?.setFilterValue(event.target.value)
           }
           className='max-w-sm'
         />

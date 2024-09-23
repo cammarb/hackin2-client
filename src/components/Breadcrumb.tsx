@@ -9,7 +9,10 @@ import {
 import { capitalizeFirstLetter } from '@/utils/stringFormatter'
 import { Fragment } from 'react/jsx-runtime'
 
-const Breadcrumbs = ({ root }: { root: string }) => {
+const Breadcrumbs = ({
+  root,
+  rootTitle
+}: { root: string; rootTitle?: string }) => {
   const location = useLocation()
   const pathnames = location.pathname.split('/').filter((x) => x)
 
@@ -17,7 +20,7 @@ const Breadcrumbs = ({ root }: { root: string }) => {
   const filteredPathnames = pathnames.slice(index)
   const nonFilteredPathnames = pathnames.slice(0, index)
 
-  const rootCapitalized = capitalizeFirstLetter(root)
+  const rootCapitalized = rootTitle ? rootTitle : capitalizeFirstLetter(root)
 
   const isUUID = (str: string) => {
     return /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(
@@ -41,8 +44,8 @@ const Breadcrumbs = ({ root }: { root: string }) => {
                   <Link
                     to={
                       index === firstItem
-                        ? `/${nonFilteredPathnames.join('/')}/${root}`
-                        : `/${nonFilteredPathnames.join('/')}/${filteredPathnames.slice(0, index + 1).join('/')}`
+                        ? `${nonFilteredPathnames.join('/')}/${root}`
+                        : `${nonFilteredPathnames.join('/')}/${filteredPathnames.slice(0, index + 1).join('/')}`
                     }
                   >
                     {isRoot

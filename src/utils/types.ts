@@ -19,23 +19,12 @@ export type EditableProgram = Omit<
 
 export type Submission = {
   id: string
-  programId: string
-  userId: string
+  bountyAssignmentId: string
   asset: string
-  severityRewardId: string
   evidence: string
   impact: string
   findings: string[]
   status: string
   createdAt: string
   updatedAt: string
-  User: {
-    username: string
-  }
-  Program: {
-    name: string
-  }
-  Severity: {
-    severity: string
-  }
 }

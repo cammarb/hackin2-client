@@ -1,40 +1,22 @@
-import { Skeleton } from '@/components/ui/skeleton'
-import { useGetApplicationsQuery } from './applicationApiSlice'
-import { ApplicationsTable } from './pentester/ApplicationsTable'
-
-export type Application = {
-  id: string
-  userId: string
-  status: string
-  programId: string
-  createdAt: string
-  updatedAt: string
-  Program: {
-    name: string
-  }
-  User: {
-    id: string
-    username: string
-  }
-}
+import { Outlet, useLocation, useParams } from 'react-router-dom'
+import Breadcrumbs from '@/components/Breadcrumb'
 
 export const ApplicationsPage = () => {
-  const {
-    data: response,
-    isLoading,
-    isError,
-    isSuccess
-  } = useGetApplicationsQuery({key: 'user', value: ''})
+  const { id } = useParams()
+  const root = 'applications'
+  const location = useLocation()
+  const pathnames = location.pathname.split('/').filter((x) => x)
+  const isRoot = pathnames[pathnames.length - 1] === root
 
-  if (isLoading) return <Skeleton className='h-4 w-[250px]' />
-  if (isError) return <p>Error</p>
-  if (isSuccess) {
-    const applications: Application[] = response.applications
-    return (
-      <main className='m-10 flex flex-col gap-10 mx-auto sm:w-[100%] md:w-[80%] lg:w-[60%]'>
-        <h1 className='text-2xl font-medium'>Applications</h1>
-        <ApplicationsTable applications={applications} />
-      </main>
-    )
-  }
+  return (
+    <div className='max-w-6xl mx-auto'>
+      <div className='mb-8 flex gap-8'>
+        <h1 className='text-3xl font-semibold'>Applications</h1>
+      </div>
+      <div>
+        {!isRoot && <Breadcrumbs root={root} />}
+        <Outlet context={id} />
+      </div>
+    </div>
+  )
 }

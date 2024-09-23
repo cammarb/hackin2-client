@@ -7,22 +7,16 @@ import {
   FormControl,
   FormMessage
 } from '@/components/ui/form'
-import {
-  Select,
-  SelectValue,
-  SelectTrigger,
-  SelectContent,
-  SelectItem
-} from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
-import { ZodType, z } from 'zod'
+import { z } from 'zod'
 import MarkdownEditor from '@uiw/react-markdown-editor'
-import { useGetSeverityRewardsQuery } from '@/features/severityReward/severityRewardSlice'
 import { useAddSubmissionMutation } from '@/features/submission/submissionSlice'
+import { useSelector } from 'react-redux'
+import { selectCurrentUser } from '../auth/authSlice'
 
 type Application = {
   asset: string
@@ -32,14 +26,14 @@ type Application = {
   impact: string
 }
 
-export const ProgramApply = () => {
+export const SubmitBountyReportPage = () => {
+  return <SubmitBountyReportForm />
+}
+
+export const SubmitBountyReportForm = () => {
+  const user = useSelector(selectCurrentUser)
   const { id } = useParams()
-  const {
-    data: response,
-    isLoading,
-    isError,
-    isSuccess
-  } = useGetSeverityRewardsQuery({key: 'program', value: id})
+
   const [submit] = useAddSubmissionMutation()
   const navigate = useNavigate()
 
@@ -79,23 +73,22 @@ export const ProgramApply = () => {
   const submitData = async (data: Application) => {
     try {
       const formData = new FormData()
-      console.log(data.findings)
 
       data.findings.forEach((finding, index) => {
         formData.append(`findings[${index}]`, finding)
       })
 
       formData.append('asset', data.asset)
-      formData.append('severity', data.severity)
       formData.append('evidence', data.evidence)
       formData.append('impact', data.impact)
-      formData.append('programId', `${id}`)
+      formData.append('bountyId', `${id}`)
+      formData.append('userId', `${user?.id}`)
 
       await submit({
         body: formData
       }).unwrap()
       form.reset({})
-      navigate('/submissions')
+      navigate(`/assigned-bounties/${id}`)
     } catch (error) {
       console.error('Error submitting report:', error)
     }
@@ -119,45 +112,6 @@ export const ProgramApply = () => {
                   <FormLabel>Asset</FormLabel>
                   <FormControl>
                     <Input type='text' {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='severity'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Severity (optional)</FormLabel>
-                  <FormControl>
-                    <Select value={field.value} onValueChange={field.onChange}>
-                      <SelectTrigger id='severity' aria-label='Select severity'>
-                        <SelectValue
-                          placeholder={'Select severity'}
-                          {...field}
-                        />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {isSuccess ? (
-                          response.severityRewards.map(
-                            (severityReward: {
-                              id: string
-                              severity: string
-                            }) => (
-                              <SelectItem
-                                key={severityReward.id}
-                                value={severityReward.id}
-                              >
-                                {severityReward.severity}
-                              </SelectItem>
-                            )
-                          )
-                        ) : (
-                          <SelectItem value='LOW'>LOW</SelectItem>
-                        )}
-                      </SelectContent>
-                    </Select>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -32,7 +32,7 @@ interface SignUpData {
 }
 
 export default function SignUp() {
-  const [newUser, { isLoading, isError }] = useNewUserMutation()
+  const [newUser, { isLoading }] = useNewUserMutation()
   const navigate = useNavigate()
 
   const schema: ZodType<SignUpData> = z.object({
@@ -56,7 +56,7 @@ export default function SignUp() {
 
   const submitData = async (data: SignUpData) => {
     try {
-      const userData = await newUser({
+      await newUser({
         firstName: data.firstName,
         lastName: data.lastName,
         username: data.username,

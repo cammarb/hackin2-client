@@ -13,7 +13,7 @@ export const applicationApiSlice = apiConnection.injectEndpoints({
     editApplication: builder.mutation({
       query: ({ id, body }) => ({
         url: `/applications/${id}/edit`,
-        method: 'PUT',
+        method: 'PATCH',
         body
       }),
       invalidatesTags: ['Applications']
