@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge'
 const SubmissionDetails = ({
   submission,
   className
-}: { submission: Submission; className: string }) => {
+}: { submission: Submission; className?: string }) => {
   return (
     <div className={`max-w-6xl grid prose dark:prose-invert ${className}`}>
       <div className='w-full grid grid-cols-2 grid-rows-3 gap-4 my-6'>
@@ -22,7 +22,6 @@ const SubmissionDetails = ({
         >
           {submission.Severity.severity}
         </Badge> */}
-
         <h4 className='my-auto'>Status:</h4>
         <Badge className='ml-auto'>{submission.status}</Badge>
       </div>

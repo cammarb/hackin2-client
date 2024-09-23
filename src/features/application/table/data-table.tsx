@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   type ColumnDef,
   flexRender,
@@ -33,14 +33,17 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  role: string
 }
 
 export function DataTable<TData, TValue>({
   columns,
-  data
+  data,
+  role
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [columnVisibility, setColumnVisibility] = useState({})
 
   const table = useReactTable({
     data,
@@ -53,9 +56,21 @@ export function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     state: {
       sorting,
-      columnFilters
-    }
+      columnFilters,
+      columnVisibility
+    },
+    onColumnVisibilityChange: setColumnVisibility
   })
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    if (role === 'PENTESTER') {
+      setColumnVisibility((prev) => ({
+        ...prev,
+        username: false
+      }))
+    }
+  }, [role, setColumnVisibility])
 
   return (
     <div>

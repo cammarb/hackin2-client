@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
-import type { Application } from '../pentester/ApplicationsPage'
-import { useEditApplicationMutation } from '../applicationApiSlice'
+import type { Application } from './ApplicationsTablePage'
+import { useEditApplicationMutation } from './applicationApiSlice'
 import {
   DialogClose,
   DialogContent,

@@ -33,9 +33,8 @@ import { AllProgramsPage } from '@/features/program/AllProgramsPage'
 import { BountiesPage } from '@/features/bounty/enterprise/BountiesPage'
 import { BountiesTablePage } from '@/features/bounty/enterprise/BountiesTablePage'
 import { BountyDetailsPage } from '@/features/bounty/enterprise/BountyDetailsPage'
-import { ApplicationsPage } from '@/features/application/pentester/ApplicationsPage'
-import { ApplicationsPage as ApplicationsPageEnterprise } from '@/features/application/enterprise/ApplicationsPage'
-import { ApplicationsTablePage } from '@/features/application/enterprise/ApplicationsTablePage'
+import { ApplicationsPage as ApplicationsPageEnterprise } from '@/features/application/ApplicationsPage'
+import { ApplicationsTablePage } from '@/features/application/ApplicationsTablePage'
 import { BountyPage } from './features/bounty/BountyPage'
 import { AssignedBountiesPage } from './features/assignedBounty/AssignedBountiesPage'
 import { AssignedBountyDetails } from './features/assignedBounty/AssignedBountyDetails'
@@ -161,7 +160,7 @@ const router = createBrowserRouter([
               },
               {
                 path: 'applications',
-                element: <ApplicationsPage />
+                element: <ApplicationsTablePage />
               },
               {
                 path: 'assigned-bounties',

@@ -1,7 +1,7 @@
 import { Badge } from '@/components/ui/badge'
 import { formatDateTime } from '@/utils/dateFormatter'
 import type { ColumnDef } from '@tanstack/react-table'
-import { NavLink, useParams } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { ArrowUpDown, Ban, Check, MoreHorizontal } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -12,9 +12,9 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { capitalizeFirstLetter } from '@/utils/stringFormatter'
-import type { Application } from '../pentester/ApplicationsPage'
+import type { Application } from '../ApplicationsTablePage'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
-import { UpdateApplicationForm } from '../enterprise/ApplicationUpdateForm'
+import { UpdateApplicationForm } from '../ApplicationUpdateForm'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -47,7 +47,7 @@ export const columns: ColumnDef<Application>[] = [
     }
   },
   {
-    accessorFn: (row) => row.User.username,
+    accessorFn: (row) => row.User?.username,
     id: 'username',
     header: ({ column }) => {
       return (
@@ -153,11 +153,17 @@ export const columns: ColumnDef<Application>[] = [
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               {application.status === 'ACCEPTED' ? (
                 <DropdownMenuItem asChild>
-                  <Link
-                    to={`/programs/${application.Bounty.programId}/bounties/${application.bountyId}`}
-                  >
-                    View Bounty
-                  </Link>
+                  {application.User ? (
+                    <Link
+                      to={`/programs/${application.Bounty.programId}/bounties/${application.bountyId}`}
+                    >
+                      View Bounty
+                    </Link>
+                  ) : (
+                    <Link to={`/assigned-bounties/${application.bountyId}`}>
+                      View Bounty
+                    </Link>
+                  )}
                 </DropdownMenuItem>
               ) : (
                 <>
