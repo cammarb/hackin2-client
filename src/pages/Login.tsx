@@ -61,12 +61,12 @@ export default function Login() {
       form.reset({})
       navigate('/')
     } catch (error) {
-      if (error?.status === 401) {
-        toast({
-          title: 'Login failed',
-          description: 'Username or password is incorrect'
-        })
-      }
+      // if (error?.status === 401) {
+      //   toast({
+      //     title: 'Login failed',
+      //     description: 'Username or password is incorrect'
+      //   })
+      // }
     }
   }
 

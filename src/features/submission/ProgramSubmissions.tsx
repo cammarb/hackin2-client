@@ -10,8 +10,8 @@ import {
 } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
 import { Link } from 'react-router-dom'
-import { getBadgeVariant } from '@/components/RewardsTable'
-import { Badge } from '@/components/ui/badge'
+// import { getBadgeVariant } from '@/components/RewardsTable'
+// import { Badge } from '@/components/ui/badge'
 import type { Submission } from '@/utils/types'
 import {
   DropdownMenu,
