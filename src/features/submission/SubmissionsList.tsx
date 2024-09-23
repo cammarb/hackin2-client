@@ -28,12 +28,13 @@ const SubmissionsList = () => {
     data: response,
     isLoading,
     isSuccess,
-    isError,
-    error
+    isError
   } = useGetSubmissionsByUserQuery(user?.id)
 
   let content = <></>
 
+  if (isLoading) content = <p>is loading</p>
+  if (isError) content = <p>is error</p>
   if (isSuccess) {
     const submissions = response.submissions
 

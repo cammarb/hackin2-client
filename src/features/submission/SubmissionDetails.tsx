@@ -2,7 +2,7 @@ import Markdown from 'react-markdown'
 import { Separator } from '@/components/ui/separator'
 import { formatDate } from '@/utils/dateFormatter'
 import type { Submission } from '@/utils/types'
-import { getBadgeVariant } from '@/components/RewardsTable'
+// import { getBadgeVariant } from '@/components/RewardsTable'
 import { Badge } from '@/components/ui/badge'
 
 const SubmissionDetails = ({

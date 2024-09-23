@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { capitalizeFirstLetter } from '@/utils/stringFormatter'
+import type { Bounty } from '../bounty.dto'
 
 export const columns: ColumnDef<Bounty>[] = [
   {

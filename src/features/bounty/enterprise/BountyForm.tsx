@@ -33,6 +33,7 @@ import {
   SelectItem
 } from '@/components/ui/select'
 import { useGetSeverityRewardsQuery } from '@/features/severityReward/severityRewardSlice'
+import type { Bounty } from '../bounty.dto'
 
 const formSchema = z.object({
   title: z.string(),

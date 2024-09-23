@@ -69,9 +69,13 @@ export function DataTable<TData, TValue>({
           className='max-w-sm'
         />
         <Select
-          value={(table.getColumn('status')?.getFilterValue() as string) ?? ''}
+          value={
+            (table.getColumn('status')?.getFilterValue() as string) ?? 'ALL'
+          }
           onValueChange={(status) =>
-            table.getColumn('status')?.setFilterValue(status)
+            table
+              .getColumn('status')
+              ?.setFilterValue(status === 'ALL' ? undefined : status)
           }
         >
           <SelectTrigger className='w-[180px]'>
@@ -80,7 +84,7 @@ export function DataTable<TData, TValue>({
           <SelectContent>
             <SelectGroup>
               <SelectLabel>Status</SelectLabel>
-              <SelectItem value={null}>All</SelectItem>
+              <SelectItem value='ALL'>All</SelectItem>
               <SelectItem value='PENDING'>Pending</SelectItem>
               <SelectItem value='IN_PROGRESS'>In Progress</SelectItem>
               <SelectItem value='DONE'>Done</SelectItem>

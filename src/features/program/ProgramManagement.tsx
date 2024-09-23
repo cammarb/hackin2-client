@@ -7,7 +7,6 @@ import {
 import { cn } from '@/lib/utils'
 import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
-import Breadcrumbs from '@/components/Breadcrumb'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import type { Program } from '@/utils/types'
 
