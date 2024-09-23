@@ -14,6 +14,7 @@ import { columns } from '../AssignmentTable/columns'
 import { useGetBountyAssignmentsQuery } from '@/features/assignedBounty/assignedBountyApiSlice'
 import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '@/features/auth/authSlice'
+import type { Bounty } from '../bounty.dto'
 
 export const BountyDetailsPage = () => {
   const { bountyId } = useParams()

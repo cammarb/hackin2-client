@@ -151,21 +151,6 @@ export const columns: ColumnDef<Application>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end'>
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem onClick={() => setDialogContent('Accept')}>
-                <DialogTrigger className='w-full flex gap-2 items-center'>
-                  Accept
-                  <Check size={16} />
-                </DialogTrigger>
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setDialogContent('Decline')}>
-                <DialogTrigger
-                  content='decline'
-                  className='w-full flex gap-2 items-center'
-                >
-                  Decline
-                  <Ban size={16} />
-                </DialogTrigger>
-              </DropdownMenuItem>
               {application.status === 'ACCEPTED' ? (
                 <DropdownMenuItem asChild>
                   <Link
@@ -174,7 +159,26 @@ export const columns: ColumnDef<Application>[] = [
                     View Bounty
                   </Link>
                 </DropdownMenuItem>
-              ) : null}
+              ) : (
+                <>
+                  {' '}
+                  <DropdownMenuItem onClick={() => setDialogContent('Accept')}>
+                    <DialogTrigger className='w-full flex gap-2 items-center'>
+                      Accept
+                      <Check size={16} />
+                    </DialogTrigger>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setDialogContent('Decline')}>
+                    <DialogTrigger
+                      content='decline'
+                      className='w-full flex gap-2 items-center'
+                    >
+                      Decline
+                      <Ban size={16} />
+                    </DialogTrigger>
+                  </DropdownMenuItem>
+                </>
+              )}
             </DropdownMenuContent>
             <UpdateApplicationForm
               application={application}

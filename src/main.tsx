@@ -46,7 +46,7 @@ const router = createBrowserRouter([
     path: '/',
     element: <App />,
     errorElement: <NotFound />,
-    loader: authLoader,
+
     children: [
       {
         index: true,
@@ -67,6 +67,7 @@ const router = createBrowserRouter([
       },
       {
         element: <RequireAuthentication />,
+        loader: authLoader,
         children: [
           {
             path: 'settings',

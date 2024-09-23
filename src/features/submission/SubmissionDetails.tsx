@@ -5,10 +5,13 @@ import type { Submission } from '@/utils/types'
 import { getBadgeVariant } from '@/components/RewardsTable'
 import { Badge } from '@/components/ui/badge'
 
-const SubmissionDetails = ({ submission }: { submission: Submission }) => {
+const SubmissionDetails = ({
+  submission,
+  className
+}: { submission: Submission; className: string }) => {
   return (
-    <div className='max-w-6xl grid prose dark:prose-invert'>
-      <div className='w-full grid grid-cols-2 grid-rows-3 gap-4 mb-6'>
+    <div className={`max-w-6xl grid prose dark:prose-invert ${className}`}>
+      <div className='w-full grid grid-cols-2 grid-rows-3 gap-4 my-6'>
         {/* <h4 className='my-auto'>Submission by:</h4>
         <p className='my-auto ml-auto'>{submission.User.username}</p>
 

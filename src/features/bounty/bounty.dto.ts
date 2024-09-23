@@ -1,4 +1,6 @@
-type Bounty = {
+import type { Submission } from '@/utils/types'
+
+export type Bounty = {
   id: string
   title: string
   description: string
@@ -11,7 +13,7 @@ type Bounty = {
   updatedAt: string
 }
 
-type BountyAssignment = {
+export type BountyAssignment = {
   id: string
   bountyId: string
   userId: string
@@ -23,4 +25,5 @@ type BountyAssignment = {
   Bounty?: {
     title: string
   }
+  Submission?: Submission
 }

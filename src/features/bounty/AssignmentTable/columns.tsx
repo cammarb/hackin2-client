@@ -13,6 +13,17 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { capitalizeFirstLetter } from '@/utils/stringFormatter'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from '@/components/ui/dialog'
+import SubmissionDetails from '@/features/submission/SubmissionDetails'
+import type { BountyAssignment } from '../bounty.dto'
+import { Separator } from '@/components/ui/separator'
 
 export const columns: ColumnDef<BountyAssignment>[] = [
   {
@@ -88,24 +99,70 @@ export const columns: ColumnDef<BountyAssignment>[] = [
     }
   },
   {
+    accessorKey: 'payment',
+    header: 'Payment',
+    cell: ({ row }) => {
+      const status: string = row.getValue('status')
+      let variant: 'draft' | 'active' | 'complete' | null | undefined
+      switch (status) {
+        case 'PENDING': {
+          variant = 'draft'
+          break
+        }
+        case 'IN_PROGRESS': {
+          variant = 'active'
+          break
+        }
+        case 'DONE': {
+          variant = 'complete'
+          break
+        }
+      }
+      return (
+        <div>
+          <Badge variant={variant}>{capitalizeFirstLetter(status)}</Badge>
+        </div>
+      )
+    }
+  },
+  {
+    accessorKey: 'Submission',
     id: 'actions',
     cell: ({ row }) => {
-      // const submissions = row.getValue('submissions')
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant='ghost' className='h-8 w-8 p-0'>
-              <span className='sr-only'>Open menu</span>
-              <MoreHorizontal className='h-4 w-4' />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align='end'>
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View Submission</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
+      const submission = row.original.Submission
+      if (submission)
+        return (
+          <Dialog>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant='ghost' className='h-8 w-8 p-0'>
+                  <span className='sr-only'>Open menu</span>
+                  <MoreHorizontal className='h-4 w-4' />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align='end'>
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DialogTrigger asChild>
+                  <DropdownMenuItem>View Submission</DropdownMenuItem>
+                </DialogTrigger>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <DialogContent className='max-w-6xl p-10 sm:max-h-screen'>
+              <DialogHeader>
+                <DialogTitle>Submission Details</DialogTitle>
+                <DialogDescription>
+                  Submission report by the user.
+                </DialogDescription>
+              </DialogHeader>
+              <Separator />
+              <SubmissionDetails
+                submission={submission}
+                className={'max-h-[80vh] overflow-y-auto'}
+              />
+            </DialogContent>
+          </Dialog>
+        )
     }
   }
 ]
