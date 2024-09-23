@@ -26,10 +26,19 @@ export const bountyApiSlice = apiConnection.injectEndpoints({
       providesTags: ['Bounty']
     }),
     getBounties: builder.query({
-      query: ({ key, value }) => ({
-        url: `/bounties?${key}=${value}`,
-        method: 'GET'
-      }),
+      query: (paramsArray) => {
+        const queryString = paramsArray
+          .map(
+            ({ key, value }: { key: string; value: string }) =>
+              `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+          )
+          .join('&')
+
+        return {
+          url: `/bounties?${queryString}`,
+          method: 'GET'
+        }
+      },
       providesTags: ['Bounty']
     })
   })

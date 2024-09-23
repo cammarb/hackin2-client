@@ -11,39 +11,41 @@ import NotFound from '@/pages/Error/404'
 import Home from '@/pages/Home'
 
 import { ThemeProvider } from '@/components/theme-provider'
-import CompanyUsers from './features/company/CompanyUsers'
-import Dashboard from './features/company/Dashboard'
-import AddProgram from './features/program/AddProgram'
+import CompanyUsers from '@/features/company/CompanyUsers'
+import Dashboard from '@/features/company/Dashboard'
+import AddProgram from '@/features/program/AddProgram'
 import Login from './pages/Login'
-import { ProgramApply } from './features/program/ProgramApply'
-import ProgramsList from './features/program/ProgramsList'
-import ProgramView from './features/program/ProgramView'
-import SubmissionsList from './features/submission/SubmissionsList'
+import ProgramsList from '@/features/program/ProgramsList'
+import ProgramView from '@/features/program/ProgramView'
+import SubmissionsList from '@/features/submission/SubmissionsList'
 import Register from './pages/Register'
-import SubmissionDetails from './features/submission/SubmissionDetails'
-import { UserSettings } from './features/user/UserSettings'
-import { GeneralSettings } from './features/user/GeneralSettings'
-import { ChangePassword } from './features/user/ChangePassword'
-import { RequireRole } from './features/auth/RequireRole'
-import { authLoader } from './features/auth/authLoader'
-import { RequireAuthentication } from './features/auth/RequireAuthentication'
-import { Unauthenticated } from './features/auth/Unauthenticated'
-import ProgramManagementPage from './features/program/ProgramManagementPage'
-import { ApplicationsPage } from './features/application/ApplicationsPage'
-import ProgramDetails from './features/program/ProgramDetails'
-import { ApplicationsTab } from './features/application/enterprise/ApplicationsTab'
-import { AllProgramsTable } from './features/program/AllProgramsTable'
-import { AllProgramsPage } from './features/program/AllProgramsPage'
-import { BountiesPage } from './features/bounty/enterprise/BountiesPage'
-import { BountiesTablePage } from './features/bounty/enterprise/BountiesTablePage'
-import { BountyDetailsPage } from './features/bounty/enterprise/BountyDetailsPage'
+import { UserSettings } from '@/features/user/UserSettings'
+import { GeneralSettings } from '@/features/user/GeneralSettings'
+import { ChangePassword } from '@/features/user/ChangePassword'
+import { RequireRole } from '@/features/auth/RequireRole'
+import { authLoader } from '@/features/auth/authLoader'
+import { RequireAuthentication } from '@/features/auth/RequireAuthentication'
+import { Unauthenticated } from '@/features/auth/Unauthenticated'
+import ProgramManagementPage from '@/features/program/ProgramManagementPage'
+import ProgramDetails from '@/features/program/ProgramDetails'
+import { AllProgramsTable } from '@/features/program/AllProgramsTable'
+import { AllProgramsPage } from '@/features/program/AllProgramsPage'
+import { BountiesPage } from '@/features/bounty/enterprise/BountiesPage'
+import { BountiesTablePage } from '@/features/bounty/enterprise/BountiesTablePage'
+import { BountyDetailsPage } from '@/features/bounty/enterprise/BountyDetailsPage'
+import { ApplicationsPage } from '@/features/application/ApplicationsPage'
+import { ApplicationsTablePage } from '@/features/application/ApplicationsTablePage'
+import { BountyPage } from './features/bounty/BountyPage'
+import { AssignedBountiesPage } from './features/assignedBounty/AssignedBountiesPage'
+import { AssignedBountyDetails } from './features/assignedBounty/AssignedBountyDetails'
+import { SubmitBountyReportPage } from './features/submission/SubmitBountyReportPage'
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
     errorElement: <NotFound />,
-    loader: authLoader,
+
     children: [
       {
         index: true,
@@ -64,6 +66,7 @@ const router = createBrowserRouter([
       },
       {
         element: <RequireAuthentication />,
+        loader: authLoader,
         children: [
           {
             path: 'settings',
@@ -124,13 +127,15 @@ const router = createBrowserRouter([
                   },
                   {
                     path: 'applications',
-                    element: <ApplicationsTab />
+                    element: <ApplicationsPage />,
+                    children: [
+                      {
+                        index: true,
+                        element: <ApplicationsTablePage />
+                      }
+                    ]
                   }
                 ]
-              },
-              {
-                path: ':id/submissions/:submissionId',
-                element: <SubmissionDetails />
               },
               {
                 path: 'users',
@@ -150,16 +155,36 @@ const router = createBrowserRouter([
                 element: <ProgramView />
               },
               {
-                path: 'bounty-programs/:id/submit/new',
-                element: <ProgramApply />
-              },
-              {
                 path: 'submissions',
                 element: <SubmissionsList />
               },
               {
                 path: 'applications',
-                element: <ApplicationsPage />
+                element: <ApplicationsPage />,
+                children: [
+                  {
+                    index: true,
+                    element: <ApplicationsTablePage />
+                  }
+                ]
+              },
+              {
+                path: 'assigned-bounties',
+                element: <AssignedBountiesPage />,
+                children: [
+                  {
+                    index: true,
+                    element: <BountyPage />
+                  },
+                  {
+                    path: ':id',
+                    element: <AssignedBountyDetails />
+                  },
+                  {
+                    path: ':id/submit',
+                    element: <SubmitBountyReportPage />
+                  }
+                ]
               }
             ]
           }

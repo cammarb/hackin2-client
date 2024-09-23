@@ -1,11 +1,4 @@
-import {
-  Building2,
-  ChevronDownIcon,
-  CircleIcon,
-  MapIcon,
-  PlusIcon,
-  StarIcon
-} from 'lucide-react'
+import { Building2, MapIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   Card,

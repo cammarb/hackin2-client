@@ -55,12 +55,8 @@ const pentesterLinks: Links[] = [
     url: 'applications'
   },
   {
-    title: 'Bounties',
-    url: 'bounties'
-  },
-  {
-    title: 'Submissions',
-    url: 'submissions'
+    title: 'Assigned Bounties',
+    url: 'assigned-bounties'
   }
 ]
 

@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { MoreHorizontal } from 'lucide-react'
 import { useGetSubmissionsByUserQuery } from '@/features/submission/submissionSlice'
+import type { Submission } from '@/utils/types'
 
 const SubmissionsList = () => {
   const user = useSelector(selectCurrentUser)
@@ -27,12 +28,13 @@ const SubmissionsList = () => {
     data: response,
     isLoading,
     isSuccess,
-    isError,
-    error
-  } = useGetSubmissionsByUserQuery(user)
+    isError
+  } = useGetSubmissionsByUserQuery(user?.id)
 
   let content = <></>
 
+  if (isLoading) content = <p>is loading</p>
+  if (isError) content = <p>is error</p>
   if (isSuccess) {
     const submissions = response.submissions
 
@@ -42,20 +44,20 @@ const SubmissionsList = () => {
           <TableCaption>A list of your submissions.</TableCaption>
           <TableHeader>
             <TableRow>
-              <TableHead>Program</TableHead>
+              <TableHead>Bounty</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Severity</TableHead>
               <TableHead className='text-right'>Files sent</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {submissions.map((submission) => (
-              <TableRow key={submission.programId}>
+            {submissions.map((submission: Submission) => (
+              <TableRow key={submission.id}>
                 <TableCell className='font-medium'>
-                  {submission.Program.name}
+                  {/* {submission.Program.name} */}
                 </TableCell>
                 <TableCell>{submission.status}</TableCell>
-                <TableCell>{submission.Severity.severity}</TableCell>
+                {/* <TableCell>{submission.Severity.severity}</TableCell> */}
                 <TableCell className='text-right'>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -90,7 +92,6 @@ const SubmissionsList = () => {
     <>
       <main className='m-10 flex flex-col gap-10 mx-auto sm:w-[100%] md:w-[80%] lg:w-[60%]'>
         <h1 className='text-2xl font-medium'>Submissions</h1>
-
         {content}
       </main>
     </>

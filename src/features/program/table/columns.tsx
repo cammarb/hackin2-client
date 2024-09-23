@@ -43,7 +43,7 @@ export const columns: ColumnDef<Program>[] = [
     header: 'Status',
     cell: ({ row }) => {
       const status: string = row.getValue('programStatus')
-      let variant
+      let variant: 'draft' | 'active' | 'paused' | 'complete' | null | undefined
       switch (status) {
         case 'DRAFT': {
           variant = 'draft'

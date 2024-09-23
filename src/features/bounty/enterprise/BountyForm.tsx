@@ -2,7 +2,7 @@ import {
   useEditBountyMutation,
   useNewBountyMutation
 } from '@/features/bounty/bountyApiSlice'
-import { Button } from '../../../components/ui/button'
+import { Button } from '@/components/ui/button'
 import { capitalizeFirstLetter } from '@/utils/stringFormatter'
 import {
   DialogClose,
@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { useForm, type UseFormReturn } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
@@ -32,11 +32,13 @@ import {
   SelectContent,
   SelectItem
 } from '@/components/ui/select'
-import { useGetSeverityRewardsQuery } from '../../severityReward/severityRewardSlice'
+import { useGetSeverityRewardsQuery } from '@/features/severityReward/severityRewardSlice'
+import type { Bounty } from '../bounty.dto'
 
 const formSchema = z.object({
   title: z.string(),
   description: z.string(),
+  status: z.string(),
   severity: z.string(),
   scope: z.string(),
   notes: z.string()
@@ -56,48 +58,34 @@ export const BountyForm = ({
   const [addBounty] = useNewBountyMutation()
   const [editBounty] = useEditBountyMutation()
 
-  let form: UseFormReturn<z.infer<typeof formSchema>> = useForm<
-    z.infer<typeof formSchema>
-  >({
+  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: '',
-      description: '',
-      severity: '',
-      scope: '',
-      notes: ''
+      title: bounty?.title || '',
+      description: bounty?.description || '',
+      status: bounty?.status || '',
+      severity: bounty?.severityRewardId || '',
+      scope: bounty?.scope || '',
+      notes: bounty?.notes || ''
     }
   })
-
-  if (variant === 'edit' && bounty && isSuccess) {
-    form = useForm<z.infer<typeof formSchema>>({
-      resolver: zodResolver(formSchema),
-      defaultValues: {
-        title: bounty.title,
-        description: bounty.description,
-        severity: bounty.severityRewardId,
-        scope: bounty.scope,
-        notes: bounty.notes
-      }
-    })
-  }
 
   const submitData = async (data: z.infer<typeof formSchema>) => {
     try {
       if (variant === 'edit') {
-        console.log('before editing')
+        console.log(variant, data.status)
         await editBounty({
           id: bounty?.id,
           body: {
             programId: programId,
             title: data.title,
             description: data.description,
+            status: data.status,
             severityRewardId: data.severity,
             scope: data.scope,
             notes: data.notes
           }
         }).unwrap()
-        console.log('after editing')
       }
       if (variant === 'create') {
         await addBounty({
@@ -149,6 +137,28 @@ export const BountyForm = ({
                 <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Textarea placeholder='Bounty description' {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='status'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor='status'>Status</FormLabel>
+                <FormControl>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger id='status' aria-label='Select status'>
+                      <SelectValue placeholder={'Select status'} {...field} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value={'PENDING'}>Pending</SelectItem>
+                      <SelectItem value={'IN_PROGRESS'}>In Progress</SelectItem>
+                      <SelectItem value={'DONE'}>Done</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormMessage />
               </FormItem>
