@@ -5,12 +5,14 @@ import type { Submission } from '@/utils/types'
 // import { getBadgeVariant } from '@/components/RewardsTable'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 const SubmissionDetails = ({
   submission,
   className
 }: { submission: Submission; className?: string }) => {
+  const { id } = useParams()
+
   return (
     <div className={`max-w-6xl grid prose dark:prose-invert ${className}`}>
       <div className='w-full grid grid-cols-2 grid-rows-3 gap-4 my-6'>
@@ -58,7 +60,9 @@ const SubmissionDetails = ({
       </div>
       <div>
         <Button asChild>
-          <Link to={'/payment/new'}>Pay</Link>
+          <Link to={`/programs/${id}/payments/new?user=${submission.userId}`}>
+            Pay
+          </Link>
         </Button>
       </div>
     </div>

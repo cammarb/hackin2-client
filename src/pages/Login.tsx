@@ -59,7 +59,7 @@ export default function Login() {
       dispatch(setCredentials({ ...userData }))
       dispatch(setSession({ isLoggedIn: true }))
       form.reset({})
-      navigate('/')
+      navigate('/dashboard')
     } catch (error) {
       // if (error?.status === 401) {
       //   toast({

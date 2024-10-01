@@ -20,13 +20,21 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { useNewPaymentMutation } from './paymentsApiSlice'
 import { Input } from '@/components/ui/input'
+import { useParams, useSearchParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { selectCurrentUser } from '../auth/authSlice'
 
 const formSchema = z.object({
   amount: z.coerce.number()
 })
 
 export const CreatePaymentCard = () => {
+  const user = useSelector(selectCurrentUser)
+  const [searchParams] = useSearchParams()
+  const pentester = searchParams.get('user')
+  const { bountyId } = useParams()
   const [newPayment] = useNewPaymentMutation()
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -36,10 +44,14 @@ export const CreatePaymentCard = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      console.log('hey')
-      await newPayment({
-        amount: values.amount
+      const response = await newPayment({
+        amount: values.amount,
+        userId: pentester,
+        companyId: user?.company?.id,
+        bountyId: bountyId
       }).unwrap()
+
+      window.location = response.url
     } catch (error) {
       console.log(error)
     }

@@ -41,13 +41,14 @@ import { AssignedBountyDetails } from './features/assignedBounty/AssignedBountyD
 import { SubmitBountyReportPage } from './features/submission/SubmitBountyReportPage'
 import { PaymentsPage } from './features/payments/PaymentsPage'
 import { CreatePaymentCard } from './features/payments/CreatePaymentCard'
+import { PaymentDetails } from './features/payments/PaymentDetailts'
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
     errorElement: <NotFound />,
-
+    loader: authLoader,
     children: [
       {
         index: true,
@@ -68,7 +69,6 @@ const router = createBrowserRouter([
       },
       {
         element: <RequireAuthentication />,
-        loader: authLoader,
         children: [
           {
             path: 'settings',
@@ -136,16 +136,20 @@ const router = createBrowserRouter([
                         element: <ApplicationsTablePage />
                       }
                     ]
-                  }
-                ]
-              },
-              {
-                path: 'payment',
-                element: <PaymentsPage />,
-                children: [
+                  },
                   {
-                    path: 'new',
-                    element: <CreatePaymentCard />
+                    path: 'payments',
+                    element: <PaymentsPage />,
+                    children: [
+                      {
+                        path: 'new',
+                        element: <CreatePaymentCard />
+                      },
+                      {
+                        path: ':id',
+                        element: <PaymentDetails />
+                      }
+                    ]
                   }
                 ]
               },
