@@ -39,6 +39,8 @@ import { BountyPage } from './features/bounty/BountyPage'
 import { AssignedBountiesPage } from './features/assignedBounty/AssignedBountiesPage'
 import { AssignedBountyDetails } from './features/assignedBounty/AssignedBountyDetails'
 import { SubmitBountyReportPage } from './features/submission/SubmitBountyReportPage'
+import { PaymentsPage } from './features/payments/PaymentsPage'
+import { CreatePaymentCard } from './features/payments/CreatePaymentCard'
 
 const router = createBrowserRouter([
   {
@@ -134,6 +136,16 @@ const router = createBrowserRouter([
                         element: <ApplicationsTablePage />
                       }
                     ]
+                  }
+                ]
+              },
+              {
+                path: 'payment',
+                element: <PaymentsPage />,
+                children: [
+                  {
+                    path: 'new',
+                    element: <CreatePaymentCard />
                   }
                 ]
               },

@@ -4,6 +4,8 @@ import { formatDate } from '@/utils/dateFormatter'
 import type { Submission } from '@/utils/types'
 // import { getBadgeVariant } from '@/components/RewardsTable'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Link } from 'react-router-dom'
 
 const SubmissionDetails = ({
   submission,
@@ -53,6 +55,11 @@ const SubmissionDetails = ({
       <div className='w-full'>
         <p>Created: {formatDate(submission.createdAt)}</p>
         <p>Last updated: {formatDate(submission.updatedAt)}</p>
+      </div>
+      <div>
+        <Button asChild>
+          <Link to={'/payment/new'}>Pay</Link>
+        </Button>
       </div>
     </div>
   )
