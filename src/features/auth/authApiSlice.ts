@@ -9,7 +9,17 @@ export const authApiSlice = apiConnection.injectEndpoints({
         url: '/auth/login',
         method: 'POST',
         body: { ...credentials }
-      })
+      }),
+      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled
+          console.log(data)
+          dispatch(setCredentials({ ...data }))
+          dispatch(setSession({ isLoggedIn: true }))
+        } catch (err) {
+          console.log(err)
+        }
+      }
     }),
     logout: builder.mutation({
       query: () => ({
