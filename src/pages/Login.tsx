@@ -53,7 +53,7 @@ export default function Login() {
         password: data.password
       }).unwrap()
       form.reset({})
-      navigate('/')
+      navigate('/dashboard')
     } catch (error) {
       // if (error?.status === 401) {
       //   toast({
