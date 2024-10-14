@@ -23,12 +23,26 @@ import { Input } from '@/components/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from '@/components/ui/use-toast'
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select'
+
+enum Role {
+  PENTESTER = 'pentester',
+  ENTERPRISE = 'enterprise'
+}
+
 interface SignUpData {
   firstName: string
   lastName: string
   username: string
   email: string
   password: string
+  role: Role
 }
 
 export default function SignUp() {
@@ -40,7 +54,8 @@ export default function SignUp() {
     lastName: z.string().min(2).max(100),
     username: z.string().min(6).max(100),
     email: z.string().min(2).max(100),
-    password: z.string().min(8).max(100)
+    password: z.string().min(8).max(100),
+    role: z.nativeEnum(Role)
   })
 
   const form = useForm<SignUpData>({
@@ -50,7 +65,8 @@ export default function SignUp() {
       lastName: '',
       username: '',
       email: '',
-      password: ''
+      password: '',
+      role: Role.PENTESTER
     }
   })
 
@@ -181,6 +197,18 @@ export default function SignUp() {
                     </FormItem>
                   )}
                 />
+              </div>
+              <div>
+              <Select required {...form.register('role')}>
+                  <SelectTrigger>
+                    <SelectValue placeholder='Select a role' />
+                  </SelectTrigger>
+
+                  <SelectContent>
+                    <SelectItem value='pentester'>Pentester</SelectItem>
+                    <SelectItem value='enterprise'>Enterprise</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </CardContent>
             <CardFooter className='flex flex-col'>
