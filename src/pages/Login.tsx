@@ -18,11 +18,8 @@ import {
 import { Input } from '@/components/ui/input'
 // import { toast } from '@/components/ui/use-toast'
 import { useLoginMutation } from '@/features/auth/authApiSlice'
-import { setCredentials } from '@/features/auth/authSlice'
-import { setSession } from '@/features/auth/sessionApiSlice'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { z, type ZodType } from 'zod'
 
@@ -35,7 +32,6 @@ export default function Login() {
   const navigate = useNavigate()
 
   const [login, { isLoading }] = useLoginMutation()
-  const dispatch = useDispatch()
 
   const schema: ZodType<LoginData> = z.object({
     username: z.string().min(6),
@@ -52,14 +48,12 @@ export default function Login() {
 
   const submitData = async (data: LoginData) => {
     try {
-      const userData = await login({
+      await login({
         username: data.username,
         password: data.password
       }).unwrap()
-      dispatch(setCredentials({ ...userData }))
-      dispatch(setSession({ isLoggedIn: true }))
       form.reset({})
-      navigate('/')
+      navigate('/dashboard')
     } catch (error) {
       // if (error?.status === 401) {
       //   toast({
