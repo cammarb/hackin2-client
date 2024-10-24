@@ -60,7 +60,9 @@ const SubmissionDetails = ({
       </div>
       <div>
         <Button asChild>
-          <Link to={`/programs/${id}/payments/new?user=${submission.userId}`}>
+          <Link
+            to={`/programs/${id}/payments/new?user=${submission.userId}&bounty=${submission.bountyId}`}
+          >
             Pay
           </Link>
         </Button>

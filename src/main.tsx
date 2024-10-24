@@ -42,6 +42,7 @@ import { SubmitBountyReportPage } from './features/submission/SubmitBountyReport
 import { PaymentsPage } from './features/payments/PaymentsPage'
 import { CreatePaymentCard } from './features/payments/CreatePaymentCard'
 import { PaymentDetails } from './features/payments/PaymentDetailts'
+import { NewPaymentPage } from './features/payments/NewPaymentPage'
 
 const router = createBrowserRouter([
   {
@@ -143,7 +144,7 @@ const router = createBrowserRouter([
                     children: [
                       {
                         path: 'new',
-                        element: <CreatePaymentCard />
+                        element: <NewPaymentPage />
                       },
                       {
                         path: ':id',
