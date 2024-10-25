@@ -31,8 +31,8 @@ import {
 } from '@/components/ui/select'
 import { useGetBountiesQuery } from '../bounty/bountyApiSlice'
 import type { Bounty, BountyAssignment } from '../bounty/bounty.dto'
-import { useGetUserQuery } from '../user/userSlice'
 import { useGetBountyAssignmentsQuery } from '../assignedBounty/assignedBountyApiSlice'
+import { WalletCards } from 'lucide-react'
 
 const formSchema = z.object({
   amount: z.coerce.number(),
@@ -75,92 +75,93 @@ export const CreatePaymentCard = ({
 
   return (
     <>
-      <Card>
+      <Card className='max-w-xl'>
         <CardHeader>
           <CardTitle>New payment</CardTitle>
           <CardDescription>
             Enter all the required details to initiate a payment for the
             services provided by the pentester.
           </CardDescription>
-          <CardContent>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)}>
-                <FormField
-                  control={form.control}
-                  name='bounty'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Bounty Program</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder='Select a Bounty Program' />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectBounty programId={programId} />
-                        </SelectContent>
-                      </Select>
-                      <FormDescription>
-                        Select the Bounty Program
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name='pentester'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Pentester</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder='Select a Pentester' />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {form.getValues().bounty && (
-                            <SelectUser bounty={form.getValues().bounty} />
-                          )}
-                        </SelectContent>
-                      </Select>
-                      <FormDescription>
-                        Select the pentester the payment is for
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name='amount'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Amount</FormLabel>
-                      <FormControl>
-                        <Input type='number' placeholder='10000' {...field} />
-                      </FormControl>
-                      <FormDescription>
-                        Specify the amount to be payed. All payments are in €
-                        EUR.
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button type='submit'>Pay</Button>
-              </form>
-            </Form>
-          </CardContent>
         </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+              <FormField
+                control={form.control}
+                name='bounty'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Bounty Program</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder='Select a Bounty Program' />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectBounty programId={programId} />
+                      </SelectContent>
+                    </Select>
+                    <FormDescription>Select the Bounty Program</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='pentester'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Pentester</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder='Select a Pentester' />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {form.getValues().bounty && (
+                          <SelectUser bounty={form.getValues().bounty} />
+                        )}
+                      </SelectContent>
+                    </Select>
+                    <FormDescription>
+                      Select the pentester the payment is for
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='amount'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Amount</FormLabel>
+                    <FormControl>
+                      <Input type='number' placeholder='10000' {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      Specify the amount to be payed. All payments are in € EUR.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button type='submit' className='mt-6 px-8 flex gap-2 text-lg'>
+                <WalletCards className='w-4 h-4' />
+                Pay
+              </Button>
+            </form>
+          </Form>
+        </CardContent>
       </Card>
     </>
   )
