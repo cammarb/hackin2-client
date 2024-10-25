@@ -64,6 +64,7 @@ export const CreatePaymentCard = ({
         userId: values.pentester,
         programId: programId,
         companyId: user?.company?.id,
+        memberId: user?.id,
         bountyId: values.bounty
       }).unwrap()
 

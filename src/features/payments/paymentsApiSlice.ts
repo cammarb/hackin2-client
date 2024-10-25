@@ -8,8 +8,15 @@ export const paymentsApiSlice = apiConnection.injectEndpoints({
         url: '/payments/new',
         body
       })
+    }),
+    getPaymentByCheckoutSessionId: builder.query({
+      query: (id) => ({
+        method: 'GET',
+        url: `/payments/checkoutSession/${id}`
+      })
     })
   })
 })
 
-export const { useNewPaymentMutation } = paymentsApiSlice
+export const { useNewPaymentMutation, useGetPaymentByCheckoutSessionIdQuery } =
+  paymentsApiSlice

@@ -7,9 +7,18 @@ import {
 } from '@/components/ui/card'
 import { CheckCircle } from 'lucide-react'
 import { useParams } from 'react-router-dom'
+import { useGetPaymentByCheckoutSessionIdQuery } from './paymentsApiSlice'
+import { Skeleton } from '@/components/ui/skeleton'
+import { formatDateTime } from '@/utils/dateFormatter'
 
 export const SuccessPaymentPage = () => {
   const { checkoutSessionId } = useParams()
+  const {
+    data: response,
+    isLoading,
+    isError,
+    isSuccess
+  } = useGetPaymentByCheckoutSessionIdQuery(checkoutSessionId)
 
   return (
     <>
@@ -27,18 +36,20 @@ export const SuccessPaymentPage = () => {
               <CardDescription>Payment details</CardDescription>
             </CardHeader>
             <CardContent className='grid gap-2'>
-              <div className='flex justify-between'>
-                <p>Amount</p>
-                <p>€50</p>
-              </div>
-              <div className='flex justify-between'>
-                <p>Date & Time</p>
-                <p>heute</p>
-              </div>
-              <div className='flex justify-between'>
-                <p>Reference number</p>
-                <p>#</p>
-              </div>
+              {isLoading && <Skeleton />}
+              {isError && <p>Error</p>}
+              {isSuccess && (
+                <>
+                  <div className='flex justify-between'>
+                    <p>Amount (in ¢)</p>
+                    <p>{response.payment.amount}</p>
+                  </div>
+                  <div className='flex justify-between'>
+                    <p>Date & Time</p>
+                    <p>{formatDateTime(response.payment.payedAt)}</p>
+                  </div>
+                </>
+              )}
             </CardContent>
           </Card>
         </div>
