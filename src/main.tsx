@@ -43,6 +43,7 @@ import { PaymentsPage } from './features/payments/PaymentsPage'
 import { CreatePaymentCard } from './features/payments/CreatePaymentCard'
 import { PaymentDetails } from './features/payments/PaymentDetailts'
 import { NewPaymentPage } from './features/payments/NewPaymentPage'
+import { SuccessPaymentPage } from './features/payments/SuccessPaymentPage'
 
 const router = createBrowserRouter([
   {
@@ -145,6 +146,10 @@ const router = createBrowserRouter([
                       {
                         path: 'new',
                         element: <NewPaymentPage />
+                      },
+                      {
+                        path: 'success/:checkoutSessionId',
+                        element: <SuccessPaymentPage />
                       },
                       {
                         path: ':id',
