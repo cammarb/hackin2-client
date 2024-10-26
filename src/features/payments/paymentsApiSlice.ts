@@ -14,9 +14,18 @@ export const paymentsApiSlice = apiConnection.injectEndpoints({
         method: 'GET',
         url: `/payments/checkoutSession/${id}`
       })
+    }),
+    getPayments: builder.query({
+      query: ({ key, value }) => ({
+        method: 'GET',
+        url: `/payments?${key}=${value}`
+      })
     })
   })
 })
 
-export const { useNewPaymentMutation, useGetPaymentByCheckoutSessionIdQuery } =
-  paymentsApiSlice
+export const {
+  useNewPaymentMutation,
+  useGetPaymentByCheckoutSessionIdQuery,
+  useGetPaymentsQuery
+} = paymentsApiSlice

@@ -40,10 +40,10 @@ import { AssignedBountiesPage } from './features/assignedBounty/AssignedBounties
 import { AssignedBountyDetails } from './features/assignedBounty/AssignedBountyDetails'
 import { SubmitBountyReportPage } from './features/submission/SubmitBountyReportPage'
 import { PaymentsPage } from './features/payments/PaymentsPage'
-import { CreatePaymentCard } from './features/payments/CreatePaymentCard'
-import { PaymentDetails } from './features/payments/PaymentDetailts'
 import { NewPaymentPage } from './features/payments/NewPaymentPage'
 import { SuccessPaymentPage } from './features/payments/SuccessPaymentPage'
+import { PaymentsTablePage } from './features/payments/PaymentsTablePage'
+import { PaymentDetailsPage } from './features/payments/PaymentDetailsPage'
 
 const router = createBrowserRouter([
   {
@@ -144,6 +144,10 @@ const router = createBrowserRouter([
                     element: <PaymentsPage />,
                     children: [
                       {
+                        index: true,
+                        element: <PaymentsTablePage />
+                      },
+                      {
                         path: 'new',
                         element: <NewPaymentPage />
                       },
@@ -152,8 +156,8 @@ const router = createBrowserRouter([
                         element: <SuccessPaymentPage />
                       },
                       {
-                        path: ':id',
-                        element: <PaymentDetails />
+                        path: ':checkoutSessionId',
+                        element: <PaymentDetailsPage />
                       }
                     ]
                   }
