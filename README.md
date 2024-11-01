@@ -63,11 +63,3 @@ You can start the application with the following command:
 ```bash
 npm run dev
 ```
-
-## API Documentation
-
-TDB
-
-### License
-
-TBD
