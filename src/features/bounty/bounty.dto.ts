@@ -1,4 +1,5 @@
 import type { Submission } from '@/utils/types'
+import type { Payment } from '@/features/payments/payments.dto'
 
 export type Bounty = {
   id: string
@@ -26,4 +27,5 @@ export type BountyAssignment = {
     title: string
   }
   Submission?: Submission
+  Payment?: Payment
 }

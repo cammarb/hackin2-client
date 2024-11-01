@@ -58,6 +58,7 @@ const SubmissionDetails = ({
         <p>Created: {formatDate(submission.createdAt)}</p>
         <p>Last updated: {formatDate(submission.updatedAt)}</p>
       </div>
+      {}
       <div>
         <Button asChild>
           <Link

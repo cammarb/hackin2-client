@@ -211,6 +211,20 @@ const router = createBrowserRouter([
                     element: <SubmitBountyReportPage />
                   }
                 ]
+              },
+              {
+                path: 'payments',
+                element: <PaymentsPage />,
+                children: [
+                  {
+                    index: true,
+                    element: <PaymentsTablePage />
+                  },
+                  {
+                    path: ':checkoutSessionId',
+                    element: <PaymentDetailsPage />
+                  }
+                ]
               }
             ]
           }
