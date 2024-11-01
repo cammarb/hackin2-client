@@ -24,6 +24,7 @@ import {
 import SubmissionDetails from '@/features/submission/SubmissionDetails'
 import type { BountyAssignment } from '../bounty.dto'
 import { Separator } from '@/components/ui/separator'
+import type { Payment } from '@/features/payments/payments.dto'
 
 export const columns: ColumnDef<BountyAssignment>[] = [
   {
@@ -99,28 +100,26 @@ export const columns: ColumnDef<BountyAssignment>[] = [
     }
   },
   {
-    accessorKey: 'payment',
+    accessorKey: 'Payment',
     header: 'Payment',
     cell: ({ row }) => {
-      const status: string = row.getValue('status')
+      const payment: Payment = row.getValue('Payment')
       let variant: 'draft' | 'active' | 'complete' | null | undefined
-      switch (status) {
+      switch (payment.status) {
         case 'PENDING': {
           variant = 'draft'
           break
         }
-        case 'IN_PROGRESS': {
-          variant = 'active'
-          break
-        }
-        case 'DONE': {
+        case 'PAYED': {
           variant = 'complete'
           break
         }
       }
       return (
         <div>
-          <Badge variant={variant}>{capitalizeFirstLetter(status)}</Badge>
+          <Badge variant={variant}>
+            {capitalizeFirstLetter(payment.status)}
+          </Badge>
         </div>
       )
     }
