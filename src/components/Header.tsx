@@ -33,7 +33,10 @@ const enterpriseLinks: Links[] = [
   {
     title: 'Programs',
     url: 'programs',
-    children: [{ title: 'New Program', url: 'programs/new' }]
+    children: [
+      { title: 'All Programs', url: 'programs' },
+      { title: 'New Program', url: 'programs/new' }
+    ]
   },
   {
     title: 'User and Access Management',

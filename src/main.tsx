@@ -39,13 +39,18 @@ import { BountyPage } from './features/bounty/BountyPage'
 import { AssignedBountiesPage } from './features/assignedBounty/AssignedBountiesPage'
 import { AssignedBountyDetails } from './features/assignedBounty/AssignedBountyDetails'
 import { SubmitBountyReportPage } from './features/submission/SubmitBountyReportPage'
+import { PaymentsPage } from './features/payments/PaymentsPage'
+import { NewPaymentPage } from './features/payments/NewPaymentPage'
+import { SuccessPaymentPage } from './features/payments/SuccessPaymentPage'
+import { PaymentsTablePage } from './features/payments/PaymentsTablePage'
+import { PaymentDetailsPage } from './features/payments/PaymentDetailsPage'
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
     errorElement: <NotFound />,
-
+    loader: authLoader,
     children: [
       {
         index: true,
@@ -66,7 +71,6 @@ const router = createBrowserRouter([
       },
       {
         element: <RequireAuthentication />,
-        loader: authLoader,
         children: [
           {
             path: 'settings',
@@ -132,6 +136,28 @@ const router = createBrowserRouter([
                       {
                         index: true,
                         element: <ApplicationsTablePage />
+                      }
+                    ]
+                  },
+                  {
+                    path: 'payments',
+                    element: <PaymentsPage />,
+                    children: [
+                      {
+                        index: true,
+                        element: <PaymentsTablePage />
+                      },
+                      {
+                        path: 'new',
+                        element: <NewPaymentPage />
+                      },
+                      {
+                        path: 'success/:checkoutSessionId',
+                        element: <SuccessPaymentPage />
+                      },
+                      {
+                        path: ':checkoutSessionId',
+                        element: <PaymentDetailsPage />
                       }
                     ]
                   }

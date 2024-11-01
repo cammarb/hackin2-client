@@ -19,7 +19,8 @@ export type EditableProgram = Omit<
 
 export type Submission = {
   id: string
-  bountyAssignmentId: string
+  bountyId: string
+  userId: string
   asset: string
   evidence: string
   impact: string

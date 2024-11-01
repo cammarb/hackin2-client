@@ -7,7 +7,14 @@ import {
 import { cn } from '@/lib/utils'
 import type { Program } from '@/utils/types'
 import { TooltipProvider } from '@radix-ui/react-tooltip'
-import { Building, Crosshair, List, Send } from 'lucide-react'
+import {
+  Building,
+  CreditCard,
+  Crosshair,
+  FileCheck2,
+  List,
+  Send
+} from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 import { Separator } from '@/components/ui/separator'
 
@@ -59,6 +66,18 @@ export function Sidebar({ isCollapsed, program }: SidebarProps) {
           navLink={'applications'}
           navName={'Applications'}
           icon={<Send className='w-4 h-4' />}
+        />
+        <NavItem
+          isCollapsed={isCollapsed}
+          navLink={'submissions'}
+          navName={'Submissions'}
+          icon={<FileCheck2 className='w-4 h-4' />}
+        />
+        <NavItem
+          isCollapsed={isCollapsed}
+          navLink={'payments'}
+          navName={'Payments'}
+          icon={<CreditCard className='w-4 h-4' />}
         />
       </nav>
     </div>

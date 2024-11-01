@@ -38,9 +38,7 @@ export function Navbar({
                       )
                     }
                   >
-                    <NavigationMenuTrigger className='prose'>
-                      {item.title}
-                    </NavigationMenuTrigger>
+                    <NavigationMenuTrigger>{item.title}</NavigationMenuTrigger>
                   </NavLink>
                   <NavigationMenuContent>
                     <div className='grid grid-flow-row w-[300px] gap-3 p-4'>

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   type ColumnDef,
   flexRender,
@@ -33,14 +33,17 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  role: string
 }
 
 export function DataTable<TData, TValue>({
   columns,
-  data
+  data,
+  role
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [columnVisibility, setColumnVisibility] = useState({})
 
   const table = useReactTable({
     data,
@@ -53,31 +56,40 @@ export function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     state: {
       sorting,
-      columnFilters
-    }
+      columnFilters,
+      columnVisibility
+    },
+    onColumnVisibilityChange: setColumnVisibility
   })
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    if (role === 'PENTESTER') {
+      setColumnVisibility((prev) => ({
+        ...prev,
+        username: false
+      }))
+    }
+  }, [role, setColumnVisibility])
 
   return (
     <div>
       <div className='flex gap-4 items-center py-4'>
         <Input
-          placeholder='Search location'
-          value={
-            (table.getColumn('location')?.getFilterValue() as string) ?? ''
-          }
+          placeholder='Search Payment by Bounty title'
+          value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
           onChange={(event) =>
-            table.getColumn('location')?.setFilterValue(event.target.value)
+            table.getColumn('title')?.setFilterValue(event.target.value)
           }
           className='max-w-sm'
         />
         <Select
           value={
-            (table.getColumn('programStatus')?.getFilterValue() as string) ??
-            'ALL'
+            (table.getColumn('status')?.getFilterValue() as string) ?? 'ALL'
           }
           onValueChange={(status) =>
             table
-              .getColumn('programStatus')
+              .getColumn('status')
               ?.setFilterValue(status === 'ALL' ? undefined : status)
           }
         >
@@ -88,10 +100,8 @@ export function DataTable<TData, TValue>({
             <SelectGroup>
               <SelectLabel>Status</SelectLabel>
               <SelectItem value='ALL'>All</SelectItem>
-              <SelectItem value='ACTIVE'>Active</SelectItem>
-              <SelectItem value='DRAFT'>Draft</SelectItem>
-              <SelectItem value='PAUSED'>Paused</SelectItem>
-              <SelectItem value='COMPLETE'>Complete</SelectItem>
+              <SelectItem value='PAYED'>Payed</SelectItem>
+              <SelectItem value='PENDING'>Pending</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>

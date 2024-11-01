@@ -4,11 +4,15 @@ import { formatDate } from '@/utils/dateFormatter'
 import type { Submission } from '@/utils/types'
 // import { getBadgeVariant } from '@/components/RewardsTable'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Link, useParams } from 'react-router-dom'
 
 const SubmissionDetails = ({
   submission,
   className
 }: { submission: Submission; className?: string }) => {
+  const { id } = useParams()
+
   return (
     <div className={`max-w-6xl grid prose dark:prose-invert ${className}`}>
       <div className='w-full grid grid-cols-2 grid-rows-3 gap-4 my-6'>
@@ -53,6 +57,15 @@ const SubmissionDetails = ({
       <div className='w-full'>
         <p>Created: {formatDate(submission.createdAt)}</p>
         <p>Last updated: {formatDate(submission.updatedAt)}</p>
+      </div>
+      <div>
+        <Button asChild>
+          <Link
+            to={`/programs/${id}/payments/new?user=${submission.userId}&bounty=${submission.bountyId}`}
+          >
+            Pay
+          </Link>
+        </Button>
       </div>
     </div>
   )
