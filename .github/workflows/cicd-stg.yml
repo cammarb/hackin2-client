@@ -20,6 +20,8 @@ jobs:
       attestations: write
       id-token: write
 
+    environment: stg
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
