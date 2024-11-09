@@ -25,7 +25,6 @@ export default function Home() {
           </h1>
         </div>
         <div className='flex w-full max-w-sm items-center space-x-2'>
-          <p>Find everything here: ${import.meta.env.VITE_API_BASE_URL}</p>
           <Input type='text' placeholder='Search for the service you need...' />
           <Button>Search</Button>
         </div>
