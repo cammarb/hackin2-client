@@ -24,10 +24,6 @@ export default function Home() {
             for <span className='italic underline underline-offset-2'>you</span>
           </h1>
         </div>
-        <div className='flex w-full max-w-sm items-center space-x-2'>
-          <Input type='text' placeholder='Search for the service you need...' />
-          <Button>Search</Button>
-        </div>
       </div>
     </div>
   )
