@@ -104,6 +104,11 @@ export const columns: ColumnDef<BountyAssignment>[] = [
     header: 'Payment',
     cell: ({ row }) => {
       const payment: Payment = row.getValue('Payment')
+
+      if (!payment || !payment.status) {
+        return 'PENDING'
+      }
+
       let variant: 'draft' | 'active' | 'complete' | null | undefined
       switch (payment.status) {
         case 'PENDING': {
