@@ -2,6 +2,14 @@ import { apiConnection } from '@/app/api/apiConnection'
 
 export const companyApiSlice = apiConnection.injectEndpoints({
   endpoints: (builder) => ({
+    newCompany: builder.mutation({
+      query: (body) => ({
+        url: '/companies/new',
+        method: 'POST',
+        body
+      }),
+      invalidatesTags: ['Company']
+    }),
     getCompany: builder.query({
       query: (id) => ({
         url: `/companies/${id}`,
@@ -17,7 +25,7 @@ export const companyApiSlice = apiConnection.injectEndpoints({
     }),
     addCompanyMembers: builder.mutation({
       query: (member) => ({
-        url: '/members/new',
+        url: '/members/invite',
         method: 'POST',
         body: member
       }),
@@ -27,6 +35,7 @@ export const companyApiSlice = apiConnection.injectEndpoints({
 })
 
 export const {
+  useNewCompanyMutation,
   useGetCompanyQuery,
   useGetCompanyMembersQuery,
   useAddCompanyMembersMutation

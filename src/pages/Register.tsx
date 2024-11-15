@@ -1,7 +1,7 @@
 import { useNewUserMutation } from '@/features/user/userSlice'
 import { useNavigate } from 'react-router-dom'
 import { z, type ZodType } from 'zod'
-import { useForm } from 'react-hook-form'
+import { useForm, UseFormReturn } from 'react-hook-form'
 import {
   Card,
   CardContent,
@@ -32,8 +32,8 @@ import {
 } from '@/components/ui/select'
 
 enum Role {
-  PENTESTER = 'pentester',
-  ENTERPRISE = 'enterprise'
+  PENTESTER = 'PENTESTER',
+  ENTERPRISE = 'ENTERPRISE'
 }
 
 interface SignUpData {
@@ -43,20 +43,96 @@ interface SignUpData {
   email: string
   password: string
   role: Role
+  company?: {
+    name: string
+    website: string
+    email: string
+  }
+}
+
+const CompanyForm = ({
+  form
+}: {
+  form: UseFormReturn<SignUpData>
+}) => {
+  return (
+    <div className='grid gap-2 mt-5'>
+      <p className='font-medium text-xl'>Create new Company</p>
+      <FormField
+        control={form.control}
+        name='company.name'
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Company Name</FormLabel>
+            <FormControl>
+              <Input placeholder='Hackin2' {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name='company.website'
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Company Website</FormLabel>
+            <FormControl>
+              <Input placeholder='https://hackin2.com' {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name='company.email'
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Company Email</FormLabel>
+            <FormControl>
+              <Input placeholder='company@hackin2.com' {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    </div>
+  )
 }
 
 export default function SignUp() {
   const [newUser, { isLoading }] = useNewUserMutation()
   const navigate = useNavigate()
 
-  const schema: ZodType<SignUpData> = z.object({
-    firstName: z.string().min(2).max(100),
-    lastName: z.string().min(2).max(100),
-    username: z.string().min(6).max(100),
-    email: z.string().min(2).max(100),
-    password: z.string().min(8).max(100),
-    role: z.nativeEnum(Role)
-  })
+  const schema: ZodType<SignUpData> = z
+    .object({
+      firstName: z.string().min(2).max(100),
+      lastName: z.string().min(2).max(100),
+      username: z.string().min(6).max(100),
+      email: z.string().min(2).max(100),
+      password: z.string().min(8).max(100),
+      role: z.nativeEnum(Role),
+      company: z
+        .object({
+          name: z.string().min(2).max(100),
+          website: z.string().url(),
+          email: z.string().email()
+        })
+        .optional()
+    })
+    .refine(
+      (data) => {
+        if (data.role === Role.ENTERPRISE) {
+          return !!data.company
+        }
+        return true
+      },
+      {
+        message: 'Company details are required for enterprise role',
+        path: ['company']
+      }
+    )
 
   const form = useForm<SignUpData>({
     resolver: zodResolver(schema),
@@ -66,20 +142,43 @@ export default function SignUp() {
       username: '',
       email: '',
       password: '',
-      role: Role.PENTESTER
+      role: Role.PENTESTER,
+      company: {
+        name: '',
+        website: '',
+        email: ''
+      }
     }
   })
 
+  const watchedRole = form.watch('role')
+
   const submitData = async (data: SignUpData) => {
     try {
+      if (data.role === Role.PENTESTER) {
+        await newUser({
+          firstName: data.firstName,
+          lastName: data.lastName,
+          username: data.username,
+          email: data.email,
+          password: data.password,
+          role: data.role
+        }).unwrap()
+      }
       await newUser({
         firstName: data.firstName,
         lastName: data.lastName,
         username: data.username,
         email: data.email,
         password: data.password,
-        role: 'ENTERPRISE'
+        role: data.role,
+        company: {
+          name: data.company?.name,
+          website: data.company?.website,
+          email: data.company?.email
+        }
       }).unwrap()
+      console.log(data)
       toast({
         variant: 'default',
         title: 'Account created!',
@@ -199,17 +298,43 @@ export default function SignUp() {
                 />
               </div>
               <div>
-              <Select required {...form.register('role')}>
-                  <SelectTrigger>
-                    <SelectValue placeholder='Select a role' />
-                  </SelectTrigger>
-
-                  <SelectContent>
-                    <SelectItem value='pentester'>Pentester</SelectItem>
-                    <SelectItem value='enterprise'>Enterprise</SelectItem>
-                  </SelectContent>
-                </Select>
+                <FormField
+                  control={form.control}
+                  name='role'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor='role'>Role</FormLabel>
+                      <FormControl>
+                        <Select
+                          value={field.value}
+                          onValueChange={field.onChange}
+                        >
+                          <SelectTrigger id='role' aria-label='Select role'>
+                            <SelectValue
+                              placeholder={'Select a role'}
+                              {...field}
+                            />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value={Role.PENTESTER}>
+                              Pentester
+                            </SelectItem>
+                            <SelectItem value={Role.ENTERPRISE}>
+                              Enterprise
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
+              {watchedRole === Role.ENTERPRISE ? (
+                <CompanyForm form={form} />
+              ) : (
+                <></>
+              )}
             </CardContent>
             <CardFooter className='flex flex-col'>
               <Button className='w-full' type='submit'>
