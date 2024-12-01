@@ -6,12 +6,15 @@ import type { Submission } from '@/utils/types'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Link, useParams } from 'react-router-dom'
+import { selectCurrentUser } from '../auth/authSlice'
+import { useSelector } from 'react-redux'
 
 const SubmissionDetails = ({
   submission,
   className
 }: { submission: Submission; className?: string }) => {
   const { id } = useParams()
+  const user = useSelector(selectCurrentUser)
 
   return (
     <div className={`max-w-6xl grid prose dark:prose-invert ${className}`}>
@@ -58,7 +61,7 @@ const SubmissionDetails = ({
         <p>Created: {formatDate(submission.createdAt)}</p>
         <p>Last updated: {formatDate(submission.updatedAt)}</p>
       </div>
-      {}
+      {user?.role === 'ENTERPRISE' &&
       <div>
         <Button asChild>
           <Link
@@ -68,6 +71,7 @@ const SubmissionDetails = ({
           </Link>
         </Button>
       </div>
+      }
     </div>
   )
 }

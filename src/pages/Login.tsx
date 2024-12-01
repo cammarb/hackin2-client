@@ -48,12 +48,14 @@ export default function Login() {
 
   const submitData = async (data: LoginData) => {
     try {
-      await login({
+      const response = await login({
         username: data.username,
         password: data.password
       }).unwrap()
       form.reset({})
-      navigate('/dashboard')
+      console.log(response)
+      if(response.user.role === 'ENTERPRISE') navigate('/dashboard')
+      else navigate('/bounty-programs')
     } catch (error) {
       // if (error?.status === 401) {
       //   toast({
